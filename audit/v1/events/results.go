@@ -92,18 +92,19 @@ type Observer struct {
 
 // Event represents a Hermes Event.
 type Event struct {
-	ID          string    `json:"id,omitempty"`
-	TypeURI     string    `json:"typeURI,omitempty"`
-	EventTime   time.Time `json:"-"`
-	Action      string    `json:"action,omitempty"`
-	EventType   string    `json:"eventType,omitempty"`
-	ResourceID  string    `json:"resource_id,omitempty"`
-	RequestPath string    `json:"requestPath,omitempty"`
-	Reason      Reason    `json:"reason,omitempty"`
-	Outcome     string    `json:"outcome,omitempty"`
-	Initiator   Initiator `json:"initiator,omitempty"`
-	Target      Target    `json:"target,omitempty"`
-	Observer    Observer  `json:"observer,omitempty"`
+	ID          string       `json:"id,omitempty"`
+	TypeURI     string       `json:"typeURI,omitempty"`
+	EventTime   time.Time    `json:"-"`
+	Attachments []Attachment `json:"attachments,omitempty"`
+	Action      string       `json:"action,omitempty"`
+	EventType   string       `json:"eventType,omitempty"`
+	ResourceID  string       `json:"resource_id,omitempty"`
+	RequestPath string       `json:"requestPath,omitempty"`
+	Reason      Reason       `json:"reason,omitempty"`
+	Outcome     string       `json:"outcome,omitempty"`
+	Initiator   Initiator    `json:"initiator,omitempty"`
+	Target      Target       `json:"target,omitempty"`
+	Observer    Observer     `json:"observer,omitempty"`
 }
 
 func (r *Event) UnmarshalJSON(b []byte) error {

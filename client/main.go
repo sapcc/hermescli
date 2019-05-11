@@ -15,8 +15,7 @@ import (
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:          "hermesctl",
-	Short:        "short1",
-	Long:         "long2",
+	Short:        "Hermes CLI tool",
 	SilenceUsage: true,
 }
 
@@ -50,6 +49,22 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	/* TODO: Introduce auth by CLI parameters
+	   ao := gophercloud.AuthOptions{
+	           IdentityEndpoint:            authURL,
+	           UserID:                      userID,
+	           Username:                    username,
+	           Password:                    password,
+	           TenantID:                    tenantID,
+	           TenantName:                  tenantName,
+	           DomainID:                    domainID,
+	           DomainName:                  domainName,
+	           ApplicationCredentialID:     applicationCredentialID,
+	           ApplicationCredentialName:   applicationCredentialName,
+	           ApplicationCredentialSecret: applicationCredentialSecret,
+	   }
+	*/
 
 	client, err := openstack.AuthenticatedClient(ao)
 	if err != nil {

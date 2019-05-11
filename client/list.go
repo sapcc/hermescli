@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/gophercloud/gophercloud/pagination"
@@ -29,7 +30,7 @@ func parseTime(timeStr string) (time.Time, error) {
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "short2",
+	Short: "List Hermes events",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// list events
 
@@ -45,6 +46,7 @@ var ListCmd = &cobra.Command{
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
 			ObserverType:  viper.GetString("source"),
+			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
 		var allEvents []events.Event
@@ -87,7 +89,7 @@ var ListCmd = &cobra.Command{
 		events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
 			tmp, err := events.ExtractEvents(page)
 			if err != nil {
-				log.Fatalf("Failed to extract events: %v", err)
+				log.Fatalf("Failed to extract events: %s", err)
 				return false, nil
 			}
 
@@ -104,13 +106,13 @@ var ListCmd = &cobra.Command{
 
 		for _, v := range allEvents {
 			tableRow := []string{}
-			tableRow = append(tableRow, fmt.Sprintf("%v", v.ID))
-			tableRow = append(tableRow, fmt.Sprintf("%v", v.EventTime.Format("2006-01-02T15:04:05-0700")))
-			tableRow = append(tableRow, fmt.Sprintf("%v", v.Observer.TypeURI))
-			tableRow = append(tableRow, fmt.Sprintf("%v", v.Action))
-			tableRow = append(tableRow, fmt.Sprintf("%v", v.Outcome))
-			tableRow = append(tableRow, fmt.Sprintf("%v\n%v", v.Target.TypeURI, v.Target.ID))
-			tableRow = append(tableRow, fmt.Sprintf("%v", v.Initiator.Name))
+			tableRow = append(tableRow, fmt.Sprintf("%s", v.ID))
+			tableRow = append(tableRow, fmt.Sprintf("%s", v.EventTime.Format("2006-01-02T15:04:05-0700")))
+			tableRow = append(tableRow, fmt.Sprintf("%s", v.Observer.TypeURI))
+			tableRow = append(tableRow, fmt.Sprintf("%s", v.Action))
+			tableRow = append(tableRow, fmt.Sprintf("%s", v.Outcome))
+			tableRow = append(tableRow, fmt.Sprintf("%s\n%s", v.Target.TypeURI, v.Target.ID))
+			tableRow = append(tableRow, fmt.Sprintf("%s", v.Initiator.Name))
 			table.Append(tableRow)
 		}
 
@@ -130,15 +132,16 @@ func init() {
 }
 
 func initListCmdFlags() {
-	ListCmd.Flags().StringP("target-type", "", "", "target-type description")
-	ListCmd.Flags().StringP("initiator-name", "", "", "initiator-name description")
-	ListCmd.Flags().StringP("action", "", "", "action description")
-	ListCmd.Flags().StringP("outcome", "", "", "outcome description")
-	ListCmd.Flags().StringP("source", "", "", "source description")
+	ListCmd.Flags().StringP("target-type", "", "", "filter events by a target type")
+	ListCmd.Flags().StringP("initiator-name", "", "", "filter events by an initiator name")
+	ListCmd.Flags().StringP("action", "", "", "filter events by an action")
+	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
+	ListCmd.Flags().StringP("source", "", "", "filter events by a source")
 	// TODO: add conflict with the time and time-start/time-end
-	ListCmd.Flags().StringP("time", "", "", "time description")
-	ListCmd.Flags().StringP("time-start", "", "", "time-start description")
-	ListCmd.Flags().StringP("time-end", "", "", "time-end description")
+	ListCmd.Flags().StringP("time", "", "", "filter events by time")
+	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
+	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
+	ListCmd.Flags().StringSliceP("sort", "", []string{}, "Supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action.\nEach sort key may also include a direction suffix.\nSupported directions are :asc for ascending and :desc for descending.\nCan be specified multiple times.")
 	viper.BindPFlag("initiator-name", ListCmd.Flags().Lookup("initiator-name"))
 	viper.BindPFlag("target-type", ListCmd.Flags().Lookup("target-type"))
 	viper.BindPFlag("action", ListCmd.Flags().Lookup("action"))
@@ -147,4 +150,5 @@ func initListCmdFlags() {
 	viper.BindPFlag("time", ListCmd.Flags().Lookup("time"))
 	viper.BindPFlag("time-start", ListCmd.Flags().Lookup("time-start"))
 	viper.BindPFlag("time-end", ListCmd.Flags().Lookup("time-end"))
+	viper.BindPFlag("sort", ListCmd.Flags().Lookup("sort"))
 }
