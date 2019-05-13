@@ -18,11 +18,12 @@ Flags:
       --action string           filter events by an action
   -h, --help                    help for list
       --initiator-name string   filter events by an initiator name
+      --limit int               limit an amount of events in output
       --outcome string          filter events by an outcome
-      --sort strings            Supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action.
-                                Each sort key may also include a direction suffix.
-                                Supported directions are :asc for ascending and :desc for descending.
-                                Can be specified multiple times.
+      --sort strings            supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
+                                each sort key may also include a direction suffix
+                                supported directions are ":asc" for ascending and ":desc" for descending
+                                can be specified multiple times
       --source string           filter events by a source
       --target-type string      filter events by a target type
       --time string             filter events by time
@@ -30,7 +31,7 @@ Flags:
       --time-start string       filter events from time
 
 Global Flags:
-      --debug   Print out request and response objects.
+      --debug   print out request and response objects
 ```
 
 ### Example
@@ -53,13 +54,13 @@ $ hermesctl list --time 2019-04-23T22:07:16+0000 --sort time:asc
 Show Hermes event
 
 Usage:
-  hermesctl show [flags] <event-id>
+  hermesctl show [flags] <event-id> [<event-id>...]
 
 Flags:
   -h, --help   help for show
 
 Global Flags:
-      --debug   Print out request and response objects.
+      --debug   print out request and response objects
 ```
 
 ```sh

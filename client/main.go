@@ -30,7 +30,7 @@ func Execute() {
 
 func initRootCmdFlags() {
 	// debug flag
-	RootCmd.PersistentFlags().BoolP("debug", "", false, "Print out request and response objects.")
+	RootCmd.PersistentFlags().BoolP("debug", "", false, "print out request and response objects")
 	viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))
 }
 

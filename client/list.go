@@ -38,9 +38,10 @@ var ListCmd = &cobra.Command{
 			return fmt.Errorf("Failed to create Hermes client: %s", err)
 		}
 
+		limit := viper.GetInt("limit")
+
 		listOpts := events.ListOpts{
-			// TODO: add limit support in CLI
-			Limit:         5000,
+			Limit:         limit,
 			TargetType:    viper.GetString("target-type"),
 			InitiatorName: viper.GetString("initiator-name"),
 			Action:        viper.GetString("action"),
@@ -48,6 +49,11 @@ var ListCmd = &cobra.Command{
 			ObserverType:  viper.GetString("source"),
 			// TODO: verify why only time sort works in hermes server
 			Sort: strings.Join(viper.GetStringSlice("sort"), ","),
+		}
+
+		if limit == 0 {
+			// default per page limit
+			listOpts.Limit = 5000
 		}
 
 		var allEvents []events.Event
@@ -72,7 +78,6 @@ var ListCmd = &cobra.Command{
 					Date:   rt,
 					Filter: events.DateFilterGTE,
 				})
-
 			}
 			if t := viper.GetString("time-end"); t != "" {
 				rt, err := parseTime(t)
@@ -83,17 +88,21 @@ var ListCmd = &cobra.Command{
 					Date:   rt,
 					Filter: events.DateFilterLTE,
 				})
-
 			}
 		}
 
 		err = events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
-			e, err := events.ExtractEvents(page)
+			evnts, err := events.ExtractEvents(page)
 			if err != nil {
 				return false, fmt.Errorf("Failed to extract events: %s", err)
 			}
 
-			allEvents = append(allEvents, e...)
+			allEvents = append(allEvents, evnts...)
+
+			if limit > 0 && len(allEvents) >= limit {
+				// break the loop
+				return false, nil
+			}
 
 			return true, nil
 		})
@@ -143,7 +152,11 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
-	ListCmd.Flags().StringSliceP("sort", "", []string{}, "Supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action.\nEach sort key may also include a direction suffix.\nSupported directions are :asc for ascending and :desc for descending.\nCan be specified multiple times.")
+	ListCmd.Flags().IntP("limit", "", 0, "limit an amount of events in output")
+	ListCmd.Flags().StringSliceP("sort", "", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
+each sort key may also include a direction suffix
+supported directions are ":asc" for ascending and ":desc" for descending
+can be specified multiple times`)
 	viper.BindPFlag("initiator-name", ListCmd.Flags().Lookup("initiator-name"))
 	viper.BindPFlag("target-type", ListCmd.Flags().Lookup("target-type"))
 	viper.BindPFlag("action", ListCmd.Flags().Lookup("action"))
@@ -152,5 +165,6 @@ func initListCmdFlags() {
 	viper.BindPFlag("time", ListCmd.Flags().Lookup("time"))
 	viper.BindPFlag("time-start", ListCmd.Flags().Lookup("time-start"))
 	viper.BindPFlag("time-end", ListCmd.Flags().Lookup("time-end"))
+	viper.BindPFlag("limit", ListCmd.Flags().Lookup("limit"))
 	viper.BindPFlag("sort", ListCmd.Flags().Lookup("sort"))
 }

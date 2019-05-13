@@ -18,7 +18,7 @@ Flags:
   -h, --help   help for show
 
 Global Flags:
-      --debug   Print out request and response objects.
+      --debug   print out request and response objects
 `
 
 // ShowCmd represents the show command
