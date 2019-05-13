@@ -33,23 +33,6 @@ type ListOptsBuilder interface {
 	ToEventListQuery() (string, error)
 }
 
-/*
-    hermes.EventFilter{
-           ObserverType:  req.FormValue("observer_type"),
-           TargetType:    req.FormValue("target_type"),
-           TargetID:      req.FormValue("target_id"),
-           InitiatorID:   req.FormValue("initiator_id"),
-           InitiatorType: req.FormValue("initiator_type"),
-           InitiatorName: req.FormValue("initiator_name"),
-           Action:        req.FormValue("action"),
-           Outcome:       req.FormValue("outcome"),
-           Time:          timeRange,
-           Offset:        uint(offset),
-           Limit:         uint(limit),
-           Sort:          sortSpec,
-   }
-*/
-
 // ListOpts allows the filtering of paginated collections through the API.
 // Filtering is achieved by passing in filter value. Page and PerPage are used
 // for pagination.
@@ -59,7 +42,7 @@ type ListOpts struct {
 	TargetType   string `q:"target_type"`
 	InitiatorID  string `q:"initiator_id"`
 
-	// NotAvForSort
+	// Not available for sort
 	InitiatorType string `q:"initiator_type"`
 	InitiatorName string `q:"initiator_name"`
 
@@ -74,7 +57,6 @@ type ListOpts struct {
 
 	Limit  int `q:"limit"`
 	Offset int `q:"offset"`
-	// TODO: sort
 }
 
 // ToEventListQuery formats a ListOpts into a query string.
@@ -94,11 +76,11 @@ func (opts ListOpts) ToEventListQuery() (string, error) {
 					t = fmt.Sprintf("%s,%s:%s", t, v, tmp)
 				}
 			} else {
-				// TODO: verify why simple time doesn't work
+				// TODO: verify why in hermes server simple time doesn't work
 				if len(opts.Time) > 1 {
 					return "", fmt.Errorf("Wrong time filter: expected one date")
 				}
-				t = fmt.Sprintf("gte:%s,lte:%s", tmp, tmp)
+				t = fmt.Sprintf("%s:%s,%s:%s", DateFilterGTE, tmp, DateFilterLTE, tmp)
 			}
 			first = false
 		}

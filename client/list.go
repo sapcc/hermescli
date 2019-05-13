@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -36,17 +35,19 @@ var ListCmd = &cobra.Command{
 
 		client, err := NewHermesV1Client()
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("Failed to create Hermes client: %s", err)
 		}
 
 		listOpts := events.ListOpts{
+			// TODO: add limit support in CLI
 			Limit:         5000,
 			TargetType:    viper.GetString("target-type"),
 			InitiatorName: viper.GetString("initiator-name"),
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
 			ObserverType:  viper.GetString("source"),
-			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
+			// TODO: verify why only time sort works in hermes server
+			Sort: strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
 		var allEvents []events.Event
@@ -86,17 +87,19 @@ var ListCmd = &cobra.Command{
 			}
 		}
 
-		events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
-			tmp, err := events.ExtractEvents(page)
+		err = events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
+			e, err := events.ExtractEvents(page)
 			if err != nil {
-				log.Fatalf("Failed to extract events: %s", err)
-				return false, nil
+				return false, fmt.Errorf("Failed to extract events: %s", err)
 			}
 
-			allEvents = append(allEvents, tmp...)
+			allEvents = append(allEvents, e...)
 
 			return true, nil
 		})
+		if err != nil {
+			return fmt.Errorf("Failed to list events: %s", err)
+		}
 
 		var buf bytes.Buffer
 		table := tablewriter.NewWriter(&buf)
@@ -128,7 +131,6 @@ var ListCmd = &cobra.Command{
 func init() {
 	initListCmdFlags()
 	RootCmd.AddCommand(ListCmd)
-	//initListCmdFlags()
 }
 
 func initListCmdFlags() {

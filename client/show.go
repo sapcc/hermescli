@@ -38,21 +38,22 @@ var ShowCmd = &cobra.Command{
 
 		client, err := NewHermesV1Client()
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("Failed to create Hermes client: %s", err)
 		}
 
 		for _, id := range args {
+			event, err := events.Get(client, id).Extract()
+			if err != nil {
+				log.Printf("[WARNING] %s", err)
+				continue
+			}
+
 			// create table
 			var buf bytes.Buffer
 			table := tablewriter.NewWriter(&buf)
 			table.SetColWidth(20)
 			table.SetAlignment(3)
 			table.SetHeader([]string{"Key", "Value"})
-
-			event, err := events.Get(client, id).Extract()
-			if err != nil {
-				log.Printf("[WARNING] %s", err)
-			}
 
 			table.Append([]string{"ID", fmt.Sprintf("%s", event.ID)})
 			table.Append([]string{"Type", fmt.Sprintf("%s", event.EventType)})
@@ -79,8 +80,8 @@ var ShowCmd = &cobra.Command{
 			if len(event.Attachments) > 0 {
 				var attachments []string
 				for _, attachment := range event.Attachments {
-					if len(attachment.Content) > 0 {
-						attachments = append(attachments, attachment.Content)
+					if attachment.Content != nil {
+						attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
 					}
 				}
 				if len(attachments) > 0 {

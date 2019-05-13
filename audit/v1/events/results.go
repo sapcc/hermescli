@@ -3,20 +3,15 @@ package events
 import (
 	"encoding/json"
 	"time"
-	//"fmt"
 
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
+	"github.com/sapcc/hermes/pkg/cadf"
 )
 
-// TODO: validTimeFormats := []string{time.RFC3339, "2006-01-02T15:04:05-0700", "2006-01-02T15:04:05"}
+type JSONRFC3339 time.Time
 
-// RFC3339Z is the time format used in Zun (Containers Service).
-const RFC3339Z = "2006-01-02T15:04:05-07:00"
-
-type JSONRFC3339Z time.Time
-
-func (jt *JSONRFC3339Z) UnmarshalJSON(data []byte) error {
+func (jt *JSONRFC3339) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
 		return err
@@ -24,12 +19,11 @@ func (jt *JSONRFC3339Z) UnmarshalJSON(data []byte) error {
 	if s == "" {
 		return nil
 	}
-	t, err := time.Parse(RFC3339Z, s)
-	//panic(fmt.Sprintf("%v", t))
+	t, err := time.Parse(time.RFC3339, s)
 	if err != nil {
 		return err
 	}
-	*jt = JSONRFC3339Z(t)
+	*jt = JSONRFC3339(t)
 	return nil
 }
 
@@ -48,70 +42,57 @@ func (r GetResult) ExtractInto(v interface{}) error {
 	return r.Result.ExtractIntoStructPtr(v, "")
 }
 
-// TODO: hermes/pkg/cadf/event.go
-
-type Reason struct {
-	ReasonCode string `json:"reasonCode,omitempty"`
-	ReasonType string `json:"reasonType,omitempty"`
-}
-
-type Host struct {
-	Address string `json:"address,omitempty"`
-	Agent   string `json:"agent,omitempty"`
-}
-
-type Initiator struct {
-	ID        string `json:"id"`
-	TypeURI   string `json:"typeURI"`
-	Name      string `json:"name"`
-	Domain    string `json:"domain,omitempty"`
-	DomainID  string `json:"domain_id,omitempty"`
-	Project   string `json:"project,omitempty"`
-	ProjectID string `json:"project_id,omitempty"`
-	Host      Host   `json:"host,omitempty"`
-}
-
-type Attachment struct {
-	Content     string `json:"content"`
-	ContentType string `json:"contentType"`
-	Name        string `json:"name"`
-}
-
-type Target struct {
-	ID          string       `json:"id"`
-	TypeURI     string       `json:"typeURI"`
-	ProjectID   string       `json:"project_id,omitempty"`
-	Attachments []Attachment `json:"attachments,omitempty"`
-}
-
-type Observer struct {
-	ID      string `json:"id"`
-	TypeURI string `json:"typeURI"`
-	Name    string `json:"name"`
-}
-
 // Event represents a Hermes Event.
 type Event struct {
-	ID          string       `json:"id,omitempty"`
-	TypeURI     string       `json:"typeURI,omitempty"`
-	EventTime   time.Time    `json:"-"`
-	Attachments []Attachment `json:"attachments,omitempty"`
-	Action      string       `json:"action,omitempty"`
-	EventType   string       `json:"eventType,omitempty"`
-	ResourceID  string       `json:"resource_id,omitempty"`
-	RequestPath string       `json:"requestPath,omitempty"`
-	Reason      Reason       `json:"reason,omitempty"`
-	Outcome     string       `json:"outcome,omitempty"`
-	Initiator   Initiator    `json:"initiator,omitempty"`
-	Target      Target       `json:"target,omitempty"`
-	Observer    Observer     `json:"observer,omitempty"`
+	// CADF Event Schema
+	TypeURI string `json:"typeURI"`
+
+	// CADF generated event id
+	ID string `json:"id"`
+
+	// CADF generated timestamp
+	EventTime time.Time `json:"-"`
+
+	// Characterizes events: eg. activity
+	EventType string `json:"eventType"`
+
+	// CADF action mapping for GET call on an OpenStack REST API
+	Action string `json:"action"`
+
+	// Outcome of REST API call, eg. success/failure
+	Outcome string `json:"outcome"`
+
+	// Standard response for successful HTTP requests
+	Reason cadf.Reason `json:"reason,omitempty"`
+
+	// CADF component that contains the RESOURCE
+	// that initiated, originated, or instigated the event's
+	// ACTION, according to the OBSERVER
+	Initiator cadf.Resource `json:"initiator"`
+
+	// CADF component that contains the RESOURCE
+	// against which the ACTION of a CADF Event
+	// Record was performed, was attempted, or is
+	// pending, according to the OBSERVER.
+	Target cadf.Resource `json:"target"`
+
+	// CADF component that contains the RESOURCE
+	// that generates the CADF Event Record based on
+	// its observation (directly or indirectly) of the Actual Event
+	Observer cadf.Resource `json:"observer"`
+
+	// Attachment contains self-describing extensions to the event
+	Attachments []cadf.Attachment `json:"attachments,omitempty"`
+
+	// Request path on the OpenStack service REST API call
+	RequestPath string `json:"requestPath,omitempty"`
 }
 
 func (r *Event) UnmarshalJSON(b []byte) error {
 	type tmp Event
 	var s struct {
 		tmp
-		EventTime JSONRFC3339Z `json:"eventTime"`
+		EventTime JSONRFC3339 `json:"eventTime"`
 	}
 	err := json.Unmarshal(b, &s)
 	if err != nil {
@@ -140,10 +121,10 @@ func (r *Event) MarshalJSON() ([]byte, error) {
 		Event{
 			ID:          r.ID,
 			TypeURI:     r.TypeURI,
+			Attachments: r.Attachments,
 			Action:      r.Action,
 			EventType:   r.EventType,
 			RequestPath: r.RequestPath,
-			ResourceID:  r.ResourceID,
 			Reason:      r.Reason,
 			Outcome:     r.Outcome,
 			Initiator:   r.Initiator,

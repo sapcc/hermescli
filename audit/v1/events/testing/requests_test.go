@@ -10,24 +10,24 @@ import (
 	th "github.com/gophercloud/gophercloud/testhelper"
 	fake "github.com/gophercloud/gophercloud/testhelper/client"
 	"github.com/kayrus/gophercloud-hermes/audit/v1/events"
+	"github.com/sapcc/hermes/pkg/cadf"
 )
 
 var eventsList = []events.Event{
 	{
-		ID: "d3f6695e-8a55-5db1-895c-9f7f0910b7a5",
-		//EventTime: "2017-11-01T12:28:58.660965+00:00",
+		ID:        "d3f6695e-8a55-5db1-895c-9f7f0910b7a5",
 		EventTime: time.Date(2017, time.November, 01, 12, 28, 58, 660965000, time.FixedZone("", 0)),
 		Action:    "create/role_assignment",
 		Outcome:   "success",
-		Initiator: events.Initiator{
+		Initiator: cadf.Resource{
 			TypeURI: "service/security/account/user",
 			ID:      "21ff350bc75824262c60adfc58b7fd4a7349120b43a990c2888e6b0b88af6398",
 		},
-		Target: events.Target{
+		Target: cadf.Resource{
 			TypeURI: "service/security/account/user",
 			ID:      "c4d3626f405b99f395a1c581ed630b2d40be8b9701f95f7b8f5b1e2cf2d72c1b",
 		},
-		Observer: events.Observer{
+		Observer: cadf.Resource{
 			TypeURI: "service/security",
 			ID:      "0e8a00bf-e36c-5a51-9418-2d56d59c8887",
 		},
@@ -35,35 +35,34 @@ var eventsList = []events.Event{
 }
 
 var event = events.Event{
-	TypeURI: "http://schemas.dmtf.org/cloud/audit/1.0/event",
-	ID:      "7189ce80-6e73-5ad9-bdc5-dcc47f176378",
-	// EventTime: "2017-12-18T18:27:32.352893+00:00",
+	TypeURI:     "http://schemas.dmtf.org/cloud/audit/1.0/event",
+	ID:          "7189ce80-6e73-5ad9-bdc5-dcc47f176378",
 	EventTime:   time.Date(2017, time.December, 18, 18, 27, 32, 352893000, time.FixedZone("", 0)),
 	Action:      "create",
 	EventType:   "activity",
 	Outcome:     "success",
 	RequestPath: "/v2.0/ports.json",
-	Reason: events.Reason{
+	Reason: cadf.Reason{
 		ReasonCode: "201",
 		ReasonType: "HTTP",
 	},
-	Initiator: events.Initiator{
+	Initiator: cadf.Resource{
 		TypeURI:   "service/security/account/user",
 		ID:        "ba8304b657fb4568addf7116f41b4a16",
 		Name:      "neutron",
 		Domain:    "Default",
 		ProjectID: "ba8304b657fb4568addf7116f41b4a16",
-		Host: events.Host{
+		Host: &cadf.Host{
 			Address: "127.0.0.1",
 			Agent:   "python-neutronclient",
 		},
 	},
-	Target: events.Target{
+	Target: cadf.Resource{
 		TypeURI:   "network/port",
 		ID:        "7189ce80-6e73-5ad9-bdc5-dcc47f176378",
 		ProjectID: "ba8304b657fb4568addf7116f41b4a16",
 	},
-	Observer: events.Observer{
+	Observer: cadf.Resource{
 		TypeURI: "service/network",
 		Name:    "neutron",
 		ID:      "7189ce80-6e73-5ad9-bdc5-dcc47f176378",
@@ -133,9 +132,6 @@ func TestGet(t *testing.T) {
 
 	n, err := events.Get(fake.ServiceClient(), "7189ce80-6e73-5ad9-bdc5-dcc47f176378").Extract()
 	th.AssertNoErr(t, err)
-
-	//panic(event.EventTime)
-	//panic(n.EventTime)
 
 	th.AssertDeepEquals(t, *n, event)
 }
