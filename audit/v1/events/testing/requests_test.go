@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/gophercloud/gophercloud/pagination"
 	th "github.com/gophercloud/gophercloud/testhelper"
@@ -16,7 +15,7 @@ import (
 var eventsList = []events.Event{
 	{
 		ID:        "d3f6695e-8a55-5db1-895c-9f7f0910b7a5",
-		EventTime: time.Date(2017, time.November, 01, 12, 28, 58, 660965000, time.FixedZone("", 0)),
+		EventTime: "2017-11-01T12:28:58.660965+00:00",
 		Action:    "create/role_assignment",
 		Outcome:   "success",
 		Initiator: cadf.Resource{
@@ -37,7 +36,7 @@ var eventsList = []events.Event{
 var event = events.Event{
 	TypeURI:     "http://schemas.dmtf.org/cloud/audit/1.0/event",
 	ID:          "7189ce80-6e73-5ad9-bdc5-dcc47f176378",
-	EventTime:   time.Date(2017, time.December, 18, 18, 27, 32, 352893000, time.FixedZone("", 0)),
+	EventTime:   "2017-12-18T18:27:32.352893+00:00",
 	Action:      "create",
 	EventType:   "activity",
 	Outcome:     "success",

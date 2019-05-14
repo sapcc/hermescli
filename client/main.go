@@ -100,7 +100,7 @@ func eventToKV(event events.Event) map[string]string {
 	kv := make(map[string]string)
 	kv["ID"] = event.ID
 	kv["Type"] = event.EventType
-	kv["Time"] = event.EventTime.Format("2006-01-02T15:04:05-0700")
+	kv["Time"] = event.EventTime
 
 	if len(event.Observer.Name) > 0 {
 		kv["Observer"] = event.Observer.Name
