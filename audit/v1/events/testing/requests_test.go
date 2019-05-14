@@ -8,7 +8,7 @@ import (
 	"github.com/gophercloud/gophercloud/pagination"
 	th "github.com/gophercloud/gophercloud/testhelper"
 	fake "github.com/gophercloud/gophercloud/testhelper/client"
-	"github.com/kayrus/gophercloud-hermes/audit/v1/events"
+	"github.com/sapcc/hermes-ctl/audit/v1/events"
 	"github.com/sapcc/hermes/pkg/cadf"
 )
 

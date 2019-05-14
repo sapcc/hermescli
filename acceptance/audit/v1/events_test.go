@@ -8,7 +8,7 @@ import (
 	"github.com/gophercloud/gophercloud/acceptance/tools"
 	"github.com/gophercloud/gophercloud/pagination"
 	th "github.com/gophercloud/gophercloud/testhelper"
-	"github.com/kayrus/gophercloud-hermes/audit/v1/events"
+	"github.com/sapcc/hermes-ctl/audit/v1/events"
 )
 
 func TestEventList(t *testing.T) {

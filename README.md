@@ -1,4 +1,4 @@
-# gophercloud-hermes
+# hermes-ctl
 
 # Usage
 

@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gophercloud/gophercloud/pagination"
-	"github.com/kayrus/gophercloud-hermes/audit/v1/events"
 	"github.com/olekukonko/tablewriter"
+	"github.com/sapcc/hermes-ctl/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

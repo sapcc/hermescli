@@ -7,7 +7,7 @@ import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/acceptance/clients"
 	"github.com/gophercloud/gophercloud/openstack"
-	"github.com/kayrus/gophercloud-hermes/audit"
+	"github.com/sapcc/hermes-ctl/audit"
 )
 
 // configureDebug will configure the provider client to print the API

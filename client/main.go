@@ -9,8 +9,8 @@ import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/acceptance/clients"
 	"github.com/gophercloud/gophercloud/openstack"
-	"github.com/kayrus/gophercloud-hermes/audit"
-	"github.com/kayrus/gophercloud-hermes/audit/v1/events"
+	"github.com/sapcc/hermes-ctl/audit"
+	"github.com/sapcc/hermes-ctl/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
