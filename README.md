@@ -2,7 +2,7 @@
 
 # Usage
 
-Only environment authentication metod is supported.
+Only environment authentication method is supported.
 
 ## List
 
@@ -18,9 +18,9 @@ Flags:
       --action string           filter events by an action
   -h, --help                    help for list
       --initiator-name string   filter events by an initiator name
-      --limit int               limit an amount of events in output
+  -l, --limit int               limit an amount of events in output
       --outcome string          filter events by an outcome
-      --sort strings            supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
+  -s, --sort strings            supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
                                 each sort key may also include a direction suffix
                                 supported directions are ":asc" for ascending and ":desc" for descending
                                 can be specified multiple times
@@ -31,7 +31,9 @@ Flags:
       --time-start string       filter events from time
 
 Global Flags:
-      --debug   print out request and response objects
+  -c, --column strings   an event column to print
+  -d, --debug            print out request and response objects
+  -f, --format string    the output format (default "table")
 ```
 
 ### Example
@@ -60,7 +62,9 @@ Flags:
   -h, --help   help for show
 
 Global Flags:
-      --debug   print out request and response objects
+  -c, --column strings   an event column to print
+  -d, --debug            print out request and response objects
+  -f, --format string    the output format (default "table")
 ```
 
 ```sh

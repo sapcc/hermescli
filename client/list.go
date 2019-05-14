@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -12,6 +13,16 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
+
+var defaultListKeyOrder = []string{
+	"ID",
+	"Time",
+	"Source",
+	"Action",
+	"Outcome",
+	"Target",
+	"Initiator",
+}
 
 func parseTime(timeStr string) (time.Time, error) {
 	validTimeFormats := []string{time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
@@ -30,15 +41,40 @@ func parseTime(timeStr string) (time.Time, error) {
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List Hermes events",
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		// check required event id
+		if len(args) > 0 {
+			return fmt.Errorf("command doesn't support arguments")
+		}
+
+		// check time flag
+		teq := viper.GetString("time")
+		tgt := viper.GetString("time-start")
+		tlt := viper.GetString("time-end")
+		if teq != "" && !(tgt == "" && tlt == "") {
+			return fmt.Errorf("Cannot combine time flag with time-start or time-end flags")
+		}
+
+		err := verifyGlobalFlags(defaultListKeyOrder)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// list events
-
 		client, err := NewHermesV1Client()
 		if err != nil {
 			return fmt.Errorf("Failed to create Hermes client: %s", err)
 		}
 
 		limit := viper.GetInt("limit")
+		keyOrder := viper.GetStringSlice("column")
+		if len(keyOrder) == 0 {
+			keyOrder = defaultListKeyOrder
+		}
+		format := viper.GetString("format")
 
 		listOpts := events.ListOpts{
 			Limit:         limit,
@@ -56,8 +92,6 @@ var ListCmd = &cobra.Command{
 			listOpts.Limit = 5000
 		}
 
-		var allEvents []events.Event
-
 		if t := viper.GetString("time"); t != "" {
 			rt, err := parseTime(t)
 			if err != nil {
@@ -68,28 +102,29 @@ var ListCmd = &cobra.Command{
 					Date: rt,
 				},
 			}
-		} else {
-			if t := viper.GetString("time-start"); t != "" {
-				rt, err := parseTime(t)
-				if err != nil {
-					return fmt.Errorf("Failed to parse time-start: %s", err)
-				}
-				listOpts.Time = append(listOpts.Time, events.DateQuery{
-					Date:   rt,
-					Filter: events.DateFilterGTE,
-				})
-			}
-			if t := viper.GetString("time-end"); t != "" {
-				rt, err := parseTime(t)
-				if err != nil {
-					return fmt.Errorf("Failed to parse time-end: %s", err)
-				}
-				listOpts.Time = append(listOpts.Time, events.DateQuery{
-					Date:   rt,
-					Filter: events.DateFilterLTE,
-				})
-			}
 		}
+		if t := viper.GetString("time-start"); t != "" {
+			rt, err := parseTime(t)
+			if err != nil {
+				return fmt.Errorf("Failed to parse time-start: %s", err)
+			}
+			listOpts.Time = append(listOpts.Time, events.DateQuery{
+				Date:   rt,
+				Filter: events.DateFilterGTE,
+			})
+		}
+		if t := viper.GetString("time-end"); t != "" {
+			rt, err := parseTime(t)
+			if err != nil {
+				return fmt.Errorf("Failed to parse time-end: %s", err)
+			}
+			listOpts.Time = append(listOpts.Time, events.DateQuery{
+				Date:   rt,
+				Filter: events.DateFilterLTE,
+			})
+		}
+
+		var allEvents []events.Event
 
 		err = events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
 			evnts, err := events.ExtractEvents(page)
@@ -100,7 +135,7 @@ var ListCmd = &cobra.Command{
 			allEvents = append(allEvents, evnts...)
 
 			if limit > 0 && len(allEvents) >= limit {
-				// break the loop
+				// break the loop, when output limit is reached
 				return false, nil
 			}
 
@@ -110,36 +145,55 @@ var ListCmd = &cobra.Command{
 			return fmt.Errorf("Failed to list events: %s", err)
 		}
 
-		var buf bytes.Buffer
-		table := tablewriter.NewWriter(&buf)
-		table.SetColWidth(20)
-		table.SetAlignment(3)
-		table.SetHeader([]string{"ID", "Time", "Source", "Action", "Outcome", "Target", "Initiator"})
-
-		for _, v := range allEvents {
-			tableRow := []string{}
-			tableRow = append(tableRow, fmt.Sprintf("%s", v.ID))
-			tableRow = append(tableRow, fmt.Sprintf("%s", v.EventTime.Format("2006-01-02T15:04:05-0700")))
-			tableRow = append(tableRow, fmt.Sprintf("%s", v.Observer.TypeURI))
-			tableRow = append(tableRow, fmt.Sprintf("%s", v.Action))
-			tableRow = append(tableRow, fmt.Sprintf("%s", v.Outcome))
-			tableRow = append(tableRow, fmt.Sprintf("%s\n%s", v.Target.TypeURI, v.Target.ID))
-			tableRow = append(tableRow, fmt.Sprintf("%s", v.Initiator.Name))
-			table.Append(tableRow)
+		if format == "json" {
+			jsonEvents, err := json.MarshalIndent(allEvents, "", "  ")
+			if err != nil {
+				return err
+			}
+			fmt.Printf("%s\n", jsonEvents)
 		}
 
-		// print out
-		table.Render()
+		if format == "value" {
+			for _, v := range allEvents {
+				kv := eventToKV(v)
+				var p []string
+				for _, k := range keyOrder {
+					v, _ := kv[k]
+					p = append(p, v)
+				}
+				fmt.Printf("%s\n", strings.Join(p, " "))
+			}
+		}
 
-		fmt.Print(buf.String())
+		if format == "table" {
+			var buf bytes.Buffer
+			table := tablewriter.NewWriter(&buf)
+			table.SetColWidth(20)
+			table.SetAlignment(3)
+			table.SetHeader(keyOrder)
+
+			for _, v := range allEvents {
+				kv := eventToKV(v)
+				tableRow := []string{}
+				for _, k := range keyOrder {
+					v, _ := kv[k]
+					tableRow = append(tableRow, v)
+				}
+				table.Append(tableRow)
+			}
+
+			table.Render()
+
+			fmt.Print(buf.String())
+		}
 
 		return nil
 	},
 }
 
 func init() {
-	initListCmdFlags()
 	RootCmd.AddCommand(ListCmd)
+	initListCmdFlags()
 }
 
 func initListCmdFlags() {
@@ -148,12 +202,11 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("action", "", "", "filter events by an action")
 	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
 	ListCmd.Flags().StringP("source", "", "", "filter events by a source")
-	// TODO: add conflict with the time and time-start/time-end
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
-	ListCmd.Flags().IntP("limit", "", 0, "limit an amount of events in output")
-	ListCmd.Flags().StringSliceP("sort", "", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
+	ListCmd.Flags().IntP("limit", "l", 0, "limit an amount of events in output")
+	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
 each sort key may also include a direction suffix
 supported directions are ":asc" for ascending and ":desc" for descending
 can be specified multiple times`)

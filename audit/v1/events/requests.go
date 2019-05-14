@@ -3,6 +3,7 @@ package events
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/gophercloud/gophercloud"
@@ -62,35 +63,30 @@ type ListOpts struct {
 // ToEventListQuery formats a ListOpts into a query string.
 func (opts ListOpts) ToEventListQuery() (string, error) {
 	q, err := gophercloud.BuildQueryString(opts)
+	if err != nil {
+		return "", err
+	}
 	params := q.Query()
 
-	if opts.Time != nil {
-		var t string
-		first := true
+	if len(opts.Time) > 0 {
+		var t []string
+
 		for _, dt := range opts.Time {
 			tmp := dt.Date.Format(time.RFC3339)
-			if v := dt.Filter; v != "" {
-				if first {
-					t = fmt.Sprintf("%s:%s", v, tmp)
-				} else {
-					t = fmt.Sprintf("%s,%s:%s", t, v, tmp)
-				}
+			if dt.Filter == "" {
+				// combine gte and lte, when there is no filter
+				t = append(t, fmt.Sprintf("%s:%s,%s:%s", DateFilterGTE, tmp, DateFilterLTE, tmp))
 			} else {
-				// TODO: verify why in hermes server simple time doesn't work
-				if len(opts.Time) > 1 {
-					return "", fmt.Errorf("Wrong time filter: expected one date")
-				}
-				t = fmt.Sprintf("%s:%s,%s:%s", DateFilterGTE, tmp, DateFilterLTE, tmp)
+				t = append(t, fmt.Sprintf("%s:%s", dt.Filter, tmp))
 			}
-			first = false
 		}
 
-		params.Add("time", t)
+		params.Add("time", strings.Join(t, ","))
 	}
 
 	q = &url.URL{RawQuery: params.Encode()}
 
-	return q.String(), err
+	return q.String(), nil
 }
 
 // List retrieves a list of Events.
