@@ -25,7 +25,7 @@ func configureDebug(client *gophercloud.ProviderClient) *gophercloud.ProviderCli
 }
 
 // NewHermesV1Client returns a *ServiceClient for making calls
-// to the OpenStack Lyra v1 API. An error will be returned if
+// to the OpenStack Hermes v1 API. An error will be returned if
 // authentication or client creation was not possible.
 func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 	// Workaround for the "AuthOptionsFromEnv"
