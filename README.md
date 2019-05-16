@@ -88,3 +88,11 @@ $ hermesctl show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 | RequestPath      | /v2.0/ports/88c4c917-f5de-43e5-a403-b7c023bfc13d |
 +------------------+--------------------------------------------------+
 ```
+
+## Build
+
+```sh
+$ make
+# or within the docker container
+$ make docker
+```
