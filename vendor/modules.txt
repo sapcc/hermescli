@@ -4,7 +4,7 @@ github.com/databus23/goslo.policy
 github.com/fsnotify/fsnotify
 # github.com/gofrs/uuid v3.1.0+incompatible
 github.com/gofrs/uuid
-# github.com/gophercloud/gophercloud v0.0.0-20190509032623-7892efa714f1
+# github.com/gophercloud/gophercloud v0.0.0-20190516144603-ad4210895ed0
 github.com/gophercloud/gophercloud
 github.com/gophercloud/gophercloud/acceptance/clients
 github.com/gophercloud/gophercloud/openstack

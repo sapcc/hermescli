@@ -2,7 +2,7 @@ module github.com/sapcc/hermes-ctl
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
-	github.com/gophercloud/gophercloud v0.0.0-20190509032623-7892efa714f1
+	github.com/gophercloud/gophercloud v0.0.0-20190516144603-ad4210895ed0
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/olekukonko/tablewriter v0.0.1
