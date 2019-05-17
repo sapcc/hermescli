@@ -134,17 +134,21 @@ func eventToKV(event events.Event) map[string]string {
 		kv["RequestPath"] = event.RequestPath
 	}
 
-	if len(event.Attachments) > 0 {
-		var attachments []string
-		for _, attachment := range event.Attachments {
-			if attachment.Content != nil {
-				attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
-			}
-		}
-		if len(attachments) > 0 {
-			kv["Attachments"] = strings.Join(attachments, "\n")
+	var attachments []string
+	for _, attachment := range event.Attachments {
+		if attachment.Content != nil {
+			attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
 		}
 	}
+	for _, attachment := range event.Target.Attachments {
+		if attachment.Content != nil {
+			attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
+		}
+	}
+	if len(attachments) > 0 {
+		kv["Attachments"] = strings.Join(attachments, "\n")
+	}
+
 	return kv
 }
 
