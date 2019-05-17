@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"fmt"
@@ -11,6 +11,7 @@ import (
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/sapcc/hermes-ctl/audit"
 	"github.com/sapcc/hermes-ctl/audit/v1/events"
+	"github.com/sapcc/hermes-ctl/env"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -45,13 +46,6 @@ func initRootCmdFlags() {
 	viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))
 	viper.BindPFlag("column", RootCmd.PersistentFlags().Lookup("column"))
 	viper.BindPFlag("format", RootCmd.PersistentFlags().Lookup("format"))
-}
-
-func main() {
-	// Workaround for the "AuthOptionsFromEnv"
-	os.Setenv("OS_DOMAIN_NAME", os.Getenv("OS_PROJECT_DOMAIN_NAME"))
-
-	Execute()
 }
 
 // NewHermesV1Client returns a *ServiceClient for making calls
@@ -98,7 +92,7 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 	}
 
 	return audit.NewHermesV1(client, gophercloud.EndpointOpts{
-		Region: os.Getenv("OS_REGION_NAME"),
+		Region: env.Get("OS_REGION_NAME"),
 	})
 }
 
@@ -206,32 +200,42 @@ by sourcing an `openrc` file), then:
 	provider, err := openstack.AuthenticatedClient(opts)
 */
 func AuthOptionsFromEnv() (gophercloud.AuthOptions, error) {
-	authURL := os.Getenv("OS_AUTH_URL")
-	username := os.Getenv("OS_USERNAME")
-	userID := os.Getenv("OS_USERID")
-	password := os.Getenv("OS_PASSWORD")
-	tenantID := os.Getenv("OS_TENANT_ID")
-	tenantName := os.Getenv("OS_TENANT_NAME")
-	domainID := os.Getenv("OS_DOMAIN_ID")
-	domainName := os.Getenv("OS_DOMAIN_NAME")
-	applicationCredentialID := os.Getenv("OS_APPLICATION_CREDENTIAL_ID")
-	applicationCredentialName := os.Getenv("OS_APPLICATION_CREDENTIAL_NAME")
-	applicationCredentialSecret := os.Getenv("OS_APPLICATION_CREDENTIAL_SECRET")
+	authURL := env.Get("OS_AUTH_URL")
+	username := env.Get("OS_USERNAME")
+	userID := env.Get("OS_USERID")
+	password := env.Get("OS_PASSWORD")
+	tenantID := env.Get("OS_TENANT_ID")
+	tenantName := env.Get("OS_TENANT_NAME")
+	domainID := env.Get("OS_DOMAIN_ID")
+	domainName := env.Get("OS_DOMAIN_NAME")
+	applicationCredentialID := env.Get("OS_APPLICATION_CREDENTIAL_ID")
+	applicationCredentialName := env.Get("OS_APPLICATION_CREDENTIAL_NAME")
+	applicationCredentialSecret := env.Get("OS_APPLICATION_CREDENTIAL_SECRET")
 
-	token := os.Getenv("OS_AUTH_TOKEN")
+	token := env.Get("OS_AUTH_TOKEN")
 	if token == "" {
 		// fallback to an old env name
-		token = os.Getenv("OS_TOKEN")
+		token = env.Get("OS_TOKEN")
 	}
 
 	// If OS_PROJECT_ID is set, overwrite tenantID with the value.
-	if v := os.Getenv("OS_PROJECT_ID"); v != "" {
+	if v := env.Get("OS_PROJECT_ID"); v != "" {
 		tenantID = v
 	}
 
 	// If OS_PROJECT_NAME is set, overwrite tenantName with the value.
-	if v := os.Getenv("OS_PROJECT_NAME"); v != "" {
+	if v := env.Get("OS_PROJECT_NAME"); v != "" {
 		tenantName = v
+	}
+
+	// If OS_PROJECT_DOMAIN_NAME is set, overwrite domainName with the value.
+	if v := env.Get("OS_PROJECT_DOMAIN_NAME"); v != "" {
+		domainName = v
+	}
+
+	// If OS_PROJECT_DOMAIN_ID is set, overwrite domainID with the value.
+	if v := env.Get("OS_PROJECT_DOMAIN_ID"); v != "" {
+		domainID = v
 	}
 
 	if authURL == "" {
