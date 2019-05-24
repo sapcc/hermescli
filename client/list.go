@@ -79,6 +79,7 @@ var ListCmd = &cobra.Command{
 		listOpts := events.ListOpts{
 			Limit:         limit,
 			TargetType:    viper.GetString("target-type"),
+			TargetID:      viper.GetString("target-id"),
 			InitiatorName: viper.GetString("initiator-name"),
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
@@ -198,6 +199,7 @@ func init() {
 
 func initListCmdFlags() {
 	ListCmd.Flags().StringP("target-type", "", "", "filter events by a target type")
+	ListCmd.Flags().StringP("target-id", "", "", "filter events by a target id")
 	ListCmd.Flags().StringP("initiator-name", "", "", "filter events by an initiator name")
 	ListCmd.Flags().StringP("action", "", "", "filter events by an action")
 	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
@@ -212,6 +214,7 @@ supported directions are ":asc" for ascending and ":desc" for descending
 can be specified multiple times`)
 	viper.BindPFlag("initiator-name", ListCmd.Flags().Lookup("initiator-name"))
 	viper.BindPFlag("target-type", ListCmd.Flags().Lookup("target-type"))
+	viper.BindPFlag("target-id", ListCmd.Flags().Lookup("target-id"))
 	viper.BindPFlag("action", ListCmd.Flags().Lookup("action"))
 	viper.BindPFlag("outcome", ListCmd.Flags().Lookup("outcome"))
 	viper.BindPFlag("source", ListCmd.Flags().Lookup("source"))

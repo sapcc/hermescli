@@ -25,6 +25,7 @@ Flags:
                                 supported directions are ":asc" for ascending and ":desc" for descending
                                 can be specified multiple times
       --source string           filter events by a source
+      --target-id string        filter events by a target id
       --target-type string      filter events by a target type
       --time string             filter events by time
       --time-end string         filter events till time
