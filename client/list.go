@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
 	"github.com/olekukonko/tablewriter"
 	"github.com/sapcc/hermes-ctl/audit/v1/events"
@@ -143,6 +144,9 @@ var ListCmd = &cobra.Command{
 			return true, nil
 		})
 		if err != nil {
+			if _, ok := err.(gophercloud.ErrDefault500); ok {
+				return fmt.Errorf(`Failed to list events: %s: please try to decrease an amount of the events in output, e.g. set "--limit 100"`, err)
+			}
 			return fmt.Errorf("Failed to list events: %s", err)
 		}
 
