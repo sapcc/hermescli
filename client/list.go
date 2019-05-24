@@ -2,7 +2,6 @@ package client
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -150,26 +149,6 @@ var ListCmd = &cobra.Command{
 			return fmt.Errorf("Failed to list events: %s", err)
 		}
 
-		if format == "json" {
-			jsonEvents, err := json.MarshalIndent(allEvents, "", "  ")
-			if err != nil {
-				return err
-			}
-			fmt.Printf("%s\n", jsonEvents)
-		}
-
-		if format == "value" {
-			for _, v := range allEvents {
-				kv := eventToKV(v)
-				var p []string
-				for _, k := range keyOrder {
-					v, _ := kv[k]
-					p = append(p, v)
-				}
-				fmt.Printf("%s\n", strings.Join(p, " "))
-			}
-		}
-
 		if format == "table" {
 			var buf bytes.Buffer
 			table := tablewriter.NewWriter(&buf)
@@ -190,12 +169,8 @@ var ListCmd = &cobra.Command{
 			table.Render()
 
 			fmt.Print(buf.String())
-		}
-
-		if format == "csv" {
-			if err = printCSV(allEvents, keyOrder); err != nil {
-				return err
-			}
+		} else {
+			return printEvent(allEvents, format, keyOrder)
 		}
 
 		return nil

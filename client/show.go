@@ -2,10 +2,8 @@ package client
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/sapcc/hermes-ctl/audit/v1/events"
@@ -82,34 +80,6 @@ var ShowCmd = &cobra.Command{
 			allEvents = append(allEvents, *event)
 		}
 
-		if format == "json" {
-			if len(allEvents) > 1 {
-				jsonEvents, err := json.MarshalIndent(allEvents, "", "  ")
-				if err != nil {
-					return err
-				}
-				fmt.Printf("%s\n", jsonEvents)
-			} else if len(allEvents) == 1 {
-				jsonEvent, err := json.MarshalIndent(allEvents[0], "", "  ")
-				if err != nil {
-					return err
-				}
-				fmt.Printf("%s\n", jsonEvent)
-			}
-		}
-
-		if format == "value" {
-			for _, v := range allEvents {
-				kv := eventToKV(v)
-				var p []string
-				for _, k := range keyOrder {
-					v, _ := kv[k]
-					p = append(p, v)
-				}
-				fmt.Printf("%s\n", strings.Join(p, " "))
-			}
-		}
-
 		if format == "table" {
 			for _, event := range allEvents {
 				kv := eventToKV(event)
@@ -132,12 +102,8 @@ var ShowCmd = &cobra.Command{
 
 				fmt.Print(buf.String())
 			}
-		}
-
-		if format == "csv" {
-			if err = printCSV(allEvents, keyOrder); err != nil {
-				return err
-			}
+		} else {
+			return printEvent(allEvents, format, keyOrder)
 		}
 
 		return nil

@@ -11,4 +11,5 @@ require (
 	github.com/spf13/viper v1.3.2
 	golang.org/x/sys v0.0.0-20190209173611-3b5209105503
 	golang.org/x/text v0.3.0
+	gopkg.in/yaml.v2 v2.2.2
 )

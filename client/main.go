@@ -1,8 +1,6 @@
 package client
 
 import (
-	"bytes"
-	"encoding/csv"
 	"fmt"
 	"net/http"
 	"os"
@@ -12,18 +10,10 @@ import (
 	"github.com/gophercloud/gophercloud/acceptance/clients"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/sapcc/hermes-ctl/audit"
-	"github.com/sapcc/hermes-ctl/audit/v1/events"
 	"github.com/sapcc/hermes-ctl/env"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
-
-var defaultPrintFormats = []string{
-	"table",
-	"value",
-	"json",
-	"csv",
-}
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -97,56 +87,6 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 	return audit.NewHermesV1(client, gophercloud.EndpointOpts{
 		Region: env.Get("OS_REGION_NAME"),
 	})
-}
-
-func eventToKV(event events.Event) map[string]string {
-	kv := make(map[string]string)
-	kv["ID"] = event.ID
-	kv["Type"] = event.EventType
-	kv["Time"] = event.EventTime
-
-	if len(event.Observer.Name) > 0 {
-		kv["Observer"] = event.Observer.Name
-	}
-	kv["TypeURI"] = event.Observer.TypeURI
-	// compatibility to Source<->Observer.TypeURI link
-	kv["Source"] = event.Observer.TypeURI
-
-	kv["Action"] = event.Action
-	kv["Outcome"] = event.Outcome
-	kv["Target"] = fmt.Sprintf("%s %s", event.Target.TypeURI, event.Target.ID)
-
-	if len(event.Initiator.Name) > 0 {
-		kv["Initiator"] = event.Initiator.Name
-	}
-	if len(event.Initiator.Domain) > 0 {
-		kv["InitiatorDomain"] = event.Initiator.Domain
-	}
-	if event.Initiator.Host != nil {
-		kv["InitiatorAddress"] = event.Initiator.Host.Address
-		kv["InitiatorAgent"] = event.Initiator.Host.Agent
-	}
-
-	if len(event.RequestPath) > 0 {
-		kv["RequestPath"] = event.RequestPath
-	}
-
-	var attachments []string
-	for _, attachment := range event.Attachments {
-		if attachment.Content != nil {
-			attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
-		}
-	}
-	for _, attachment := range event.Target.Attachments {
-		if attachment.Content != nil {
-			attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
-		}
-	}
-	if len(attachments) > 0 {
-		kv["Attachments"] = strings.Join(attachments, "\n")
-	}
-
-	return kv
 }
 
 func verifyGlobalFlags(columnsOrder []string) error {
@@ -330,31 +270,4 @@ func AuthOptionsFromEnv() (gophercloud.AuthOptions, error) {
 	}
 
 	return ao, nil
-}
-
-func printCSV(allEvents []events.Event, keyOrder []string) error {
-	var buf bytes.Buffer
-	csv := csv.NewWriter(&buf)
-
-	if err := csv.Write(keyOrder); err != nil {
-		return fmt.Errorf("error writing header to csv:", err)
-	}
-
-	for _, v := range allEvents {
-		kv := eventToKV(v)
-		tableRow := []string{}
-		for _, k := range keyOrder {
-			v, _ := kv[k]
-			tableRow = append(tableRow, v)
-		}
-		if err := csv.Write(tableRow); err != nil {
-			return fmt.Errorf("error writing record to csv:", err)
-		}
-	}
-
-	csv.Flush()
-
-	fmt.Print(buf.String())
-
-	return nil
 }
