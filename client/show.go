@@ -134,6 +134,12 @@ var ShowCmd = &cobra.Command{
 			}
 		}
 
+		if format == "csv" {
+			if err = printCSV(allEvents, keyOrder); err != nil {
+				return err
+			}
+		}
+
 		return nil
 	},
 }

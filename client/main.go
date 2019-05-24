@@ -1,6 +1,8 @@
 package client
 
 import (
+	"bytes"
+	"encoding/csv"
 	"fmt"
 	"net/http"
 	"os"
@@ -20,6 +22,7 @@ var defaultPrintFormats = []string{
 	"table",
 	"value",
 	"json",
+	"csv",
 }
 
 // RootCmd represents the base command when called without any subcommands
@@ -327,4 +330,31 @@ func AuthOptionsFromEnv() (gophercloud.AuthOptions, error) {
 	}
 
 	return ao, nil
+}
+
+func printCSV(allEvents []events.Event, keyOrder []string) error {
+	var buf bytes.Buffer
+	csv := csv.NewWriter(&buf)
+
+	if err := csv.Write(keyOrder); err != nil {
+		return fmt.Errorf("error writing header to csv:", err)
+	}
+
+	for _, v := range allEvents {
+		kv := eventToKV(v)
+		tableRow := []string{}
+		for _, k := range keyOrder {
+			v, _ := kv[k]
+			tableRow = append(tableRow, v)
+		}
+		if err := csv.Write(tableRow); err != nil {
+			return fmt.Errorf("error writing record to csv:", err)
+		}
+	}
+
+	csv.Flush()
+
+	fmt.Print(buf.String())
+
+	return nil
 }

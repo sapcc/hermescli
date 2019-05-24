@@ -192,6 +192,12 @@ var ListCmd = &cobra.Command{
 			fmt.Print(buf.String())
 		}
 
+		if format == "csv" {
+			if err = printCSV(allEvents, keyOrder); err != nil {
+				return err
+			}
+		}
+
 		return nil
 	},
 }
