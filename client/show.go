@@ -11,18 +11,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const usage = `Usage:
-  hermesctl show [flags] <event-id> [<event-id>...]
-
-Flags:
-  -h, --help   help for show
-
-Global Flags:
-  -c, --column strings   an event column to print
-  -d, --debug            print out request and response objects
-  -f, --format string    the output format (default "table")
-`
-
 var defaultShowKeyOrder = []string{
 	"ID",
 	"Type",
@@ -42,20 +30,11 @@ var defaultShowKeyOrder = []string{
 
 // ShowCmd represents the show command
 var ShowCmd = &cobra.Command{
-	Use:   "show",
+	Use:   "show <event-id> [<event-id>...]",
+	Args:  cobra.MinimumNArgs(1),
 	Short: "Show Hermes event",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		// check required event id
-		if len(args) == 0 {
-			return fmt.Errorf("no event id given")
-		}
-
-		err := verifyGlobalFlags(defaultShowKeyOrder)
-		if err != nil {
-			return err
-		}
-
-		return nil
+		return verifyGlobalFlags(defaultShowKeyOrder)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// show event
@@ -111,6 +90,5 @@ var ShowCmd = &cobra.Command{
 }
 
 func init() {
-	ShowCmd.SetUsageTemplate(usage)
 	RootCmd.AddCommand(ShowCmd)
 }

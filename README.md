@@ -57,7 +57,7 @@ $ hermesctl list --time 2019-04-23T22:07:16+0000 --sort time:asc
 Show Hermes event
 
 Usage:
-  hermesctl show [flags] <event-id> [<event-id>...]
+  hermesctl show <event-id> [<event-id>...] [flags]
 
 Flags:
   -h, --help   help for show
@@ -67,6 +67,8 @@ Global Flags:
   -d, --debug            print out request and response objects
   -f, --format string    the output format (default "table")
 ```
+
+### Example
 
 ```sh
 $ hermesctl show 1878df7c-d3ec-52d0-8b56-11ad68d25102
@@ -88,6 +90,37 @@ $ hermesctl show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 | InitiatorAgent   | python-neutronclient                             |
 | RequestPath      | /v2.0/ports/88c4c917-f5de-43e5-a403-b7c023bfc13d |
 +------------------+--------------------------------------------------+
+```
+
+## Attributes
+
+### Usage
+
+```
+$ hermesctl attributes -h
+List Hermes attributes
+
+Usage:
+  hermesctl attributes observer_type|target_type|target_id|initiator_type|initiator_id|initiator_name|action|outcome [flags]
+
+Flags:
+  -h, --help            help for attributes
+  -l, --limit int       limit an amount of attributes in output
+      --max-depth int   limit the level of detail of hierarchical values
+
+Global Flags:
+  -c, --column strings   an event column to print
+  -d, --debug            print out request and response objects
+  -f, --format string    the output format (default "table")
+```
+
+### Example
+
+```sh
+$ hermesctl attributes outcome
+success
+failure
+unknown
 ```
 
 ## Build

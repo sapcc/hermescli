@@ -40,12 +40,20 @@ func parseTime(timeStr string) (time.Time, error) {
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
 	Use:   "list",
+	Args:  cobra.ExactArgs(0),
 	Short: "List Hermes events",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		// check required event id
-		if len(args) > 0 {
-			return fmt.Errorf("command doesn't support arguments")
-		}
+		viper.BindPFlag("initiator-name", cmd.Flags().Lookup("initiator-name"))
+		viper.BindPFlag("target-type", cmd.Flags().Lookup("target-type"))
+		viper.BindPFlag("target-id", cmd.Flags().Lookup("target-id"))
+		viper.BindPFlag("action", cmd.Flags().Lookup("action"))
+		viper.BindPFlag("outcome", cmd.Flags().Lookup("outcome"))
+		viper.BindPFlag("source", cmd.Flags().Lookup("source"))
+		viper.BindPFlag("time", cmd.Flags().Lookup("time"))
+		viper.BindPFlag("time-start", cmd.Flags().Lookup("time-start"))
+		viper.BindPFlag("time-end", cmd.Flags().Lookup("time-end"))
+		viper.BindPFlag("limit", cmd.Flags().Lookup("limit"))
+		viper.BindPFlag("sort", cmd.Flags().Lookup("sort"))
 
 		// check time flag
 		teq := viper.GetString("time")
@@ -55,12 +63,7 @@ var ListCmd = &cobra.Command{
 			return fmt.Errorf("Cannot combine time flag with time-start or time-end flags")
 		}
 
-		err := verifyGlobalFlags(defaultListKeyOrder)
-		if err != nil {
-			return err
-		}
-
-		return nil
+		return verifyGlobalFlags(defaultListKeyOrder)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// list events
@@ -178,8 +181,8 @@ var ListCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(ListCmd)
 	initListCmdFlags()
+	RootCmd.AddCommand(ListCmd)
 }
 
 func initListCmdFlags() {
@@ -197,15 +200,4 @@ func initListCmdFlags() {
 each sort key may also include a direction suffix
 supported directions are ":asc" for ascending and ":desc" for descending
 can be specified multiple times`)
-	viper.BindPFlag("initiator-name", ListCmd.Flags().Lookup("initiator-name"))
-	viper.BindPFlag("target-type", ListCmd.Flags().Lookup("target-type"))
-	viper.BindPFlag("target-id", ListCmd.Flags().Lookup("target-id"))
-	viper.BindPFlag("action", ListCmd.Flags().Lookup("action"))
-	viper.BindPFlag("outcome", ListCmd.Flags().Lookup("outcome"))
-	viper.BindPFlag("source", ListCmd.Flags().Lookup("source"))
-	viper.BindPFlag("time", ListCmd.Flags().Lookup("time"))
-	viper.BindPFlag("time-start", ListCmd.Flags().Lookup("time-start"))
-	viper.BindPFlag("time-end", ListCmd.Flags().Lookup("time-end"))
-	viper.BindPFlag("limit", ListCmd.Flags().Lookup("limit"))
-	viper.BindPFlag("sort", ListCmd.Flags().Lookup("sort"))
 }

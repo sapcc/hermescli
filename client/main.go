@@ -93,6 +93,9 @@ func verifyGlobalFlags(columnsOrder []string) error {
 	// verify supported columns
 	columns := viper.GetStringSlice("column")
 	for _, c := range columns {
+		if len(columnsOrder) == 0 {
+			return fmt.Errorf(`Columns are not supported for this command`)
+		}
 		if !isSliceContainsStr(columnsOrder, c) {
 			return fmt.Errorf(`Invalid "%s" column name, supported values for the column: %s`, c, strings.Join(columnsOrder, ", "))
 		}
