@@ -3,6 +3,8 @@ package client
 import (
 	"bytes"
 	"fmt"
+	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -13,6 +15,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
+
+const maxOffset = 10000
 
 var defaultListKeyOrder = []string{
 	"ID",
@@ -25,6 +29,7 @@ var defaultListKeyOrder = []string{
 }
 
 func parseTime(timeStr string) (time.Time, error) {
+	//validTimeFormats := []string{"2019-02-12T09:32:36.871453+00:00", time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
 	validTimeFormats := []string{time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
 	var t time.Time
 	var err error
@@ -35,6 +40,151 @@ func parseTime(timeStr string) (time.Time, error) {
 		}
 	}
 	return time.Now(), err
+}
+
+func getTimeListOpts(allEvents *[]events.Event, listOpts *events.ListOpts) error {
+	// time of the last event
+	t := (*allEvents)[len(*allEvents)-1]
+	rt, err := parseTime(t.EventTime)
+	if err != nil {
+		return fmt.Errorf("Failed to parse time of the last %s event: %s", t.ID, err)
+	}
+
+	var filter events.DateFilter
+	if getTimeSort(*listOpts) {
+		filter = events.DateFilterLTE
+	} else {
+		filter = events.DateFilterGTE
+	}
+
+	dateFilter := events.DateQuery{
+		Date:   rt,
+		Filter: filter,
+	}
+
+	// TODO: test with existing time frames
+	if len(listOpts.Time) > 0 {
+		var found bool
+		for i, v := range listOpts.Time {
+			if v.Filter == filter {
+				found = true
+				listOpts.Time[i].Date = rt
+			}
+		}
+		if !found {
+			listOpts.Time = append(listOpts.Time, dateFilter)
+		}
+	} else {
+		listOpts.Time = []events.DateQuery{
+			dateFilter,
+		}
+	}
+
+	return nil
+}
+
+func getOffset(page pagination.Page) (int, error) {
+	// detect next URL offset
+	next, err := page.NextPageURL()
+	if err != nil {
+		return 0, fmt.Errorf("Failed to detect next page url: %s", err)
+	}
+	parsedURL, err := url.Parse(next)
+	if err != nil {
+		return 0, fmt.Errorf("Failed to parse next url: %s", err)
+	}
+	params := parsedURL.Query()
+	if v, ok := params["offset"]; ok {
+		if len(v) == 0 || len(v) > 1 {
+			return 0, fmt.Errorf("Failed to detect offset", err)
+		}
+		return strconv.Atoi(v[0])
+	}
+	return 0, nil
+}
+
+func getTimeSort(listOpts events.ListOpts) bool {
+	for _, v := range strings.Split(listOpts.Sort, ",") {
+		s := strings.SplitN(v, ":", 2)
+		if len(s) == 2 && s[0] == "time" {
+			if s[1] == "asc" {
+				return false
+			}
+			if s[1] == "desc" {
+				return true
+			}
+			return false
+		}
+		if s[0] == "time" {
+			return false
+		}
+	}
+	return true
+}
+
+func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int) error {
+	var forceWorkaround bool
+	eventLength := len(*allEvents)
+	precise := false
+
+	err := events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
+		evnts, err := events.ExtractEvents(page)
+		if err != nil {
+			return false, fmt.Errorf("Failed to extract events: %s", err)
+		}
+
+		if precise {
+			// add only unique events
+		OUTER:
+			for _, evntNew := range evnts {
+				for _, allEvnts := range *allEvents {
+					if allEvnts.ID == evntNew.ID {
+						continue OUTER
+					}
+				}
+				*allEvents = append(*allEvents, evntNew)
+			}
+		} else {
+			*allEvents = append(*allEvents, evnts...)
+		}
+
+		eventLength = len(*allEvents)
+
+		if userLimit > 0 && eventLength >= userLimit {
+			// break the loop, when output userLimit is reached
+			return false, nil
+		}
+
+		offset, err := getOffset(page)
+		if err != nil {
+			return false, err
+		}
+
+		if (userLimit == 0 || userLimit > maxOffset) && offset >= maxOffset {
+			// detect the 10000 offset, and go to the workaround without the gophercloud.ErrDefault500
+			forceWorkaround = true
+			return false, nil
+		}
+
+		return true, nil
+	})
+	if err != nil {
+		return fmt.Errorf("Failed to list events: %s", err)
+	}
+
+	if forceWorkaround && eventLength > 0 {
+		// workaround to avoid 10000 limit gophercloud.ErrDefault500
+		if err = getTimeListOpts(allEvents, &listOpts); err != nil {
+			return err
+		}
+		delta := userLimit - eventLength
+		if delta > 0 && delta <= maxOffset {
+			listOpts.Limit = delta
+		}
+		return getEvents(client, allEvents, listOpts, userLimit)
+	}
+
+	return nil
 }
 
 // ListCmd represents the list command
@@ -73,7 +223,7 @@ var ListCmd = &cobra.Command{
 			return fmt.Errorf("Failed to create Hermes client: %s", err)
 		}
 
-		limit := viper.GetInt("limit")
+		userLimit := viper.GetInt("limit")
 		keyOrder := viper.GetStringSlice("column")
 		if len(keyOrder) == 0 {
 			keyOrder = defaultListKeyOrder
@@ -81,7 +231,7 @@ var ListCmd = &cobra.Command{
 		format := viper.GetString("format")
 
 		listOpts := events.ListOpts{
-			Limit:         limit,
+			Limit:         maxOffset,
 			TargetType:    viper.GetString("target-type"),
 			TargetID:      viper.GetString("target-id"),
 			InitiatorID:   viper.GetString("initiator-id"),
@@ -93,9 +243,10 @@ var ListCmd = &cobra.Command{
 			Sort: strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
-		if limit == 0 {
+		// TODO: properly handle user limits, when limit > 10000
+		if userLimit > 0 && userLimit <= maxOffset {
 			// default per page limit
-			listOpts.Limit = 5000
+			listOpts.Limit = userLimit
 		}
 
 		if t := viper.GetString("time"); t != "" {
@@ -132,26 +283,8 @@ var ListCmd = &cobra.Command{
 
 		var allEvents []events.Event
 
-		err = events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
-			evnts, err := events.ExtractEvents(page)
-			if err != nil {
-				return false, fmt.Errorf("Failed to extract events: %s", err)
-			}
-
-			allEvents = append(allEvents, evnts...)
-
-			if limit > 0 && len(allEvents) >= limit {
-				// break the loop, when output limit is reached
-				return false, nil
-			}
-
-			return true, nil
-		})
-		if err != nil {
-			if _, ok := err.(gophercloud.ErrDefault500); ok {
-				return fmt.Errorf(`Failed to list events: %s: please try to decrease an amount of the events in output, e.g. set "--limit 100"`, err)
-			}
-			return fmt.Errorf("Failed to list events: %s", err)
+		if err = getEvents(client, &allEvents, listOpts, userLimit); err != nil {
+			return fmt.Errorf("Failed to list all events using the workaround: %s", err)
 		}
 
 		if format == "table" {
@@ -198,7 +331,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
-	ListCmd.Flags().IntP("limit", "l", 0, "limit an amount of events in output")
+	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
 	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
 each sort key may also include a direction suffix
 supported directions are ":asc" for ascending and ":desc" for descending
