@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -14,6 +15,7 @@ import (
 	"github.com/sapcc/hermes-ctl/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gopkg.in/cheggaaa/pb.v1"
 )
 
 const maxOffset = 10000
@@ -83,7 +85,7 @@ func getTimeListOpts(allEvents *[]events.Event, listOpts *events.ListOpts) error
 	return nil
 }
 
-func getOffset(page pagination.Page) (int, error) {
+func getNextOffset(page pagination.Page) (int, error) {
 	// detect next URL offset
 	next, err := page.NextPageURL()
 	if err != nil {
@@ -122,10 +124,10 @@ func getTimeSort(listOpts events.ListOpts) bool {
 	return true
 }
 
-func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int) error {
+func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, bar *pb.ProgressBar) error {
+	var precise bool = false
 	var forceWorkaround bool
-	eventLength := len(*allEvents)
-	precise := false
+	var eventLength int
 
 	err := events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
 		evnts, err := events.ExtractEvents(page)
@@ -135,11 +137,11 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 
 		if precise {
 			// add only unique events
-		OUTER:
+		ROOTLOOP:
 			for _, evntNew := range evnts {
 				for _, allEvnts := range *allEvents {
 					if allEvnts.ID == evntNew.ID {
-						continue OUTER
+						continue ROOTLOOP
 					}
 				}
 				*allEvents = append(*allEvents, evntNew)
@@ -150,18 +152,38 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 
 		eventLength = len(*allEvents)
 
+		if bar == nil {
+			if v, err := page.(events.EventPage).Total(); err != nil {
+				return false, fmt.Errorf("Failed to extract total: %s", err)
+			} else if eventLength <= maxOffset && eventLength != userLimit {
+				if userLimit >= maxOffset && v > userLimit {
+					bar = pb.New(userLimit)
+				} else if v > maxOffset {
+					bar = pb.New(v)
+				}
+				if bar != nil {
+					bar.Output = os.Stderr
+					bar.Start()
+				}
+			}
+		}
+
+		if bar != nil {
+			bar.Set(eventLength)
+		}
+
 		if userLimit > 0 && eventLength >= userLimit {
 			// break the loop, when output userLimit is reached
 			return false, nil
 		}
 
-		offset, err := getOffset(page)
+		nextOffset, err := getNextOffset(page)
 		if err != nil {
 			return false, err
 		}
 
-		if (userLimit == 0 || userLimit > maxOffset) && offset >= maxOffset {
-			// detect the 10000 offset, and go to the workaround without the gophercloud.ErrDefault500
+		if (userLimit == 0 || userLimit > maxOffset) && nextOffset >= maxOffset {
+			// go to the workaround to avoid the 500 http code
 			forceWorkaround = true
 			return false, nil
 		}
@@ -173,7 +195,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 	}
 
 	if forceWorkaround && eventLength > 0 {
-		// workaround to avoid 10000 limit gophercloud.ErrDefault500
+		// workaround to avoid 10000 limit 500 code
 		if err = getTimeListOpts(allEvents, &listOpts); err != nil {
 			return err
 		}
@@ -181,7 +203,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 		if delta > 0 && delta <= maxOffset {
 			listOpts.Limit = delta
 		}
-		return getEvents(client, allEvents, listOpts, userLimit)
+		return getEvents(client, allEvents, listOpts, userLimit, bar)
 	}
 
 	return nil
@@ -243,7 +265,7 @@ var ListCmd = &cobra.Command{
 			Sort: strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
-		// TODO: properly handle user limits, when limit > 10000
+		// handle user limits <= 10000
 		if userLimit > 0 && userLimit <= maxOffset {
 			// default per page limit
 			listOpts.Limit = userLimit
@@ -283,8 +305,15 @@ var ListCmd = &cobra.Command{
 
 		var allEvents []events.Event
 
-		if err = getEvents(client, &allEvents, listOpts, userLimit); err != nil {
+		var bar *pb.ProgressBar
+		if err = getEvents(client, &allEvents, listOpts, userLimit, bar); err != nil {
+			if bar != nil {
+				bar.Finish()
+			}
 			return fmt.Errorf("Failed to list all events using the workaround: %s", err)
+		}
+		if bar != nil {
+			bar.Finish()
 		}
 
 		if format == "table" {

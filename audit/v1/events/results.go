@@ -48,6 +48,18 @@ func (r EventPage) NextPageURL() (string, error) {
 	return s.Next, err
 }
 
+// Total extracts the "total" attribute of the result.
+func (r EventPage) Total() (int, error) {
+	var s struct {
+		Total int `json:"total"`
+	}
+	err := r.ExtractInto(&s)
+	if err != nil {
+		return 0, err
+	}
+	return s.Total, err
+}
+
 // ExtractEvents accepts a Page struct, specifically an EventPage struct,
 // and extracts the elements into a slice of Event structs. In other words,
 // a generic collection is mapped into a relevant slice.
