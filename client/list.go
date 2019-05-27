@@ -125,7 +125,7 @@ func getTimeSort(listOpts events.ListOpts) bool {
 	return true
 }
 
-func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar *pb.ProgressBar) error {
+func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar **pb.ProgressBar) error {
 	var forceWorkaround bool
 	var eventLength int
 
@@ -165,24 +165,24 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 
 		eventLength = len(*allEvents)
 
-		if bar == nil {
+		if *bar == nil {
 			if v, err := page.(events.EventPage).Total(); err != nil {
 				return false, fmt.Errorf("Failed to extract total: %s", err)
 			} else if eventLength <= maxOffset && eventLength != userLimit {
 				if userLimit >= maxOffset && v > userLimit {
-					bar = pb.New(userLimit)
+					*bar = pb.New(userLimit)
 				} else if v > maxOffset {
-					bar = pb.New(v)
+					*bar = pb.New(v)
 				}
-				if bar != nil {
-					bar.Output = os.Stderr
-					bar.Start()
+				if *bar != nil {
+					(*bar).Output = os.Stderr
+					(*bar).Start()
 				}
 			}
 		}
 
-		if bar != nil {
-			bar.Set(eventLength)
+		if *bar != nil {
+			(*bar).Set(eventLength)
 		}
 
 		if userLimit > 0 && eventLength >= userLimit {
@@ -319,7 +319,7 @@ var ListCmd = &cobra.Command{
 		var allEvents []events.Event
 
 		var bar *pb.ProgressBar
-		if err = getEvents(client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), bar); err != nil {
+		if err = getEvents(client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), &bar); err != nil {
 			if bar != nil {
 				bar.Finish()
 			}
