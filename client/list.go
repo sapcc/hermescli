@@ -20,6 +20,9 @@ import (
 
 const maxOffset = 10000
 
+// precision of the overlap detection
+const precision = 100
+
 var defaultListKeyOrder = []string{
 	"ID",
 	"Time",
@@ -31,7 +34,6 @@ var defaultListKeyOrder = []string{
 }
 
 func parseTime(timeStr string) (time.Time, error) {
-	//validTimeFormats := []string{"2019-02-12T09:32:36.871453+00:00", time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
 	validTimeFormats := []string{time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
 	var t time.Time
 	var err error
@@ -64,7 +66,6 @@ func getTimeListOpts(allEvents *[]events.Event, listOpts *events.ListOpts) error
 		Filter: filter,
 	}
 
-	// TODO: test with existing time frames
 	if len(listOpts.Time) > 0 {
 		var found bool
 		for i, v := range listOpts.Time {
@@ -124,8 +125,7 @@ func getTimeSort(listOpts events.ListOpts) bool {
 	return true
 }
 
-func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, bar *pb.ProgressBar) error {
-	var precise bool = false
+func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar *pb.ProgressBar) error {
 	var forceWorkaround bool
 	var eventLength int
 
@@ -137,14 +137,27 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 
 		if precise {
 			// add only unique events
+			// detect duplicates of only previous 100 last and further 100 first items
+			// otherwise it is very slow for an amount of objects > 10000 (10000^2*pageN iterations)
+			eventLength = len(*allEvents)
 		ROOTLOOP:
-			for _, evntNew := range evnts {
-				for _, allEvnts := range *allEvents {
-					if allEvnts.ID == evntNew.ID {
+			for i, evntNew := range evnts {
+				for k, j := 0, eventLength-1; j >= eventLength-precision && j >= 0; k, j = k+1, j-1 {
+					if k >= precision {
+						// don't compare items above 100, break the loop
+						break
+					}
+					if (*allEvents)[j].ID == evntNew.ID {
 						continue ROOTLOOP
 					}
 				}
-				*allEvents = append(*allEvents, evntNew)
+				if i >= precision {
+					// append all remaining and exit the loop
+					*allEvents = append(*allEvents, evnts[i:]...)
+					break
+				} else {
+					*allEvents = append(*allEvents, evntNew)
+				}
 			}
 		} else {
 			*allEvents = append(*allEvents, evnts...)
@@ -203,7 +216,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 		if delta > 0 && delta <= maxOffset {
 			listOpts.Limit = delta
 		}
-		return getEvents(client, allEvents, listOpts, userLimit, bar)
+		return getEvents(client, allEvents, listOpts, userLimit, precise, bar)
 	}
 
 	return nil
@@ -227,6 +240,7 @@ var ListCmd = &cobra.Command{
 		viper.BindPFlag("time-end", cmd.Flags().Lookup("time-end"))
 		viper.BindPFlag("limit", cmd.Flags().Lookup("limit"))
 		viper.BindPFlag("sort", cmd.Flags().Lookup("sort"))
+		viper.BindPFlag("over-10k-fix", cmd.Flags().Lookup("over-10k-fix"))
 
 		// check time flag
 		teq := viper.GetString("time")
@@ -261,8 +275,7 @@ var ListCmd = &cobra.Command{
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
 			ObserverType:  viper.GetString("source"),
-			// TODO: verify why only time sort works in hermes server
-			Sort: strings.Join(viper.GetStringSlice("sort"), ","),
+			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
 		// handle user limits <= 10000
@@ -306,7 +319,7 @@ var ListCmd = &cobra.Command{
 		var allEvents []events.Event
 
 		var bar *pb.ProgressBar
-		if err = getEvents(client, &allEvents, listOpts, userLimit, bar); err != nil {
+		if err = getEvents(client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), bar); err != nil {
 			if bar != nil {
 				bar.Finish()
 			}
@@ -360,6 +373,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
+	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out ovelapping events for > 10k total events")
 	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
 	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
 each sort key may also include a direction suffix
