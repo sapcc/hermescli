@@ -43,6 +43,7 @@ var ListCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Short: "List Hermes events",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
+		viper.BindPFlag("initiator-id", cmd.Flags().Lookup("initiator-id"))
 		viper.BindPFlag("initiator-name", cmd.Flags().Lookup("initiator-name"))
 		viper.BindPFlag("target-type", cmd.Flags().Lookup("target-type"))
 		viper.BindPFlag("target-id", cmd.Flags().Lookup("target-id"))
@@ -83,6 +84,7 @@ var ListCmd = &cobra.Command{
 			Limit:         limit,
 			TargetType:    viper.GetString("target-type"),
 			TargetID:      viper.GetString("target-id"),
+			InitiatorID:   viper.GetString("initiator-id"),
 			InitiatorName: viper.GetString("initiator-name"),
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
@@ -187,7 +189,8 @@ func init() {
 
 func initListCmdFlags() {
 	ListCmd.Flags().StringP("target-type", "", "", "filter events by a target type")
-	ListCmd.Flags().StringP("target-id", "", "", "filter events by a target id")
+	ListCmd.Flags().StringP("target-id", "", "", "filter events by a target ID")
+	ListCmd.Flags().StringP("initiator-id", "", "", "filter events by an initiator ID")
 	ListCmd.Flags().StringP("initiator-name", "", "", "filter events by an initiator name")
 	ListCmd.Flags().StringP("action", "", "", "filter events by an action")
 	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
