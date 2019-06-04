@@ -110,6 +110,6 @@ func init() {
 }
 
 func initAttributesCmdFlags() {
-	AttributesCmd.Flags().IntP("limit", "l", 0, "limit an amount of attributes in output")
-	AttributesCmd.Flags().IntP("max-depth", "", 0, "limit the level of detail of hierarchical values")
+	AttributesCmd.Flags().UintP("limit", "l", 0, "limit an amount of attributes in output")
+	AttributesCmd.Flags().UintP("max-depth", "", 0, "limit the level of detail of hierarchical values")
 }
