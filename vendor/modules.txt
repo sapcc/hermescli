@@ -41,6 +41,8 @@ github.com/mitchellh/mapstructure
 github.com/olekukonko/tablewriter
 # github.com/pelletier/go-toml v1.2.0
 github.com/pelletier/go-toml
+# github.com/sapcc/cloud-env v0.0.0-20190605125141-027f56f400ee
+github.com/sapcc/cloud-env
 # github.com/sapcc/go-bits v0.0.0-20180828115508-ed29938ce01c
 github.com/sapcc/go-bits/gopherpolicy
 # github.com/sapcc/hermes v0.0.0-20190208080356-1a6e6384ef35

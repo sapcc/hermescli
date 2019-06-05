@@ -18,7 +18,7 @@ docker:
 	docker run -ti --rm -e GOCACHE=/tmp -v $(PWD):/$(APP_NAME) -u $(UID):$(UID) --workdir /$(APP_NAME) golang:latest make
 
 fmt:
-	gofmt -s -w acceptance audit client env *.go
+	gofmt -s -w acceptance audit client *.go
 
 gopath/src/$(PKG):
 	mkdir -p gopath/src/$(shell dirname $(PKG))
