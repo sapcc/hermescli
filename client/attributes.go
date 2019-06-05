@@ -41,8 +41,9 @@ var AttributesCmd = &cobra.Command{
 	ValidArgs: validArgs,
 	Short:     "List Hermes attributes",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		viper.BindPFlag("limit", cmd.Flags().Lookup("limit"))
-		viper.BindPFlag("max-depth", cmd.Flags().Lookup("max-depth"))
+		if err := viper.BindPFlags(cmd.Flags()); err != nil {
+			return err
+		}
 
 		return verifyGlobalFlags(nil)
 	},

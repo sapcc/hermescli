@@ -228,19 +228,9 @@ var ListCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Short: "List Hermes events",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		viper.BindPFlag("initiator-id", cmd.Flags().Lookup("initiator-id"))
-		viper.BindPFlag("initiator-name", cmd.Flags().Lookup("initiator-name"))
-		viper.BindPFlag("target-type", cmd.Flags().Lookup("target-type"))
-		viper.BindPFlag("target-id", cmd.Flags().Lookup("target-id"))
-		viper.BindPFlag("action", cmd.Flags().Lookup("action"))
-		viper.BindPFlag("outcome", cmd.Flags().Lookup("outcome"))
-		viper.BindPFlag("source", cmd.Flags().Lookup("source"))
-		viper.BindPFlag("time", cmd.Flags().Lookup("time"))
-		viper.BindPFlag("time-start", cmd.Flags().Lookup("time-start"))
-		viper.BindPFlag("time-end", cmd.Flags().Lookup("time-end"))
-		viper.BindPFlag("limit", cmd.Flags().Lookup("limit"))
-		viper.BindPFlag("sort", cmd.Flags().Lookup("sort"))
-		viper.BindPFlag("over-10k-fix", cmd.Flags().Lookup("over-10k-fix"))
+		if err := viper.BindPFlags(cmd.Flags()); err != nil {
+			return err
+		}
 
 		// check time flag
 		teq := viper.GetString("time")
@@ -254,10 +244,6 @@ var ListCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// list events
-		client, err := NewHermesV1Client()
-		if err != nil {
-			return fmt.Errorf("Failed to create Hermes client: %s", err)
-		}
 
 		userLimit := viper.GetInt("limit")
 		keyOrder := viper.GetStringSlice("column")
@@ -316,9 +302,14 @@ var ListCmd = &cobra.Command{
 			})
 		}
 
-		var allEvents []events.Event
+		client, err := NewHermesV1Client()
+		if err != nil {
+			return fmt.Errorf("Failed to create Hermes client: %s", err)
+		}
 
+		var allEvents []events.Event
 		var bar *pb.ProgressBar
+
 		if err = getEvents(client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), &bar); err != nil {
 			if bar != nil {
 				bar.Finish()
