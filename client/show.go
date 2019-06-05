@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/sapcc/hermes-ctl/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gopkg.in/cheggaaa/pb.v1"
 )
 
 var defaultShowKeyOrder = []string{
@@ -49,14 +51,30 @@ var ShowCmd = &cobra.Command{
 		}
 		format := viper.GetString("format")
 
+		// initialize the progress bar, when multiple events are requested
+		var bar *pb.ProgressBar
+		if len(args) > 1 {
+			bar = pb.New(len(args))
+			bar.Output = os.Stderr
+			bar.Start()
+		}
+
 		var allEvents []events.Event
-		for _, id := range args {
+		for i, id := range args {
+			if bar != nil {
+				bar.Set(i + 1)
+			}
 			event, err := events.Get(client, id).Extract()
 			if err != nil {
 				log.Printf("[WARNING] Failed to get %s event: %s", id, err)
 				continue
 			}
 			allEvents = append(allEvents, *event)
+		}
+
+		// stop the progress bar
+		if bar != nil {
+			bar.Finish()
 		}
 
 		if format == "table" {
