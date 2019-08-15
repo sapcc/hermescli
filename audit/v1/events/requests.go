@@ -104,9 +104,40 @@ func List(client *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pa
 	})
 }
 
+// GetOptsBuilder allows extensions to add additional parameters to the
+// Get request.
+type GetOptsBuilder interface {
+	ToEventsQuery() (string, error)
+}
+
+// GetOpts enables retrieving events by a specific project or domain.
+type GetOpts struct {
+	// The project ID to retrieve event for.
+	ProjectID string `q:"project_id"`
+
+	// The domain ID to retrieve event for.
+	DomainID string `q:"domain_id"`
+}
+
+// ToEventsQuery formats a GetOpts into a query string.
+func (opts GetOpts) ToEventsQuery() (string, error) {
+	q, err := gophercloud.BuildQueryString(opts)
+	return q.String(), err
+}
+
 // Get retrieves a specific event based on its unique ID.
-func Get(c *gophercloud.ServiceClient, id string) (r GetResult) {
-	_, r.Err = c.Get(getURL(c, id), &r.Body, &gophercloud.RequestOpts{
+func Get(c *gophercloud.ServiceClient, id string, opts GetOptsBuilder) (r GetResult) {
+	url := getURL(c, id)
+	if opts != nil {
+		query, err := opts.ToEventsQuery()
+		if err != nil {
+			r.Err = err
+			return
+		}
+		url += query
+	}
+
+	_, r.Err = c.Get(url, &r.Body, &gophercloud.RequestOpts{
 		OkCodes: []int{200},
 	})
 	return

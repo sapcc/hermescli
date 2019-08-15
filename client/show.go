@@ -36,6 +36,10 @@ var ShowCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Short: "Show Hermes event",
 	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if err := viper.BindPFlags(cmd.Flags()); err != nil {
+			return err
+		}
+
 		return verifyGlobalFlags(defaultShowKeyOrder)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -59,12 +63,17 @@ var ShowCmd = &cobra.Command{
 			bar.Start()
 		}
 
+		getOpts := events.GetOpts{
+			ProjectID: viper.GetString("project-id"),
+			DomainID:  viper.GetString("domain-id"),
+		}
+
 		var allEvents []events.Event
 		for i, id := range args {
 			if bar != nil {
 				bar.Set(i + 1)
 			}
-			event, err := events.Get(client, id).Extract()
+			event, err := events.Get(client, id, getOpts).Extract()
 			if err != nil {
 				log.Printf("[WARNING] Failed to get %s event: %s", id, err)
 				continue
@@ -108,5 +117,11 @@ var ShowCmd = &cobra.Command{
 }
 
 func init() {
+	initShowCmdFlags()
 	RootCmd.AddCommand(ShowCmd)
+}
+
+func initShowCmdFlags() {
+	ShowCmd.Flags().StringP("project-id", "", "", "show event for the project ID")
+	ShowCmd.Flags().StringP("domain-id", "", "", "show event for the domain ID")
 }
