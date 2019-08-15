@@ -261,6 +261,8 @@ var ListCmd = &cobra.Command{
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
 			ObserverType:  viper.GetString("source"),
+			ProjectID:     viper.GetString("project-id"),
+			DomainID:      viper.GetString("domain-id"),
 			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
@@ -314,7 +316,7 @@ var ListCmd = &cobra.Command{
 			if bar != nil {
 				bar.Finish()
 			}
-			return fmt.Errorf("Failed to list all events using the workaround: %s", err)
+			return fmt.Errorf("Failed to list the events: %s", err)
 		}
 		if bar != nil {
 			bar.Finish()
@@ -364,6 +366,8 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
+	ListCmd.Flags().StringP("project-id", "", "", "filter events by the project ID")
+	ListCmd.Flags().StringP("domain-id", "", "", "filter events by the domain ID")
 	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out ovelapping events for > 10k total events")
 	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
 	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
