@@ -105,6 +105,14 @@ func verifyGlobalFlags(columnsOrder []string) error {
 	if !isSliceContainsStr(defaultPrintFormats, viper.GetString("format")) {
 		return fmt.Errorf(`Invalid "%s" column name, supported values for the format: %s`, viper.GetString("format"), strings.Join(defaultPrintFormats, ", "))
 	}
+
+	// verify the project ID and the domain ID parameters
+	projectID := viper.GetString("project-id")
+	domainID := viper.GetString("domain-id")
+	if projectID != "" && domainID != "" {
+		return fmt.Errorf("--domain-id and --project-id cannot both be specified")
+	}
+
 	return nil
 }
 
