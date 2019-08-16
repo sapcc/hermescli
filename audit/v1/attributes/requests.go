@@ -15,8 +15,10 @@ type ListOptsBuilder interface {
 // Filtering is achieved by passing in filter value. Page and PerPage are used
 // for pagination.
 type ListOpts struct {
-	MaxDepth int `q:"max_depth"`
-	Limit    int `q:"limit"`
+	MaxDepth  int    `q:"max_depth"`
+	Limit     int    `q:"limit"`
+	DomainID  string `q:"domain_id"`
+	ProjectID string `q:"project_id"`
 }
 
 // ToAttributeListQuery formats a ListOpts into a query string.
