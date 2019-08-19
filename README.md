@@ -16,16 +16,20 @@ Usage:
 
 Flags:
       --action string           filter events by an action
+      --domain-id string        filter events by the domain ID
   -h, --help                    help for list
+      --initiator-id string     filter events by an initiator ID
       --initiator-name string   filter events by an initiator name
-  -l, --limit int               limit an amount of events in output
+  -l, --limit uint              limit an amount of events in output
       --outcome string          filter events by an outcome
+      --over-10k-fix            workaround to filter out ovelapping events for > 10k total events (default true)
+      --project-id string       filter events by the project ID
   -s, --sort strings            supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
                                 each sort key may also include a direction suffix
                                 supported directions are ":asc" for ascending and ":desc" for descending
                                 can be specified multiple times
       --source string           filter events by a source
-      --target-id string        filter events by a target id
+      --target-id string        filter events by a target ID
       --target-type string      filter events by a target type
       --time string             filter events by time
       --time-end string         filter events till time
@@ -60,7 +64,9 @@ Usage:
   hermesctl show <event-id> [<event-id>...] [flags]
 
 Flags:
-  -h, --help   help for show
+      --domain-id string    show event for the domain ID
+  -h, --help                help for show
+      --project-id string   show event for the project ID
 
 Global Flags:
   -c, --column strings   an event column to print
@@ -96,17 +102,18 @@ $ hermesctl show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 
 ### Usage
 
-```
-$ hermesctl attributes -h
+```sh
 List Hermes attributes
 
 Usage:
   hermesctl attributes observer_type|target_type|target_id|initiator_type|initiator_id|initiator_name|action|outcome [flags]
 
 Flags:
-  -h, --help            help for attributes
-  -l, --limit int       limit an amount of attributes in output
-      --max-depth int   limit the level of detail of hierarchical values
+      --domain-id string    filter attributes by the domain ID
+  -h, --help                help for attributes
+  -l, --limit uint          limit an amount of attributes in output
+      --max-depth uint      limit the level of detail of hierarchical values
+      --project-id string   filter attributes by the project ID
 
 Global Flags:
   -c, --column strings   an event column to print
