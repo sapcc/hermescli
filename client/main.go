@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/gophercloud/gophercloud"
-	"github.com/gophercloud/gophercloud/acceptance/clients"
 	"github.com/gophercloud/gophercloud/openstack"
+	"github.com/gophercloud/utils/client"
 	"github.com/gophercloud/utils/env"
 	"github.com/gophercloud/utils/openstack/clientconfig"
 	"github.com/sapcc/hermes-ctl/audit"
@@ -67,25 +67,26 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 	   }
 	*/
 
-	client, err := openstack.NewClient(ao.IdentityEndpoint)
+	provider, err := openstack.NewClient(ao.IdentityEndpoint)
 	if err != nil {
 		return nil, err
 	}
 
 	if viper.GetBool("debug") {
-		client.HTTPClient = http.Client{
-			Transport: &clients.LogRoundTripper{
-				Rt: &http.Transport{},
+		provider.HTTPClient = http.Client{
+			Transport: &client.RoundTripper{
+				Rt:     &http.Transport{},
+				Logger: &client.DefaultLogger{},
 			},
 		}
 	}
 
-	err = openstack.Authenticate(client, *ao)
+	err = openstack.Authenticate(provider, *ao)
 	if err != nil {
 		return nil, err
 	}
 
-	return audit.NewHermesV1(client, gophercloud.EndpointOpts{
+	return audit.NewHermesV1(provider, gophercloud.EndpointOpts{
 		Region: env.Getenv("OS_REGION_NAME"),
 	})
 }

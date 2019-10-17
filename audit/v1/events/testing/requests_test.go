@@ -129,7 +129,7 @@ func TestGet(t *testing.T) {
 		fmt.Fprintf(w, GetResponse)
 	})
 
-	n, err := events.Get(fake.ServiceClient(), "7189ce80-6e73-5ad9-bdc5-dcc47f176378").Extract()
+	n, err := events.Get(fake.ServiceClient(), "7189ce80-6e73-5ad9-bdc5-dcc47f176378", nil).Extract()
 	th.AssertNoErr(t, err)
 
 	th.AssertDeepEquals(t, *n, event)

@@ -4,13 +4,10 @@ github.com/databus23/goslo.policy
 github.com/fsnotify/fsnotify
 # github.com/gofrs/uuid v3.1.0+incompatible
 github.com/gofrs/uuid
-# github.com/gophercloud/gophercloud v0.0.0-20190516144603-ad4210895ed0
+# github.com/gophercloud/gophercloud v0.6.1-0.20191019020556-0907b320e0ac
 github.com/gophercloud/gophercloud
-github.com/gophercloud/gophercloud/acceptance/clients
 github.com/gophercloud/gophercloud/acceptance/tools
 github.com/gophercloud/gophercloud/openstack
-github.com/gophercloud/gophercloud/openstack/baremetal/noauth
-github.com/gophercloud/gophercloud/openstack/blockstorage/noauth
 github.com/gophercloud/gophercloud/openstack/identity/v2/tenants
 github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
 github.com/gophercloud/gophercloud/openstack/identity/v3/tokens
@@ -18,7 +15,8 @@ github.com/gophercloud/gophercloud/openstack/utils
 github.com/gophercloud/gophercloud/pagination
 github.com/gophercloud/gophercloud/testhelper
 github.com/gophercloud/gophercloud/testhelper/client
-# github.com/gophercloud/utils v0.0.0-20191017015441-921cc2410f13
+# github.com/gophercloud/utils v0.0.0-20191020172814-bd86af96d544
+github.com/gophercloud/utils/client
 github.com/gophercloud/utils/env
 github.com/gophercloud/utils/openstack/clientconfig
 # github.com/hashicorp/hcl v1.0.0
@@ -73,5 +71,5 @@ golang.org/x/text/transform
 golang.org/x/text/unicode/norm
 # gopkg.in/cheggaaa/pb.v1 v1.0.28
 gopkg.in/cheggaaa/pb.v1
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/yaml.v2 v2.2.4
 gopkg.in/yaml.v2
