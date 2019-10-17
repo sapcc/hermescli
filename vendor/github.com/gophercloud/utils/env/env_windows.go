@@ -8,7 +8,7 @@ import (
 	"golang.org/x/text/encoding/charmap"
 )
 
-func Get(s string) string {
+func Getenv(s string) string {
 	var st uint32
 	env := os.Getenv(s)
 	if windows.GetConsoleMode(windows.Handle(syscall.Stdin), &st) == nil ||

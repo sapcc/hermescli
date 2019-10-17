@@ -6,6 +6,6 @@ import (
 	"os"
 )
 
-func Get(s string) string {
+func Getenv(s string) string {
 	return os.Getenv(s)
 }

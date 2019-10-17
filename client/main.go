@@ -9,7 +9,8 @@ import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/acceptance/clients"
 	"github.com/gophercloud/gophercloud/openstack"
-	env "github.com/sapcc/cloud-env"
+	"github.com/gophercloud/utils/env"
+	"github.com/gophercloud/utils/openstack/clientconfig"
 	"github.com/sapcc/hermes-ctl/audit"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -45,7 +46,7 @@ func initRootCmdFlags() {
 // to the OpenStack Lyra v1 API. An error will be returned if
 // authentication or client creation was not possible.
 func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
-	ao, err := env.AuthOptionsFromEnv()
+	ao, err := clientconfig.AuthOptions(nil)
 	if err != nil {
 		return nil, err
 	}
@@ -79,13 +80,13 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 		}
 	}
 
-	err = openstack.Authenticate(client, ao)
+	err = openstack.Authenticate(client, *ao)
 	if err != nil {
 		return nil, err
 	}
 
 	return audit.NewHermesV1(client, gophercloud.EndpointOpts{
-		Region: env.Get("OS_REGION_NAME"),
+		Region: env.Getenv("OS_REGION_NAME"),
 	})
 }
 
