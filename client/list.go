@@ -368,7 +368,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
 	ListCmd.Flags().StringP("project-id", "", "", "filter events by the project ID")
 	ListCmd.Flags().StringP("domain-id", "", "", "filter events by the domain ID")
-	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out ovelapping events for > 10k total events")
+	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out overlapping events for > 10k total events")
 	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
 	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
 each sort key may also include a direction suffix
