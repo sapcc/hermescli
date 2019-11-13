@@ -22,7 +22,7 @@ Flags:
       --initiator-name string   filter events by an initiator name
   -l, --limit uint              limit an amount of events in output
       --outcome string          filter events by an outcome
-      --over-10k-fix            workaround to filter out ovelapping events for > 10k total events (default true)
+      --over-10k-fix            workaround to filter out overlapping events for > 10k total events (default true)
       --project-id string       filter events by the project ID
   -s, --sort strings            supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
                                 each sort key may also include a direction suffix
