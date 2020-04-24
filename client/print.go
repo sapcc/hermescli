@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sapcc/hermes-ctl/audit/v1/events"
+	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
 	"gopkg.in/yaml.v2"
 )
 

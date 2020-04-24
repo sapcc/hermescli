@@ -11,7 +11,7 @@ import (
 	"github.com/gophercloud/utils/client"
 	"github.com/gophercloud/utils/env"
 	"github.com/gophercloud/utils/openstack/clientconfig"
-	"github.com/sapcc/hermes-ctl/audit"
+	"github.com/sapcc/gophercloud-sapcc/clients"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -86,7 +86,7 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 		return nil, err
 	}
 
-	return audit.NewHermesV1(provider, gophercloud.EndpointOpts{
+	return clients.NewHermesV1(provider, gophercloud.EndpointOpts{
 		Region: env.Getenv("OS_REGION_NAME"),
 	})
 }

@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
-	"github.com/sapcc/hermes-ctl/audit/v1/events"
+	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/cheggaaa/pb.v1"
