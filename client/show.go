@@ -46,7 +46,7 @@ var ShowCmd = &cobra.Command{
 		// show event
 		client, err := NewHermesV1Client()
 		if err != nil {
-			return fmt.Errorf("Failed to create Hermes client: %s", err)
+			return fmt.Errorf("failed to create Hermes client: %s", err)
 		}
 
 		keyOrder := viper.GetStringSlice("column")

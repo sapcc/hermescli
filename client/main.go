@@ -96,16 +96,16 @@ func verifyGlobalFlags(columnsOrder []string) error {
 	columns := viper.GetStringSlice("column")
 	for _, c := range columns {
 		if len(columnsOrder) == 0 {
-			return fmt.Errorf(`Columns are not supported for this command`)
+			return fmt.Errorf(`columns are not supported for this command`)
 		}
 		if !isSliceContainsStr(columnsOrder, c) {
-			return fmt.Errorf(`Invalid "%s" column name, supported values for the column: %s`, c, strings.Join(columnsOrder, ", "))
+			return fmt.Errorf(`invalid "%s" column name, supported values for the column: %s`, c, strings.Join(columnsOrder, ", "))
 		}
 	}
 
 	// verify supported formats
 	if !isSliceContainsStr(defaultPrintFormats, viper.GetString("format")) {
-		return fmt.Errorf(`Invalid "%s" column name, supported values for the format: %s`, viper.GetString("format"), strings.Join(defaultPrintFormats, ", "))
+		return fmt.Errorf(`invalid "%s" column name, supported values for the format: %s`, viper.GetString("format"), strings.Join(defaultPrintFormats, ", "))
 	}
 
 	// verify the project ID and the domain ID parameters

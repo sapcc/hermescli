@@ -51,7 +51,7 @@ var AttributesCmd = &cobra.Command{
 		// list attributes
 		client, err := NewHermesV1Client()
 		if err != nil {
-			return fmt.Errorf("Failed to create Hermes client: %s", err)
+			return fmt.Errorf("failed to create Hermes client: %s", err)
 		}
 
 		format := viper.GetString("format")
@@ -69,7 +69,7 @@ var AttributesCmd = &cobra.Command{
 			err = attributes.List(client, name, listOpts).EachPage(func(page pagination.Page) (bool, error) {
 				attrs, err := attributes.ExtractAttributes(page)
 				if err != nil {
-					return false, fmt.Errorf("Failed to extract attributes: %s", err)
+					return false, fmt.Errorf("failed to extract attributes: %s", err)
 				}
 
 				allAttributes = append(allAttributes, attrs...)
@@ -78,9 +78,9 @@ var AttributesCmd = &cobra.Command{
 			})
 			if err != nil {
 				if _, ok := err.(gophercloud.ErrDefault500); ok {
-					return fmt.Errorf(`Failed to list attributes: %s: please try to decrease an amount of the attributes in output, e.g. set "--limit 100"`, err)
+					return fmt.Errorf(`failed to list attributes: %s: please try to decrease an amount of the attributes in output, e.g. set "--limit 100"`, err)
 				}
-				return fmt.Errorf("Failed to list attributes: %s", err)
+				return fmt.Errorf("failed to list attributes: %s", err)
 			}
 		}
 
@@ -100,7 +100,7 @@ var AttributesCmd = &cobra.Command{
 		case "csv", "value", "table":
 			fmt.Printf("%s\n", strings.Join(allAttributes, "\n"))
 		default:
-			return fmt.Errorf("Unsupported format: %s", format)
+			return fmt.Errorf("unsupported format: %s", format)
 		}
 
 		return nil

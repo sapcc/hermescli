@@ -80,7 +80,7 @@ func printEvent(allEvents []events.Event, format string, keyOrder []string) erro
 	case "value":
 		return printValue(allEvents, keyOrder)
 	}
-	return fmt.Errorf("Unsupported format: %s", format)
+	return fmt.Errorf("unsupported format: %s", format)
 }
 
 func printCSV(allEvents []events.Event, keyOrder []string) error {
@@ -88,18 +88,18 @@ func printCSV(allEvents []events.Event, keyOrder []string) error {
 	csv := csv.NewWriter(&buf)
 
 	if err := csv.Write(keyOrder); err != nil {
-		return fmt.Errorf("error writing header to csv:", err)
+		return fmt.Errorf("error writing header to csv: %s", err)
 	}
 
 	for _, v := range allEvents {
 		kv := eventToKV(v)
 		tableRow := []string{}
 		for _, k := range keyOrder {
-			v, _ := kv[k]
+			v := kv[k]
 			tableRow = append(tableRow, v)
 		}
 		if err := csv.Write(tableRow); err != nil {
-			return fmt.Errorf("error writing record to csv:", err)
+			return fmt.Errorf("error writing record to csv: %s", err)
 		}
 	}
 
@@ -149,7 +149,7 @@ func printValue(allEvents []events.Event, keyOrder []string) error {
 		kv := eventToKV(v)
 		var p []string
 		for _, k := range keyOrder {
-			v, _ := kv[k]
+			v := kv[k]
 			p = append(p, v)
 		}
 		fmt.Printf("%s\n", strings.Join(p, " "))

@@ -26,6 +26,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	policy "github.com/databus23/goslo.policy"
 	"github.com/gophercloud/gophercloud"
@@ -43,12 +44,26 @@ type Validator interface {
 	CheckToken(r *http.Request) *Token
 }
 
+//Cacher is the generic interface for a token cache.
+type Cacher interface {
+	//StoreTokenPayload attempts to store the token payload corresponding to the
+	//given credentials in the cache. Implementations shall treat `credentials`
+	//as an opaque string and only use it as a cache key.
+	StoreTokenPayload(credentials string, payload []byte)
+	//LoadTokenPayload attempts to retrieve the payload for the given credentials
+	//from the cache. If there nothing cached for these credentials, or if the
+	//retrieval fails, nil shall be returned.
+	LoadTokenPayload(credentials string) []byte
+}
+
 //TokenValidator combines an Identity v3 client to validate tokens (AuthN), and
 //a policy.Enforcer to check access permissions (AuthZ).
 type TokenValidator struct {
 	IdentityV3 *gophercloud.ServiceClient
 	//Enforcer can also be initialized with the LoadPolicyFile method.
 	Enforcer Enforcer
+	//Cacher can be used to cache validated tokens.
+	Cacher Cacher
 }
 
 //LoadPolicyFile creates v.Enforcer from the given policy file.
@@ -70,18 +85,54 @@ func (v *TokenValidator) LoadPolicyFile(path string) error {
 //returns a Token instance for checking authorization. Any errors that occur
 //during this function are deferred until Require() is called.
 func (v *TokenValidator) CheckToken(r *http.Request) *Token {
-	str := r.Header.Get("X-Auth-Token")
-	if str == "" {
+	tokenStr := r.Header.Get("X-Auth-Token")
+	if tokenStr == "" {
 		return &Token{Err: errors.New("X-Auth-Token header missing")}
 	}
 
-	response := tokens.Get(v.IdentityV3, str)
-	if response.Err != nil {
-		//this includes 4xx responses, so after this point, we can be sure that the token is valid
-		return &Token{Err: response.Err}
+	return v.CheckCredentials(tokenStr, func() TokenResult {
+		return tokens.Get(v.IdentityV3, tokenStr)
+	})
+}
+
+//CheckCredentials is a more generic version of CheckToken that can also be
+//used when the user supplies credentials instead of a Keystone token.
+//
+//The `check` argument contains the logic for actually checking the user's
+//credentials, usually by calling tokens.Create() or tokens.Get() from package
+//github.com/gophercloud/gophercloud/openstack/identity/v3/tokens.
+//
+//The `cacheKey` argument shall be a string that identifies the given
+//credentials. This key is used for caching the TokenResult in `v.Cacher` if
+//that is non-nil.
+func (v *TokenValidator) CheckCredentials(cacheKey string, check func() TokenResult) *Token {
+	//prefer cached token payload over actually talking to Keystone (but fallback
+	//to Keystone if the token payload deserialization fails)
+	if v.Cacher != nil {
+		payload := v.Cacher.LoadTokenPayload(cacheKey)
+		if payload != nil {
+			var s serializableToken
+			err := json.Unmarshal(payload, &s)
+			if err == nil && s.Token.ExpiresAt.After(time.Now()) {
+				t := v.TokenFromGophercloudResult(s)
+				if t.Err == nil {
+					return t
+				}
+			}
+		}
 	}
 
-	return v.TokenFromGophercloudResult(response)
+	t := v.TokenFromGophercloudResult(check())
+
+	//cache token payload if valid
+	if t.Err == nil && v.Cacher != nil {
+		payload, err := json.Marshal(t.serializable)
+		if err == nil {
+			v.Cacher.StoreTokenPayload(cacheKey, payload)
+		}
+	}
+
+	return t
 }
 
 //TokenFromGophercloudResult creates a Token instance from a gophercloud Result
@@ -116,11 +167,19 @@ func (v *TokenValidator) TokenFromGophercloudResult(result TokenResult) *Token {
 				return openstack.V3EndpointURL(catalog, opts)
 			},
 		},
+		serializable: serializableToken{
+			Token:          *token,
+			TokenData:      tokenData,
+			ServiceCatalog: catalog.Entries,
+		},
 	}
 }
 
 //TokenResult is the interface type for the argument of
 //TokenValidator.TokenFromGophercloudResult().
+//
+//Notable implementors are tokens.CreateResult or tokens.GetResult from package
+//github.com/gophercloud/gophercloud/openstack/identity/v3/tokens.
 type TokenResult interface {
 	ExtractInto(value interface{}) error
 	Extract() (*tokens.Token, error)
