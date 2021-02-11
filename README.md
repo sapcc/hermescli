@@ -1,4 +1,4 @@
-# hermes-ctl
+# hermescli
 
 # Usage
 
@@ -12,7 +12,7 @@ Only environment authentication method is supported.
 List Hermes events
 
 Usage:
-  hermesctl list [flags]
+  hermescli list [flags]
 
 Flags:
       --action string           filter events by an action
@@ -44,7 +44,7 @@ Global Flags:
 ### Example
 
 ```sh
-$ hermesctl list --time 2019-04-23T22:07:16+0000 --sort time:asc
+$ hermescli list --time 2019-04-23T22:07:16+0000 --sort time:asc
 +--------------------------------------+--------------------------+-----------------+--------+---------+--------------------------------------+-----------+
 |                  ID                  |           TIME           |     SOURCE      | ACTION | OUTCOME |                TARGET                | INITIATOR |
 +--------------------------------------+--------------------------+-----------------+--------+---------+--------------------------------------+-----------+
@@ -61,7 +61,7 @@ $ hermesctl list --time 2019-04-23T22:07:16+0000 --sort time:asc
 Show Hermes event
 
 Usage:
-  hermesctl show <event-id> [<event-id>...] [flags]
+  hermescli show <event-id> [<event-id>...] [flags]
 
 Flags:
       --domain-id string    show event for the domain ID
@@ -77,7 +77,7 @@ Global Flags:
 ### Example
 
 ```sh
-$ hermesctl show 1878df7c-d3ec-52d0-8b56-11ad68d25102
+$ hermescli show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 +------------------+--------------------------------------------------+
 |       KEY        |                      VALUE                       |
 +------------------+--------------------------------------------------+
@@ -106,7 +106,7 @@ $ hermesctl show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 List Hermes attributes
 
 Usage:
-  hermesctl attributes observer_type|target_type|target_id|initiator_type|initiator_id|initiator_name|action|outcome [flags]
+  hermescli attributes observer_type|target_type|target_id|initiator_type|initiator_id|initiator_name|action|outcome [flags]
 
 Flags:
       --domain-id string    filter attributes by the domain ID
@@ -124,7 +124,7 @@ Global Flags:
 ### Example
 
 ```sh
-$ hermesctl attributes outcome
+$ hermescli attributes outcome
 success
 failure
 unknown

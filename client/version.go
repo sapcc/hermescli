@@ -14,7 +14,7 @@ var VersionCmd = &cobra.Command{
 	Short:             "Print version information",
 	DisableAutoGenTag: true,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("hermesctl %s compiled with %v on %v/%v\n",
+		fmt.Printf("hermescli %s compiled with %v on %v/%v\n",
 			Version, runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	},
 }

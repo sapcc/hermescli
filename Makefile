@@ -1,5 +1,5 @@
-PKG:=github.com/sapcc/hermes-ctl
-APP_NAME:=hermesctl
+PKG:=github.com/sapcc/hermescli
+APP_NAME:=hermescli
 PWD:=$(shell pwd)
 UID:=$(shell id -u)
 VERSION:=$(shell git describe --tags --always --dirty="-dev")

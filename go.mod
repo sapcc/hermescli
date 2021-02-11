@@ -1,4 +1,4 @@
-module github.com/sapcc/hermes-ctl
+module github.com/sapcc/hermescli
 
 go 1.15
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/sapcc/hermes-ctl/client"
+	"github.com/sapcc/hermescli/client"
 )
 
 func main() {
