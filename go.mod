@@ -1,6 +1,6 @@
 module github.com/sapcc/hermescli
 
-go 1.15
+go 1.16
 
 require (
 	github.com/gophercloud/gophercloud v0.15.1-0.20210205220151-18b16b34db5c
