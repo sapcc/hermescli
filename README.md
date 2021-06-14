@@ -16,14 +16,14 @@ Usage:
 
 Flags:
       --action string           filter events by an action
-      --domain-id string        filter events by the domain ID
+  -A, --all-projects            include all projects and domains (admin only) (alias for --project-id '*')
   -h, --help                    help for list
       --initiator-id string     filter events by an initiator ID
       --initiator-name string   filter events by an initiator name
   -l, --limit uint              limit an amount of events in output
       --outcome string          filter events by an outcome
       --over-10k-fix            workaround to filter out overlapping events for > 10k total events (default true)
-      --project-id string       filter events by the project ID
+      --project-id string       filter events by the project or domain ID (admin only)
   -s, --sort strings            supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
                                 each sort key may also include a direction suffix
                                 supported directions are ":asc" for ascending and ":desc" for descending
@@ -64,9 +64,9 @@ Usage:
   hermescli show <event-id> [<event-id>...] [flags]
 
 Flags:
-      --domain-id string    show event for the domain ID
+  -A, --all-projects        include all projects and domains (admin only) (alias for --project-id '*')
   -h, --help                help for show
-      --project-id string   show event for the project ID
+      --project-id string   show event for the project or domain ID (admin only)
 
 Global Flags:
   -c, --column strings   an event column to print
@@ -109,11 +109,11 @@ Usage:
   hermescli attributes observer_type|target_type|target_id|initiator_type|initiator_id|initiator_name|action|outcome [flags]
 
 Flags:
-      --domain-id string    filter attributes by the domain ID
+  -A, --all-projects        include all projects and domains (admin only) (alias for --project-id '*')
   -h, --help                help for attributes
   -l, --limit uint          limit an amount of attributes in output
       --max-depth uint      limit the level of detail of hierarchical values
-      --project-id string   filter attributes by the project ID
+      --project-id string   filter attributes by the project or domain ID (admin only)
 
 Global Flags:
   -c, --column strings   an event column to print

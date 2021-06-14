@@ -110,9 +110,9 @@ func verifyGlobalFlags(columnsOrder []string) error {
 
 	// verify the project ID and the domain ID parameters
 	projectID := viper.GetString("project-id")
-	domainID := viper.GetString("domain-id")
-	if projectID != "" && domainID != "" {
-		return fmt.Errorf("--domain-id and --project-id cannot both be specified")
+	allProjects := viper.GetBool("all-projects")
+	if projectID != "" && allProjects {
+		return fmt.Errorf("--project-id and --all-projects cannot be both specified")
 	}
 
 	return nil

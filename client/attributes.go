@@ -56,11 +56,15 @@ var AttributesCmd = &cobra.Command{
 
 		format := viper.GetString("format")
 
+		projectID := viper.GetString("project-id")
+		if viper.GetBool("all-projects") {
+			projectID = "*"
+		}
+
 		listOpts := attributes.ListOpts{
 			Limit:     viper.GetInt("limit"),
 			MaxDepth:  viper.GetInt("max-depth"),
-			ProjectID: viper.GetString("project-id"),
-			DomainID:  viper.GetString("domain-id"),
+			ProjectID: projectID,
 		}
 
 		var allAttributes []string
@@ -115,6 +119,6 @@ func init() {
 func initAttributesCmdFlags() {
 	AttributesCmd.Flags().UintP("limit", "l", 0, "limit an amount of attributes in output")
 	AttributesCmd.Flags().UintP("max-depth", "", 0, "limit the level of detail of hierarchical values")
-	AttributesCmd.Flags().StringP("project-id", "", "", "filter attributes by the project ID")
-	AttributesCmd.Flags().StringP("domain-id", "", "", "filter attributes by the domain ID")
+	AttributesCmd.Flags().StringP("project-id", "", "", "filter attributes by the project or domain ID (admin only)")
+	AttributesCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
 }

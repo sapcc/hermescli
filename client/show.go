@@ -63,9 +63,13 @@ var ShowCmd = &cobra.Command{
 			bar.Start()
 		}
 
+		projectID := viper.GetString("project-id")
+		if viper.GetBool("all-projects") {
+			projectID = "*"
+		}
+
 		getOpts := events.GetOpts{
-			ProjectID: viper.GetString("project-id"),
-			DomainID:  viper.GetString("domain-id"),
+			ProjectID: projectID,
 		}
 
 		var allEvents []events.Event
@@ -122,6 +126,6 @@ func init() {
 }
 
 func initShowCmdFlags() {
-	ShowCmd.Flags().StringP("project-id", "", "", "show event for the project ID")
-	ShowCmd.Flags().StringP("domain-id", "", "", "show event for the domain ID")
+	ShowCmd.Flags().StringP("project-id", "", "", "show event for the project or domain ID (admin only)")
+	ShowCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
 }

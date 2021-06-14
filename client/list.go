@@ -252,6 +252,11 @@ var ListCmd = &cobra.Command{
 		}
 		format := viper.GetString("format")
 
+		projectID := viper.GetString("project-id")
+		if viper.GetBool("all-projects") {
+			projectID = "*"
+		}
+
 		listOpts := events.ListOpts{
 			Limit:         maxOffset,
 			TargetType:    viper.GetString("target-type"),
@@ -261,8 +266,7 @@ var ListCmd = &cobra.Command{
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
 			ObserverType:  viper.GetString("source"),
-			ProjectID:     viper.GetString("project-id"),
-			DomainID:      viper.GetString("domain-id"),
+			ProjectID:     projectID,
 			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
 		}
 
@@ -366,8 +370,8 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
-	ListCmd.Flags().StringP("project-id", "", "", "filter events by the project ID")
-	ListCmd.Flags().StringP("domain-id", "", "", "filter events by the domain ID")
+	ListCmd.Flags().StringP("project-id", "", "", "filter events by the project or domain ID (admin only)")
+	ListCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
 	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out overlapping events for > 10k total events")
 	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
 	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
