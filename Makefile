@@ -8,6 +8,9 @@ LDFLAGS:=-X $(PKG)/client.Version=$(VERSION) -w -s
 export CGO_ENABLED:=0
 
 build: fmt vet
+	go build -mod=vendor -ldflags="$(LDFLAGS)" -o bin/$(APP_NAME) ./cmd
+
+build-all: fmt vet
 	GOOS=linux go build -mod=vendor -ldflags="$(LDFLAGS)" -o bin/$(APP_NAME) ./cmd
 	GOOS=darwin go build -mod=vendor -ldflags="$(LDFLAGS)" -o bin/$(APP_NAME)_darwin ./cmd
 	GOOS=windows go build -mod=vendor -ldflags="$(LDFLAGS)" -o bin/$(APP_NAME).exe ./cmd
