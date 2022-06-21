@@ -1,3 +1,17 @@
+// Copyright 2019 SAP SE
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package events
 
 import (
@@ -47,11 +61,12 @@ type ListOpts struct {
 	InitiatorType string `q:"initiator_type"`
 	InitiatorName string `q:"initiator_name"`
 
-	Action    string `q:"action"`
-	Outcome   string `q:"outcome"`
-	Time      []DateQuery
-	DomainID  string `q:"domain_id"`
-	ProjectID string `q:"project_id"`
+	Action      string `q:"action"`
+	Outcome     string `q:"outcome"`
+	RequestPath string `q:"request_path"`
+	Time        []DateQuery
+	DomainID    string `q:"domain_id"`
+	ProjectID   string `q:"project_id"`
 
 	// Sort will sort the results in the requested order.
 	Sort string `q:"sort"`

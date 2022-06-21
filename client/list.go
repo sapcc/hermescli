@@ -29,6 +29,7 @@ var defaultListKeyOrder = []string{
 	"Source",
 	"Action",
 	"Outcome",
+	"RequestPath",
 	"Target",
 	"Initiator",
 }
@@ -265,6 +266,7 @@ var ListCmd = &cobra.Command{
 			InitiatorName: viper.GetString("initiator-name"),
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
+			RequestPath:   viper.GetString("request-path"),
 			ObserverType:  viper.GetString("source"),
 			ProjectID:     projectID,
 			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
@@ -366,6 +368,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("initiator-name", "", "", "filter events by an initiator name")
 	ListCmd.Flags().StringP("action", "", "", "filter events by an action")
 	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
+	ListCmd.Flags().StringP("request-path", "", "", "filter events by a request path")
 	ListCmd.Flags().StringP("source", "", "", "filter events by a source")
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
