@@ -32,8 +32,8 @@ func eventToKV(event events.Event) map[string]string {
 	// compatibility to Source<->Observer.TypeURI link
 	kv["Source"] = event.Observer.TypeURI
 
-	kv["Action"] = event.Action
-	kv["Outcome"] = event.Outcome
+	kv["Action"] = string(event.Action)
+	kv["Outcome"] = string(event.Outcome)
 	kv["Target"] = fmt.Sprintf("%s %s", event.Target.TypeURI, event.Target.ID)
 
 	if len(event.Initiator.Name) > 0 {
