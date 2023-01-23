@@ -4,8 +4,8 @@ go 1.16
 
 require (
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/gophercloud/gophercloud v1.0.0
-	github.com/gophercloud/utils v0.0.0-20220307143606-8e7800759d16
+	github.com/gophercloud/gophercloud v1.1.1
+	github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5
