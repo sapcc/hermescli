@@ -74,24 +74,25 @@ Global Flags:
 
 ```sh
 $ hermescli show 1878df7c-d3ec-52d0-8b56-11ad68d25102
-+------------------+--------------------------------------------------+
-|       KEY        |                      VALUE                       |
-+------------------+--------------------------------------------------+
-| ID               | 1878df7c-d3ec-52d0-8b56-11ad68d25102             |
-| Type             | activity                                         |
-| Time             | 2019-04-23T22:07:16+0000                         |
-| Observer         | neutron                                          |
-| TypeURI          | service/network                                  |
-| Action           | update                                           |
-| Outcome          | success                                          |
-| Target           | network/port                                     |
-|                  | 88c4c917-f5de-43e5-a403-b7c023bfc13d             |
-| Initiator        | neutron                                          |
-| InitiatorDomain  | Default                                          |
-| InitiatorAddress | 100.65.0.80                                      |
-| InitiatorAgent   | python-neutronclient                             |
-| RequestPath      | /v2.0/ports/88c4c917-f5de-43e5-a403-b7c023bfc13d |
-+------------------+--------------------------------------------------+
++-------------------------+--------------------------------------------------+
+|       KEY               |                      VALUE                       |
++-------------------------+--------------------------------------------------+
+| ID                      | 1878df7c-d3ec-52d0-8b56-11ad68d25102             |
+| Type                    | activity                                         |
+| Time                    | 2019-04-23T22:07:16+0000                         |
+| Observer                | neutron                                          |
+| TypeURI                 | service/network                                  |
+| Action                  | update                                           |
+| Outcome                 | success                                          |
+| Target                  | network/port                                     |
+|                         | 88c4c917-f5de-43e5-a403-b7c023bfc13d             |
+| Initiator               | neutron                                          |
+| InitiatorDomain         | Default                                          |
+| InitiatorAddress        | 100.65.0.80                                      |
+| InitiatorAgent          | python-neutronclient                             |
+| InitiatorAppCredential  | ee1246022693405e81b4e12fac1111cd                 |
+| RequestPath             | /v2.0/ports/88c4c917-f5de-43e5-a403-b7c023bfc13d |
++-------------------------+--------------------------------------------------+
 ```
 
 ## Attributes
