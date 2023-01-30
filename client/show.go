@@ -26,6 +26,7 @@ var defaultShowKeyOrder = []string{
 	"InitiatorDomain",
 	"InitiatorAddress",
 	"InitiatorAgent",
+	"InitiatorAppCredential",
 	"RequestPath",
 	"Attachments",
 }
