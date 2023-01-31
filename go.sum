@@ -108,6 +108,8 @@ github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6So
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sapcc/go-api-declarations v1.2.0 h1:ypzrA7dc18VgtOLVaZnJ8vJ26T3ZFskr/2JLzgInd9s=
 github.com/sapcc/go-api-declarations v1.2.0/go.mod h1:zS+2xqmbtAyQxQz1liJp0qxDgop78fb4Sfk/IB0PvH0=
+github.com/sapcc/go-api-declarations v1.4.3 h1:RYJujw/NizuJepIU60E9da5JxGnWqn4FGSW/A6V7Uv8=
+github.com/sapcc/go-api-declarations v1.4.3/go.mod h1:EA4x5xxJGyG/3JTteUOYBg6cJLJgsBHrDj3ryfNU4dQ=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20220621184442-d8f25d6d201a h1:/ADV/2GE5yMv4VrHKEpKnrDg2U0Nk2fXT+VcJy6X+0Q=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20220621184442-d8f25d6d201a/go.mod h1:LRF4cs0iIAeFPa3V4cxBfE+6Pczt/56WA5lUcCnGaoo=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=

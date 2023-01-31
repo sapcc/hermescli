@@ -51,7 +51,8 @@ github.com/olekukonko/tablewriter
 github.com/pelletier/go-toml
 # github.com/rivo/uniseg v0.2.0
 github.com/rivo/uniseg
-# github.com/sapcc/go-api-declarations v1.2.0
+# github.com/sapcc/go-api-declarations v1.4.3
+## explicit
 github.com/sapcc/go-api-declarations/cadf
 # github.com/sapcc/gophercloud-sapcc v0.0.0-20220621184442-d8f25d6d201a
 ## explicit

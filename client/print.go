@@ -47,6 +47,10 @@ func eventToKV(event events.Event) map[string]string {
 		kv["InitiatorAgent"] = event.Initiator.Host.Agent
 	}
 
+	if len(event.Initiator.AppCredentialID) > 0 {
+		kv["InitiatorAppCredential"] = event.Initiator.AppCredentialID
+	}
+
 	if len(event.RequestPath) > 0 {
 		kv["RequestPath"] = event.RequestPath
 	}
