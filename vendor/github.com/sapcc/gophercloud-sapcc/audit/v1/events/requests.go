@@ -106,15 +106,15 @@ func (opts ListOpts) ToEventListQuery() (string, error) {
 
 // List retrieves a list of Events.
 func List(client *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pager {
-	url := listURL(client)
+	serviceURL := listURL(client)
 	if opts != nil {
 		query, err := opts.ToEventListQuery()
 		if err != nil {
 			return pagination.Pager{Err: err}
 		}
-		url += query
+		serviceURL += query
 	}
-	return pagination.NewPager(client, url, func(r pagination.PageResult) pagination.Page {
+	return pagination.NewPager(client, serviceURL, func(r pagination.PageResult) pagination.Page {
 		return EventPage{pagination.LinkedPageBase{PageResult: r}}
 	})
 }
@@ -142,17 +142,17 @@ func (opts GetOpts) ToEventsQuery() (string, error) {
 
 // Get retrieves a specific event based on its unique ID.
 func Get(c *gophercloud.ServiceClient, id string, opts GetOptsBuilder) (r GetResult) {
-	url := getURL(c, id)
+	serviceURL := getURL(c, id)
 	if opts != nil {
 		query, err := opts.ToEventsQuery()
 		if err != nil {
 			r.Err = err
 			return
 		}
-		url += query
+		serviceURL += query
 	}
 
-	resp, err := c.Get(url, &r.Body, &gophercloud.RequestOpts{
+	resp, err := c.Get(serviceURL, &r.Body, &gophercloud.RequestOpts{
 		OkCodes: []int{200},
 	})
 	_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)

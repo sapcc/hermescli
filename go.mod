@@ -10,7 +10,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5
 	github.com/sapcc/go-api-declarations v1.4.3 // indirect
-	github.com/sapcc/gophercloud-sapcc v0.0.0-20220621184442-d8f25d6d201a
+	github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0
 	github.com/spf13/cobra v0.0.6
 	github.com/spf13/viper v1.4.0
 	gopkg.in/cheggaaa/pb.v1 v1.0.25
