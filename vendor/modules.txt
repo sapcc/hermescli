@@ -44,7 +44,7 @@ github.com/mattn/go-runewidth
 github.com/mitchellh/go-homedir
 # github.com/mitchellh/mapstructure v1.1.2
 github.com/mitchellh/mapstructure
-# github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5
+# github.com/olekukonko/tablewriter v0.0.5
 ## explicit
 github.com/olekukonko/tablewriter
 # github.com/pelletier/go-toml v1.2.0
