@@ -112,6 +112,8 @@ github.com/sapcc/go-api-declarations v1.4.3 h1:RYJujw/NizuJepIU60E9da5JxGnWqn4FG
 github.com/sapcc/go-api-declarations v1.4.3/go.mod h1:EA4x5xxJGyG/3JTteUOYBg6cJLJgsBHrDj3ryfNU4dQ=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20220621184442-d8f25d6d201a h1:/ADV/2GE5yMv4VrHKEpKnrDg2U0Nk2fXT+VcJy6X+0Q=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20220621184442-d8f25d6d201a/go.mod h1:LRF4cs0iIAeFPa3V4cxBfE+6Pczt/56WA5lUcCnGaoo=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0 h1:A7wf/JcAVkSQnCFTWJvSJBKnpzIJdjMo8h1PVxeGwHY=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0/go.mod h1:1vanBcnn7tavNnHiax2eS9Q6TGNt9bFKiiBZ9HRWNOI=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/soheilhy/cmux v0.1.4/go.mod h1:IM3LyeVVIOuxMH7sFAkER9+bJ4dT7Ms6E4xg4kGIyLM=
