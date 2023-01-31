@@ -3,6 +3,7 @@ module github.com/sapcc/hermescli
 go 1.16
 
 require (
+	github.com/cheggaaa/pb/v3 v3.1.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/gophercloud/gophercloud v1.0.0
 	github.com/gophercloud/utils v0.0.0-20220307143606-8e7800759d16
