@@ -2,7 +2,7 @@
 ## explicit
 # github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
-# github.com/gophercloud/gophercloud v1.1.1
+# github.com/gophercloud/gophercloud v1.2.0
 ## explicit
 github.com/gophercloud/gophercloud
 github.com/gophercloud/gophercloud/openstack
