@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/gophercloud/gophercloud v1.3.0
-	github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca
+	github.com/gophercloud/utils v0.0.0-20230418172808-6eab72e966e1
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0
+	github.com/sapcc/gophercloud-sapcc v0.0.0-20230426140328-8937b76696bc
 	github.com/spf13/cobra v0.0.6
 	github.com/spf13/viper v1.4.0
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
@@ -16,6 +16,7 @@ require (
 require (
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
+	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.0 // indirect
@@ -25,7 +26,7 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/pelletier/go-toml v1.2.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/sapcc/go-api-declarations v1.4.3 // indirect
+	github.com/sapcc/go-api-declarations v1.5.1 // indirect
 	github.com/spf13/afero v1.1.2 // indirect
 	github.com/spf13/cast v1.3.0 // indirect
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
