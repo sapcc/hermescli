@@ -3,7 +3,7 @@ module github.com/sapcc/hermescli
 go 1.17
 
 require (
-	github.com/gophercloud/gophercloud v1.2.0
+	github.com/gophercloud/gophercloud v1.3.0
 	github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0
