@@ -44,10 +44,13 @@ github.com/gophercloud/gophercloud v1.3.0 h1:RUKyCMiZoQR3VlVR5E3K7PK1AC3/qppsWYo
 github.com/gophercloud/gophercloud v1.3.0/go.mod h1:aAVqcocTSXh2vYFZ1JTvx4EQmfgzxRcNupUfxZbBNDM=
 github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca h1:HZWyhvVXgS2rx5StixMKhrTjpfUg5vLSNhF/xHkcRNg=
 github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca/go.mod h1:z4Dey7xsTUXgcB1C8elMvGRKTjV1ez0eoYQlMrduG1g=
+github.com/gophercloud/utils v0.0.0-20230418172808-6eab72e966e1 h1:vJyXd9+MB5vAKxpOo4z/PDSiPgKmEyJwHIDOdV4Y0KY=
+github.com/gophercloud/utils v0.0.0-20230418172808-6eab72e966e1/go.mod h1:VSalo4adEk+3sNkmVJLnhHoOyOYYS8sTWLG4mv5BKto=
 github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.0/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
 github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0/go.mod h1:8NvIoxWQoOIhqOTXgfV/d3M/q6VIi02HzZEHgUlZvzk=
 github.com/grpc-ecosystem/grpc-gateway v1.9.0/go.mod h1:vNeuVxBJEsws4ogUvrchl83t/GYV9WGTSLVdBhOQFDY=
+github.com/hashicorp/go-uuid v1.0.3 h1:2gKiV6YVmrJ1i2CKKa9obLvRieoRGviZFL26PcT/Co8=
 github.com/hashicorp/go-uuid v1.0.3/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
 github.com/hashicorp/hcl v1.0.0 h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=
 github.com/hashicorp/hcl v1.0.0/go.mod h1:E5yfLk+7swimpb2L/Alb/PJmXilQ/rhwaUYs4T20WEQ=
@@ -104,8 +107,12 @@ github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6So
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sapcc/go-api-declarations v1.4.3 h1:RYJujw/NizuJepIU60E9da5JxGnWqn4FGSW/A6V7Uv8=
 github.com/sapcc/go-api-declarations v1.4.3/go.mod h1:EA4x5xxJGyG/3JTteUOYBg6cJLJgsBHrDj3ryfNU4dQ=
+github.com/sapcc/go-api-declarations v1.5.1 h1:K0dn7gy9uvBRn3qBUHOYli4J3eJCRrTBIUxWrpk+1yg=
+github.com/sapcc/go-api-declarations v1.5.1/go.mod h1:3OCDo75YJwpytM/I0SjwcZJf1ZNu89KeAZ55kdOTSqE=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0 h1:A7wf/JcAVkSQnCFTWJvSJBKnpzIJdjMo8h1PVxeGwHY=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230127143243-98c6f09836d0/go.mod h1:1vanBcnn7tavNnHiax2eS9Q6TGNt9bFKiiBZ9HRWNOI=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230426140328-8937b76696bc h1:QTa5DMrwz26kujn8XTxve91APM28jVyLjr1QO4pPrCk=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230426140328-8937b76696bc/go.mod h1:MtFWTLs0Lmmvsw+ZsHg3GsgfLahFmLPhU5CNhQV3HXk=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/soheilhy/cmux v0.1.4/go.mod h1:IM3LyeVVIOuxMH7sFAkER9+bJ4dT7Ms6E4xg4kGIyLM=
