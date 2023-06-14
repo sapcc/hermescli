@@ -1,0 +1,1087 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>client: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/sapcc/hermescli/client/attributes.go (15.2%)</option>
+				
+				<option value="file1">github.com/sapcc/hermescli/client/list.go (9.9%)</option>
+				
+				<option value="file2">github.com/sapcc/hermescli/client/main.go (0.0%)</option>
+				
+				<option value="file3">github.com/sapcc/hermescli/client/print.go (32.5%)</option>
+				
+				<option value="file4">github.com/sapcc/hermescli/client/show.go (8.2%)</option>
+				
+				<option value="file5">github.com/sapcc/hermescli/client/version.go (50.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package client
+
+import (
+        "encoding/json"
+        "fmt"
+        "strings"
+
+        "github.com/gophercloud/gophercloud"
+        "github.com/gophercloud/gophercloud/pagination"
+        "github.com/sapcc/gophercloud-sapcc/audit/v1/attributes"
+        "github.com/spf13/cobra"
+        "github.com/spf13/viper"
+        "gopkg.in/yaml.v2"
+)
+
+var validArgs = []string{
+        "observer_type",
+        "target_type",
+        "target_id",
+        "initiator_type",
+        "initiator_id",
+        "initiator_name",
+        "action",
+        "outcome"}
+
+func validateAll(checks ...cobra.PositionalArgs) cobra.PositionalArgs <span class="cov8" title="1">{
+        return func(cmd *cobra.Command, args []string) error </span><span class="cov0" title="0">{
+                for _, check := range checks </span><span class="cov0" title="0">{
+                        if err := check(cmd, args); err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+                }
+                <span class="cov0" title="0">return nil</span>
+        }
+}
+
+// AttributesCmd represents the list command
+var AttributesCmd = &amp;cobra.Command{
+        Use:       fmt.Sprintf("attributes %s", strings.Join(validArgs, "|")),
+        Args:      validateAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+        ValidArgs: validArgs,
+        Short:     "List Hermes attributes",
+        PreRunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                if err := viper.BindPFlags(cmd.Flags()); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+                <span class="cov0" title="0">return verifyGlobalFlags(nil)</span>
+        },
+        RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                // list attributes
+                client, err := NewHermesV1Client()
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to create Hermes client: %s", err)
+                }</span>
+
+                <span class="cov0" title="0">format := viper.GetString("format")
+
+                projectID := viper.GetString("project-id")
+                if viper.GetBool("all-projects") </span><span class="cov0" title="0">{
+                        projectID = "*"
+                }</span>
+
+                <span class="cov0" title="0">listOpts := attributes.ListOpts{
+                        Limit:     viper.GetInt("limit"),
+                        MaxDepth:  viper.GetInt("max-depth"),
+                        ProjectID: projectID,
+                }
+
+                var allAttributes []string
+
+                for _, name := range args </span><span class="cov0" title="0">{
+                        err = attributes.List(client, name, listOpts).EachPage(func(page pagination.Page) (bool, error) </span><span class="cov0" title="0">{
+                                attrs, err := attributes.ExtractAttributes(page)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return false, fmt.Errorf("failed to extract attributes: %s", err)
+                                }</span>
+
+                                <span class="cov0" title="0">allAttributes = append(allAttributes, attrs...)
+
+                                return true, nil</span>
+                        })
+                        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                                if _, ok := err.(gophercloud.ErrDefault500); ok </span><span class="cov0" title="0">{
+                                        return fmt.Errorf(`failed to list attributes: %s: please try to decrease an amount of the attributes in output, e.g. set "--limit 100"`, err)
+                                }</span>
+                                <span class="cov0" title="0">return fmt.Errorf("failed to list attributes: %s", err)</span>
+                        }
+                }
+
+                <span class="cov0" title="0">switch format </span>{
+                case "json":<span class="cov0" title="0">
+                        jsonAttrs, err := json.MarshalIndent(allAttributes, "", "  ")
+                        if err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+                        <span class="cov0" title="0">fmt.Printf("%s\n", jsonAttrs)</span>
+                case "yaml":<span class="cov0" title="0">
+                        yamlAttrs, err := yaml.Marshal(allAttributes)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+                        <span class="cov0" title="0">fmt.Printf("%s", yamlAttrs)</span>
+                case "csv", "value", "table":<span class="cov0" title="0">
+                        fmt.Printf("%s\n", strings.Join(allAttributes, "\n"))</span>
+                default:<span class="cov0" title="0">
+                        return fmt.Errorf("unsupported format: %s", format)</span>
+                }
+
+                <span class="cov0" title="0">return nil</span>
+        },
+}
+
+func init() <span class="cov8" title="1">{
+        initAttributesCmdFlags()
+        RootCmd.AddCommand(AttributesCmd)
+}</span>
+
+func initAttributesCmdFlags() <span class="cov8" title="1">{
+        AttributesCmd.Flags().UintP("limit", "l", 0, "limit an amount of attributes in output")
+        AttributesCmd.Flags().UintP("max-depth", "", 0, "limit the level of detail of hierarchical values")
+        AttributesCmd.Flags().StringP("project-id", "", "", "filter attributes by the project or domain ID (admin only)")
+        AttributesCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package client
+
+import (
+        "bytes"
+        "fmt"
+        "net/url"
+        "os"
+        "strconv"
+        "strings"
+        "time"
+
+        "github.com/gophercloud/gophercloud"
+        "github.com/gophercloud/gophercloud/pagination"
+        "github.com/olekukonko/tablewriter"
+        "github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+        "github.com/spf13/cobra"
+        "github.com/spf13/viper"
+        "gopkg.in/cheggaaa/pb.v1"
+)
+
+const maxOffset = 10000
+
+// precision of the overlap detection
+const precision = 100
+
+var defaultListKeyOrder = []string{
+        "ID",
+        "Time",
+        "Source",
+        "Action",
+        "Outcome",
+        "RequestPath",
+        "Target",
+        "Initiator",
+}
+
+func parseTime(timeStr string) (time.Time, error) <span class="cov0" title="0">{
+        validTimeFormats := []string{time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
+        var t time.Time
+        var err error
+        for _, timeFormat := range validTimeFormats </span><span class="cov0" title="0">{
+                t, err = time.Parse(timeFormat, timeStr)
+                if err == nil </span><span class="cov0" title="0">{
+                        return t, nil
+                }</span>
+        }
+        <span class="cov0" title="0">return time.Now(), err</span>
+}
+
+func getTimeListOpts(allEvents *[]events.Event, listOpts *events.ListOpts) error <span class="cov0" title="0">{
+        // time of the last event
+        t := (*allEvents)[len(*allEvents)-1]
+        rt, err := parseTime(t.EventTime)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to parse time of the last %s event: %s", t.ID, err)
+        }</span>
+
+        <span class="cov0" title="0">var filter events.DateFilter
+        if getTimeSort(*listOpts) </span><span class="cov0" title="0">{
+                filter = events.DateFilterLTE
+        }</span> else<span class="cov0" title="0"> {
+                filter = events.DateFilterGTE
+        }</span>
+
+        <span class="cov0" title="0">dateFilter := events.DateQuery{
+                Date:   rt,
+                Filter: filter,
+        }
+
+        if len(listOpts.Time) &gt; 0 </span><span class="cov0" title="0">{
+                var found bool
+                for i, v := range listOpts.Time </span><span class="cov0" title="0">{
+                        if v.Filter == filter </span><span class="cov0" title="0">{
+                                found = true
+                                listOpts.Time[i].Date = rt
+                        }</span>
+                }
+                <span class="cov0" title="0">if !found </span><span class="cov0" title="0">{
+                        listOpts.Time = append(listOpts.Time, dateFilter)
+                }</span>
+        } else<span class="cov0" title="0"> {
+                listOpts.Time = []events.DateQuery{
+                        dateFilter,
+                }
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func getNextOffset(page pagination.Page) (int, error) <span class="cov0" title="0">{
+        // detect next URL offset
+        next, err := page.NextPageURL()
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("failed to detect next page url: %s", err)
+        }</span>
+        <span class="cov0" title="0">parsedURL, err := url.Parse(next)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("failed to parse next url: %s", err)
+        }</span>
+        <span class="cov0" title="0">params := parsedURL.Query()
+        if v, ok := params["offset"]; ok </span><span class="cov0" title="0">{
+                if len(v) == 0 || len(v) &gt; 1 </span><span class="cov0" title="0">{
+                        return 0, fmt.Errorf("failed to detect offset")
+                }</span>
+                <span class="cov0" title="0">return strconv.Atoi(v[0])</span>
+        }
+        <span class="cov0" title="0">return 0, nil</span>
+}
+
+func getTimeSort(listOpts events.ListOpts) bool <span class="cov0" title="0">{
+        for _, v := range strings.Split(listOpts.Sort, ",") </span><span class="cov0" title="0">{
+                s := strings.SplitN(v, ":", 2)
+                if len(s) == 2 &amp;&amp; s[0] == "time" </span><span class="cov0" title="0">{
+                        if s[1] == "asc" </span><span class="cov0" title="0">{
+                                return false
+                        }</span>
+                        <span class="cov0" title="0">if s[1] == "desc" </span><span class="cov0" title="0">{
+                                return true
+                        }</span>
+                        <span class="cov0" title="0">return false</span>
+                }
+                <span class="cov0" title="0">if s[0] == "time" </span><span class="cov0" title="0">{
+                        return false
+                }</span>
+        }
+        <span class="cov0" title="0">return true</span>
+}
+
+func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar **pb.ProgressBar) error <span class="cov0" title="0">{
+        var forceWorkaround bool
+        var eventLength int
+
+        err := events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) </span><span class="cov0" title="0">{
+                evnts, err := events.ExtractEvents(page)
+                if err != nil </span><span class="cov0" title="0">{
+                        return false, fmt.Errorf("failed to extract events: %s", err)
+                }</span>
+
+                <span class="cov0" title="0">if precise </span><span class="cov0" title="0">{
+                        // add only unique events
+                        // detect duplicates of only previous 100 last and further 100 first items
+                        // otherwise it is very slow for an amount of objects &gt; 10000 (10000^2*pageN iterations)
+                        eventLength = len(*allEvents)
+                ROOTLOOP:
+                        for i, evntNew := range evnts </span><span class="cov0" title="0">{
+                                for k, j := 0, eventLength-1; j &gt;= eventLength-precision &amp;&amp; j &gt;= 0; k, j = k+1, j-1 </span><span class="cov0" title="0">{
+                                        if k &gt;= precision </span><span class="cov0" title="0">{
+                                                // don't compare items above 100, break the loop
+                                                break</span>
+                                        }
+                                        <span class="cov0" title="0">if (*allEvents)[j].ID == evntNew.ID </span><span class="cov0" title="0">{
+                                                continue ROOTLOOP</span>
+                                        }
+                                }
+                                <span class="cov0" title="0">if i &gt;= precision </span><span class="cov0" title="0">{
+                                        // append all remaining and exit the loop
+                                        *allEvents = append(*allEvents, evnts[i:]...)
+                                        break</span>
+                                } else<span class="cov0" title="0"> {
+                                        *allEvents = append(*allEvents, evntNew)
+                                }</span>
+                        }
+                } else<span class="cov0" title="0"> {
+                        *allEvents = append(*allEvents, evnts...)
+                }</span>
+
+                <span class="cov0" title="0">eventLength = len(*allEvents)
+
+                if *bar == nil </span><span class="cov0" title="0">{
+                        if v, err := page.(events.EventPage).Total(); err != nil </span><span class="cov0" title="0">{
+                                return false, fmt.Errorf("failed to extract total: %s", err)
+                        }</span> else<span class="cov0" title="0"> if eventLength &lt;= maxOffset &amp;&amp; eventLength != userLimit </span><span class="cov0" title="0">{
+                                if userLimit &gt;= maxOffset &amp;&amp; v &gt; userLimit </span><span class="cov0" title="0">{
+                                        *bar = pb.New(userLimit)
+                                }</span> else<span class="cov0" title="0"> if v &gt; maxOffset </span><span class="cov0" title="0">{
+                                        *bar = pb.New(v)
+                                }</span>
+                                <span class="cov0" title="0">if *bar != nil </span><span class="cov0" title="0">{
+                                        (*bar).Output = os.Stderr
+                                        (*bar).Start()
+                                }</span>
+                        }
+                }
+
+                <span class="cov0" title="0">if *bar != nil </span><span class="cov0" title="0">{
+                        (*bar).Set(eventLength)
+                }</span>
+
+                <span class="cov0" title="0">if userLimit &gt; 0 &amp;&amp; eventLength &gt;= userLimit </span><span class="cov0" title="0">{
+                        // break the loop, when output userLimit is reached
+                        return false, nil
+                }</span>
+
+                <span class="cov0" title="0">nextOffset, err := getNextOffset(page)
+                if err != nil </span><span class="cov0" title="0">{
+                        return false, err
+                }</span>
+
+                <span class="cov0" title="0">if (userLimit == 0 || userLimit &gt; maxOffset) &amp;&amp; nextOffset &gt;= maxOffset </span><span class="cov0" title="0">{
+                        // go to the workaround to avoid the 500 http code
+                        forceWorkaround = true
+                        return false, nil
+                }</span>
+
+                <span class="cov0" title="0">return true, nil</span>
+        })
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to list events: %s", err)
+        }</span>
+
+        <span class="cov0" title="0">if forceWorkaround &amp;&amp; eventLength &gt; 0 </span><span class="cov0" title="0">{
+                // workaround to avoid 10000 limit 500 code
+                if err = getTimeListOpts(allEvents, &amp;listOpts); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">delta := userLimit - eventLength
+                if delta &gt; 0 &amp;&amp; delta &lt;= maxOffset </span><span class="cov0" title="0">{
+                        listOpts.Limit = delta
+                }</span>
+                <span class="cov0" title="0">return getEvents(client, allEvents, listOpts, userLimit, precise, bar)</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// ListCmd represents the list command
+var ListCmd = &amp;cobra.Command{
+        Use:   "list",
+        Args:  cobra.ExactArgs(0),
+        Short: "List Hermes events",
+        PreRunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                if err := viper.BindPFlags(cmd.Flags()); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+                // check time flag
+                <span class="cov0" title="0">teq := viper.GetString("time")
+                tgt := viper.GetString("time-start")
+                tlt := viper.GetString("time-end")
+                if teq != "" &amp;&amp; !(tgt == "" &amp;&amp; tlt == "") </span><span class="cov0" title="0">{
+                        return fmt.Errorf("cannot combine time flag with time-start or time-end flags")
+                }</span>
+
+                <span class="cov0" title="0">return verifyGlobalFlags(defaultListKeyOrder)</span>
+        },
+        RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                // list events
+
+                userLimit := viper.GetInt("limit")
+                keyOrder := viper.GetStringSlice("column")
+                if len(keyOrder) == 0 </span><span class="cov0" title="0">{
+                        keyOrder = defaultListKeyOrder
+                }</span>
+                <span class="cov0" title="0">format := viper.GetString("format")
+
+                projectID := viper.GetString("project-id")
+                if viper.GetBool("all-projects") </span><span class="cov0" title="0">{
+                        projectID = "*"
+                }</span>
+
+                <span class="cov0" title="0">listOpts := events.ListOpts{
+                        Limit:         maxOffset,
+                        TargetType:    viper.GetString("target-type"),
+                        TargetID:      viper.GetString("target-id"),
+                        InitiatorID:   viper.GetString("initiator-id"),
+                        InitiatorName: viper.GetString("initiator-name"),
+                        Action:        viper.GetString("action"),
+                        Outcome:       viper.GetString("outcome"),
+                        RequestPath:   viper.GetString("request-path"),
+                        ObserverType:  viper.GetString("source"),
+                        ProjectID:     projectID,
+                        Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
+                }
+
+                // handle user limits &lt;= 10000
+                if userLimit &gt; 0 &amp;&amp; userLimit &lt;= maxOffset </span><span class="cov0" title="0">{
+                        // default per page limit
+                        listOpts.Limit = userLimit
+                }</span>
+
+                <span class="cov0" title="0">if t := viper.GetString("time"); t != "" </span><span class="cov0" title="0">{
+                        rt, err := parseTime(t)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to parse time: %s", err)
+                        }</span>
+                        <span class="cov0" title="0">listOpts.Time = []events.DateQuery{
+                                {
+                                        Date: rt,
+                                },
+                        }</span>
+                }
+                <span class="cov0" title="0">if t := viper.GetString("time-start"); t != "" </span><span class="cov0" title="0">{
+                        rt, err := parseTime(t)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to parse time-start: %s", err)
+                        }</span>
+                        <span class="cov0" title="0">listOpts.Time = append(listOpts.Time, events.DateQuery{
+                                Date:   rt,
+                                Filter: events.DateFilterGTE,
+                        })</span>
+                }
+                <span class="cov0" title="0">if t := viper.GetString("time-end"); t != "" </span><span class="cov0" title="0">{
+                        rt, err := parseTime(t)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to parse time-end: %s", err)
+                        }</span>
+                        <span class="cov0" title="0">listOpts.Time = append(listOpts.Time, events.DateQuery{
+                                Date:   rt,
+                                Filter: events.DateFilterLTE,
+                        })</span>
+                }
+
+                <span class="cov0" title="0">client, err := NewHermesV1Client()
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to create Hermes client: %s", err)
+                }</span>
+
+                <span class="cov0" title="0">var allEvents []events.Event
+                var bar *pb.ProgressBar
+
+                if err = getEvents(client, &amp;allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), &amp;bar); err != nil </span><span class="cov0" title="0">{
+                        if bar != nil </span><span class="cov0" title="0">{
+                                bar.Finish()
+                        }</span>
+                        <span class="cov0" title="0">return fmt.Errorf("failed to list the events: %s", err)</span>
+                }
+                <span class="cov0" title="0">if bar != nil </span><span class="cov0" title="0">{
+                        bar.Finish()
+                }</span>
+
+                <span class="cov0" title="0">if format == "table" </span><span class="cov0" title="0">{
+                        var buf bytes.Buffer
+                        table := tablewriter.NewWriter(&amp;buf)
+                        table.SetColWidth(20)
+                        table.SetAlignment(3)
+                        table.SetHeader(keyOrder)
+
+                        for _, v := range allEvents </span><span class="cov0" title="0">{
+                                kv := eventToKV(v)
+                                tableRow := []string{}
+                                for _, k := range keyOrder </span><span class="cov0" title="0">{
+                                        v := kv[k]
+                                        tableRow = append(tableRow, v)
+                                }</span>
+                                <span class="cov0" title="0">table.Append(tableRow)</span>
+                        }
+
+                        <span class="cov0" title="0">table.Render()
+
+                        fmt.Print(buf.String())</span>
+                } else<span class="cov0" title="0"> {
+                        return printEvent(allEvents, format, keyOrder)
+                }</span>
+
+                <span class="cov0" title="0">return nil</span>
+        },
+}
+
+func init() <span class="cov8" title="1">{
+        initListCmdFlags()
+        RootCmd.AddCommand(ListCmd)
+}</span>
+
+func initListCmdFlags() <span class="cov8" title="1">{
+        ListCmd.Flags().StringP("target-type", "", "", "filter events by a target type")
+        ListCmd.Flags().StringP("target-id", "", "", "filter events by a target ID")
+        ListCmd.Flags().StringP("initiator-id", "", "", "filter events by an initiator ID")
+        ListCmd.Flags().StringP("initiator-name", "", "", "filter events by an initiator name")
+        ListCmd.Flags().StringP("action", "", "", "filter events by an action")
+        ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
+        ListCmd.Flags().StringP("request-path", "", "", "filter events by a request path")
+        ListCmd.Flags().StringP("source", "", "", "filter events by a source")
+        ListCmd.Flags().StringP("time", "", "", "filter events by time")
+        ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
+        ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
+        ListCmd.Flags().StringP("project-id", "", "", "filter events by the project or domain ID (admin only)")
+        ListCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
+        ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out overlapping events for &gt; 10k total events")
+        ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
+        ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action
+each sort key may also include a direction suffix
+supported directions are ":asc" for ascending and ":desc" for descending
+can be specified multiple times`)
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package client
+
+import (
+        "fmt"
+        "net/http"
+        "os"
+        "strings"
+
+        "github.com/gophercloud/gophercloud"
+        "github.com/gophercloud/gophercloud/openstack"
+        "github.com/gophercloud/utils/client"
+        "github.com/gophercloud/utils/env"
+        "github.com/gophercloud/utils/openstack/clientconfig"
+        "github.com/sapcc/gophercloud-sapcc/clients"
+        "github.com/spf13/cobra"
+        "github.com/spf13/viper"
+)
+
+// RootCmd represents the base command when called without any subcommands
+var RootCmd = &amp;cobra.Command{
+        Use:          "hermescli",
+        Short:        "Hermes CLI tool",
+        SilenceUsage: true,
+}
+
+// Execute adds all child commands to the root command sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() <span class="cov0" title="0">{
+        initRootCmdFlags()
+        if err := RootCmd.Execute(); err != nil </span><span class="cov0" title="0">{
+                os.Exit(1)
+        }</span>
+}
+
+func initRootCmdFlags() <span class="cov0" title="0">{
+        // debug flag
+        RootCmd.PersistentFlags().BoolP("debug", "d", false, "print out request and response objects")
+        RootCmd.PersistentFlags().StringSliceP("column", "c", []string{}, "an event column to print")
+        RootCmd.PersistentFlags().StringP("format", "f", "table", "the output format")
+        viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))   //nolint:errcheck
+        viper.BindPFlag("column", RootCmd.PersistentFlags().Lookup("column")) //nolint:errcheck
+        viper.BindPFlag("format", RootCmd.PersistentFlags().Lookup("format")) //nolint:errcheck
+}</span>
+
+// NewHermesV1Client returns a *ServiceClient for making calls
+// to the OpenStack Lyra v1 API. An error will be returned if
+// authentication or client creation was not possible.
+func NewHermesV1Client() (*gophercloud.ServiceClient, error) <span class="cov0" title="0">{
+        ao, err := clientconfig.AuthOptions(nil)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        /* TODO: Introduce auth by CLI parameters
+           ao := gophercloud.AuthOptions{
+                   IdentityEndpoint:            authURL,
+                   UserID:                      userID,
+                   Username:                    username,
+                   Password:                    password,
+                   TenantID:                    tenantID,
+                   TenantName:                  tenantName,
+                   DomainID:                    domainID,
+                   DomainName:                  domainName,
+                   ApplicationCredentialID:     applicationCredentialID,
+                   ApplicationCredentialName:   applicationCredentialName,
+                   ApplicationCredentialSecret: applicationCredentialSecret,
+           }
+        */
+
+        <span class="cov0" title="0">provider, err := openstack.NewClient(ao.IdentityEndpoint)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">if viper.GetBool("debug") </span><span class="cov0" title="0">{
+                provider.HTTPClient = http.Client{
+                        Transport: &amp;client.RoundTripper{
+                                Rt:     &amp;http.Transport{},
+                                Logger: &amp;client.DefaultLogger{},
+                        },
+                }
+        }</span>
+
+        <span class="cov0" title="0">err = openstack.Authenticate(provider, *ao)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return clients.NewHermesV1(provider, gophercloud.EndpointOpts{
+                Region: env.Getenv("OS_REGION_NAME"),
+        })</span>
+}
+
+func verifyGlobalFlags(columnsOrder []string) error <span class="cov0" title="0">{
+        // verify supported columns
+        columns := viper.GetStringSlice("column")
+        for _, c := range columns </span><span class="cov0" title="0">{
+                if len(columnsOrder) == 0 </span><span class="cov0" title="0">{
+                        return fmt.Errorf(`columns are not supported for this command`)
+                }</span>
+                <span class="cov0" title="0">if !isSliceContainsStr(columnsOrder, c) </span><span class="cov0" title="0">{
+                        return fmt.Errorf(`invalid "%s" column name, supported values for the column: %s`, c, strings.Join(columnsOrder, ", "))
+                }</span>
+        }
+
+        // verify supported formats
+        <span class="cov0" title="0">if !isSliceContainsStr(defaultPrintFormats, viper.GetString("format")) </span><span class="cov0" title="0">{
+                return fmt.Errorf(`invalid "%s" column name, supported values for the format: %s`, viper.GetString("format"), strings.Join(defaultPrintFormats, ", "))
+        }</span>
+
+        // verify the project ID and the domain ID parameters
+        <span class="cov0" title="0">projectID := viper.GetString("project-id")
+        allProjects := viper.GetBool("all-projects")
+        if projectID != "" &amp;&amp; allProjects </span><span class="cov0" title="0">{
+                return fmt.Errorf("--project-id and --all-projects cannot be both specified")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// isSliceContainsStr returns true if the string exists in given slice
+func isSliceContainsStr(sl []string, str string) bool <span class="cov0" title="0">{
+        for _, s := range sl </span><span class="cov0" title="0">{
+                if s == str </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+        }
+        <span class="cov0" title="0">return false</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package client
+
+import (
+        "bytes"
+        "encoding/csv"
+        "encoding/json"
+        "fmt"
+        "strings"
+
+        "github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+        "gopkg.in/yaml.v2"
+)
+
+var defaultPrintFormats = []string{
+        "table",
+        "value",
+        "json",
+        "csv",
+        "yaml",
+}
+
+func eventToKV(event events.Event) map[string]string <span class="cov8" title="1">{
+        kv := make(map[string]string)
+        kv["ID"] = event.ID
+        kv["Type"] = event.EventType
+        kv["Time"] = event.EventTime
+
+        if len(event.Observer.Name) &gt; 0 </span><span class="cov8" title="1">{
+                kv["Observer"] = event.Observer.Name
+        }</span>
+        <span class="cov8" title="1">kv["TypeURI"] = event.Observer.TypeURI
+        // compatibility to Source&lt;-&gt;Observer.TypeURI link
+        kv["Source"] = event.Observer.TypeURI
+
+        kv["Action"] = string(event.Action)
+        kv["Outcome"] = string(event.Outcome)
+        kv["Target"] = fmt.Sprintf("%s %s", event.Target.TypeURI, event.Target.ID)
+
+        if len(event.Initiator.Name) &gt; 0 </span><span class="cov8" title="1">{
+                kv["Initiator"] = event.Initiator.Name
+        }</span>
+        <span class="cov8" title="1">if len(event.Initiator.Domain) &gt; 0 </span><span class="cov8" title="1">{
+                kv["InitiatorDomain"] = event.Initiator.Domain
+        }</span>
+        <span class="cov8" title="1">if event.Initiator.Host != nil </span><span class="cov8" title="1">{
+                kv["InitiatorAddress"] = event.Initiator.Host.Address
+                kv["InitiatorAgent"] = event.Initiator.Host.Agent
+        }</span>
+
+        <span class="cov8" title="1">if len(event.Initiator.AppCredentialID) &gt; 0 </span><span class="cov8" title="1">{
+                kv["InitiatorAppCredential"] = event.Initiator.AppCredentialID
+        }</span>
+
+        <span class="cov8" title="1">if len(event.RequestPath) &gt; 0 </span><span class="cov8" title="1">{
+                kv["RequestPath"] = event.RequestPath
+        }</span>
+
+        <span class="cov8" title="1">var attachments []string
+        for _, attachment := range event.Attachments </span><span class="cov0" title="0">{
+                if attachment.Content != nil </span><span class="cov0" title="0">{
+                        attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
+                }</span>
+        }
+        <span class="cov8" title="1">for _, attachment := range event.Target.Attachments </span><span class="cov0" title="0">{
+                if attachment.Content != nil </span><span class="cov0" title="0">{
+                        attachments = append(attachments, fmt.Sprintf("%v", attachment.Content))
+                }</span>
+        }
+        <span class="cov8" title="1">if len(attachments) &gt; 0 </span><span class="cov0" title="0">{
+                kv["Attachments"] = strings.Join(attachments, "\n")
+        }</span>
+
+        <span class="cov8" title="1">return kv</span>
+}
+
+func printEvent(allEvents []events.Event, format string, keyOrder []string) error <span class="cov0" title="0">{
+        switch format </span>{
+        case "json":<span class="cov0" title="0">
+                return printJSON(allEvents)</span>
+        case "yaml":<span class="cov0" title="0">
+                return printYAML(allEvents)</span>
+        case "csv":<span class="cov0" title="0">
+                return printCSV(allEvents, keyOrder)</span>
+        case "value":<span class="cov0" title="0">
+                return printValue(allEvents, keyOrder)</span>
+        }
+        <span class="cov0" title="0">return fmt.Errorf("unsupported format: %s", format)</span>
+}
+
+func printCSV(allEvents []events.Event, keyOrder []string) error <span class="cov0" title="0">{
+        var buf bytes.Buffer
+        csv := csv.NewWriter(&amp;buf) //nolint:gocritic
+
+        if err := csv.Write(keyOrder); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error writing header to csv: %s", err)
+        }</span>
+
+        <span class="cov0" title="0">for _, v := range allEvents </span><span class="cov0" title="0">{
+                kv := eventToKV(v)
+                tableRow := []string{}
+                for _, k := range keyOrder </span><span class="cov0" title="0">{
+                        v := kv[k]
+                        tableRow = append(tableRow, v)
+                }</span>
+                <span class="cov0" title="0">if err := csv.Write(tableRow); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("error writing record to csv: %s", err)
+                }</span>
+        }
+
+        <span class="cov0" title="0">csv.Flush()
+
+        fmt.Print(buf.String())
+
+        return nil</span>
+}
+
+func printJSON(allEvents []events.Event) error <span class="cov0" title="0">{
+        if len(allEvents) &gt; 1 </span><span class="cov0" title="0">{
+                jsonEvents, err := json.MarshalIndent(allEvents, "", "  ")
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">fmt.Printf("%s\n", jsonEvents)</span>
+        } else<span class="cov0" title="0"> if len(allEvents) == 1 </span><span class="cov0" title="0">{
+                jsonEvent, err := json.MarshalIndent(allEvents[0], "", "  ")
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">fmt.Printf("%s\n", jsonEvent)</span>
+        }
+        <span class="cov0" title="0">return nil</span>
+}
+
+func printYAML(allEvents []events.Event) error <span class="cov0" title="0">{
+        if len(allEvents) &gt; 1 </span><span class="cov0" title="0">{
+                yamlEvents, err := yaml.Marshal(allEvents)
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">fmt.Printf("%s", yamlEvents)</span>
+        } else<span class="cov0" title="0"> if len(allEvents) == 1 </span><span class="cov0" title="0">{
+                yamlEvent, err := yaml.Marshal(allEvents[0])
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">fmt.Printf("%s", yamlEvent)</span>
+        }
+        <span class="cov0" title="0">return nil</span>
+}
+
+func printValue(allEvents []events.Event, keyOrder []string) error <span class="cov0" title="0">{
+        for _, v := range allEvents </span><span class="cov0" title="0">{
+                kv := eventToKV(v)
+                var p []string
+                for _, k := range keyOrder </span><span class="cov0" title="0">{
+                        v := kv[k]
+                        p = append(p, v)
+                }</span>
+                <span class="cov0" title="0">fmt.Printf("%s\n", strings.Join(p, " "))</span>
+        }
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package client
+
+import (
+        "bytes"
+        "fmt"
+        "log"
+        "os"
+
+        "github.com/olekukonko/tablewriter"
+        "github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+        "github.com/spf13/cobra"
+        "github.com/spf13/viper"
+        "gopkg.in/cheggaaa/pb.v1"
+)
+
+var defaultShowKeyOrder = []string{
+        "ID",
+        "Type",
+        "Time",
+        "Observer",
+        "TypeURI",
+        "Action",
+        "Outcome",
+        "Target",
+        "Initiator",
+        "InitiatorDomain",
+        "InitiatorAddress",
+        "InitiatorAgent",
+        "InitiatorAppCredential",
+        "RequestPath",
+        "Attachments",
+}
+
+// ShowCmd represents the show command
+var ShowCmd = &amp;cobra.Command{
+        Use:   "show &lt;event-id&gt; [&lt;event-id&gt;...]",
+        Args:  cobra.MinimumNArgs(1),
+        Short: "Show Hermes event",
+        PreRunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                if err := viper.BindPFlags(cmd.Flags()); err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+                <span class="cov0" title="0">return verifyGlobalFlags(defaultShowKeyOrder)</span>
+        },
+        RunE: func(cmd *cobra.Command, args []string) error <span class="cov0" title="0">{
+                // show event
+                client, err := NewHermesV1Client()
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to create Hermes client: %s", err)
+                }</span>
+
+                <span class="cov0" title="0">keyOrder := viper.GetStringSlice("column")
+                if len(keyOrder) == 0 </span><span class="cov0" title="0">{
+                        keyOrder = defaultShowKeyOrder
+                }</span>
+                <span class="cov0" title="0">format := viper.GetString("format")
+
+                // initialize the progress bar, when multiple events are requested
+                var bar *pb.ProgressBar
+                if len(args) &gt; 1 </span><span class="cov0" title="0">{
+                        bar = pb.New(len(args))
+                        bar.Output = os.Stderr
+                        bar.Start()
+                }</span>
+
+                <span class="cov0" title="0">projectID := viper.GetString("project-id")
+                if viper.GetBool("all-projects") </span><span class="cov0" title="0">{
+                        projectID = "*"
+                }</span>
+
+                <span class="cov0" title="0">getOpts := events.GetOpts{
+                        ProjectID: projectID,
+                }
+
+                var allEvents []events.Event
+                for i, id := range args </span><span class="cov0" title="0">{
+                        if bar != nil </span><span class="cov0" title="0">{
+                                bar.Set(i + 1)
+                        }</span>
+                        <span class="cov0" title="0">event, err := events.Get(client, id, getOpts).Extract()
+                        if err != nil </span><span class="cov0" title="0">{
+                                log.Printf("[WARNING] Failed to get %s event: %s", id, err)
+                                continue</span>
+                        }
+                        <span class="cov0" title="0">allEvents = append(allEvents, *event)</span>
+                }
+
+                // stop the progress bar
+                <span class="cov0" title="0">if bar != nil </span><span class="cov0" title="0">{
+                        bar.Finish()
+                }</span>
+
+                <span class="cov0" title="0">if format == "table" </span><span class="cov0" title="0">{
+                        for _, event := range allEvents </span><span class="cov0" title="0">{
+                                kv := eventToKV(event)
+
+                                // create table
+                                var buf bytes.Buffer
+                                table := tablewriter.NewWriter(&amp;buf)
+                                table.SetColWidth(20)
+                                table.SetAlignment(3)
+                                table.SetHeader([]string{"Key", "Value"})
+
+                                // populate output table
+                                for _, k := range keyOrder </span><span class="cov0" title="0">{
+                                        if v, ok := kv[k]; ok </span><span class="cov0" title="0">{
+                                                table.Append([]string{k, v})
+                                        }</span>
+                                }
+
+                                <span class="cov0" title="0">table.Render()
+
+                                fmt.Print(buf.String())</span>
+                        }
+                } else<span class="cov0" title="0"> {
+                        return printEvent(allEvents, format, keyOrder)
+                }</span>
+
+                <span class="cov0" title="0">return nil</span>
+        },
+}
+
+func init() <span class="cov8" title="1">{
+        initShowCmdFlags()
+        RootCmd.AddCommand(ShowCmd)
+}</span>
+
+func initShowCmdFlags() <span class="cov8" title="1">{
+        ShowCmd.Flags().StringP("project-id", "", "", "show event for the project or domain ID (admin only)")
+        ShowCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package client
+
+import (
+        "fmt"
+        "runtime"
+
+        "github.com/spf13/cobra"
+)
+
+var Version = "dev"
+
+var VersionCmd = &amp;cobra.Command{
+        Use:               "version",
+        Short:             "Print version information",
+        DisableAutoGenTag: true,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                fmt.Printf("hermescli %s compiled with %v on %v/%v\n",
+                        Version, runtime.Version(), runtime.GOOS, runtime.GOARCH)
+        }</span>,
+}
+
+func init() <span class="cov8" title="1">{
+        RootCmd.AddCommand(VersionCmd)
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
