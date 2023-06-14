@@ -9,7 +9,7 @@ binaries:
     installTo:   bin/
 
 dockerfile:
-  enabled: true
+  enabled: false
 
 golangciLint:
   createConfig: true
