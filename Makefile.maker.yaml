@@ -1,0 +1,34 @@
+# Configuration file for <https://github.com/sapcc/go-makefile-maker>
+
+metadata:
+  url: https://github.com/sapcc/hermescli
+
+binaries:
+  - name:        hermescli
+    fromPackage: ./cmd
+    installTo:   bin/
+
+dockerfile:
+  enabled: yes
+
+golangciLint:
+  createConfig: true
+
+githubWorkflow:
+  global:
+    ignorePaths: [ "**.md" ] # all Markdown files
+  ci:
+    enabled: true
+    coveralls: true
+  license:
+    enabled: true
+  securityChecks:
+    enabled: true
+  spellCheck:
+    enabled: true
+    ignorePaths: [] # override global setting so that nothing is ignored
+
+renovate:
+  enabled: true
+  assignees:
+    - notque

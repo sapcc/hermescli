@@ -2,6 +2,14 @@
 
 Hermes CLI is a command line interface for interacting with [Hermes](https://github.com/sapcc/hermes), an OpenStack service for storing and retrieving audit events. It allows users to easily retrieve and display audit events from the service, without the need for manual API calls or a separate client library.
 
+## Commands
+
+Hermes CLI offers the following commands:
+
+- `list`: Retrieve a list of audit events
+- `show`: Show details for a specific event
+- `attributes`: List attributes related to audit events
+
 ## Usage
 
 ```sh

@@ -1,3 +1,17 @@
+// Copyright 2020 SAP SE
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package client
 
 import (
@@ -37,9 +51,9 @@ func initRootCmdFlags() {
 	RootCmd.PersistentFlags().BoolP("debug", "d", false, "print out request and response objects")
 	RootCmd.PersistentFlags().StringSliceP("column", "c", []string{}, "an event column to print")
 	RootCmd.PersistentFlags().StringP("format", "f", "table", "the output format")
-	viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))
-	viper.BindPFlag("column", RootCmd.PersistentFlags().Lookup("column"))
-	viper.BindPFlag("format", RootCmd.PersistentFlags().Lookup("format"))
+	viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))   //nolint:errcheck
+	viper.BindPFlag("column", RootCmd.PersistentFlags().Lookup("column")) //nolint:errcheck
+	viper.BindPFlag("format", RootCmd.PersistentFlags().Lookup("format")) //nolint:errcheck
 }
 
 // NewHermesV1Client returns a *ServiceClient for making calls
