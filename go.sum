@@ -48,6 +48,8 @@ github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca h1:HZWyhvVXgS2rx
 github.com/gophercloud/utils v0.0.0-20221207145018-e8fba78967ca/go.mod h1:z4Dey7xsTUXgcB1C8elMvGRKTjV1ez0eoYQlMrduG1g=
 github.com/gophercloud/utils v0.0.0-20230418172808-6eab72e966e1 h1:vJyXd9+MB5vAKxpOo4z/PDSiPgKmEyJwHIDOdV4Y0KY=
 github.com/gophercloud/utils v0.0.0-20230418172808-6eab72e966e1/go.mod h1:VSalo4adEk+3sNkmVJLnhHoOyOYYS8sTWLG4mv5BKto=
+github.com/gophercloud/utils v0.0.0-20230523080330-de873b9cf00d h1:6Gvua77nKyAiZQpu0N3AsamGu1L6Mlnhp3tAtDcqwvc=
+github.com/gophercloud/utils v0.0.0-20230523080330-de873b9cf00d/go.mod h1:VSalo4adEk+3sNkmVJLnhHoOyOYYS8sTWLG4mv5BKto=
 github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.0/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
 github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0/go.mod h1:8NvIoxWQoOIhqOTXgfV/d3M/q6VIi02HzZEHgUlZvzk=
