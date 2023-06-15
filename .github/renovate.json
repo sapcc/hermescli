@@ -10,10 +10,10 @@
   ],
   "commitMessageAction": "Renovate: Update",
   "constraints": {
-    "go": "1.17"
+    "go": "1.20"
   },
   "postUpdateOptions": [
-    "gomodTidy1.17",
+    "gomodTidy",
     "gomodUpdateImportPaths"
   ],
   "packageRules": [
@@ -21,7 +21,7 @@
       "matchPackageNames": [
         "golang"
       ],
-      "allowedVersions": "1.17.x"
+      "allowedVersions": "1.20.x"
     },
     {
       "matchPackagePatterns": [
