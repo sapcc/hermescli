@@ -177,6 +177,8 @@ github.com/sapcc/gophercloud-sapcc v0.0.0-20230602113015-b6ca39cd0679 h1:5O8CEhF
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230602113015-b6ca39cd0679/go.mod h1:kbAro1qScwJa799Bhb+hRLhPLdtHvvkhmjqSt6FYOlo=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230802132930-b052d3b04aa4 h1:WmcJBzzpfFtb9SkdKZB+XifFLBKrsAi5xD/0u7IcY28=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230802132930-b052d3b04aa4/go.mod h1:H9kOk+pM1XxAHSwj6LDer8gfQVq/Y4na+dh0HHWd4kU=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230802144342-25a5047b4099 h1:3VElrXweuCSdaILW2aBqcofNzDMfex1awVVdn5Awg2E=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230802144342-25a5047b4099/go.mod h1:H9kOk+pM1XxAHSwj6LDer8gfQVq/Y4na+dh0HHWd4kU=
 github.com/spf13/afero v1.9.5 h1:stMpOSZFs//0Lv29HduCmli3GUfpFoF3Y1Q/aXj/wVM=
 github.com/spf13/afero v1.9.5/go.mod h1:UBogFpq8E9Hx+xc5CNTTEpTnuHVmXDwZcZcE1eb/UhQ=
 github.com/spf13/cast v1.5.1 h1:R+kOtfhWQE6TVQzY+4D7wJLBgkdVasCEFxSUBYBYIlA=
