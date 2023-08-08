@@ -7,7 +7,7 @@ require (
 	github.com/gophercloud/utils v0.0.0-20230523080330-de873b9cf00d
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.7.0
-	github.com/sapcc/gophercloud-sapcc v0.0.0-20230802144342-25a5047b4099
+	github.com/sapcc/gophercloud-sapcc v0.0.0-20230808121208-865da3ea3f30
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
@@ -32,7 +32,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
-	golang.org/x/sys v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/text v0.11.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
