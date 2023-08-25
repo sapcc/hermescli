@@ -18,18 +18,17 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/cheggaaa/pb/v3"
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
 	"github.com/olekukonko/tablewriter"
 	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/cheggaaa/pb.v1"
 )
 
 const maxOffset = 10000
@@ -190,14 +189,13 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 					*bar = pb.New(v)
 				}
 				if *bar != nil {
-					(*bar).Output = os.Stderr
 					(*bar).Start()
 				}
 			}
 		}
 
 		if *bar != nil {
-			(*bar).Set(eventLength)
+			(*bar).Set("Events", eventLength)
 		}
 
 		if userLimit > 0 && eventLength >= userLimit {
