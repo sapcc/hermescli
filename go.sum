@@ -177,8 +177,12 @@ github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/f
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sapcc/go-api-declarations v1.7.0 h1:fABKw/dw300ZQ5TKEjVnKPqMSH5aCOSbJ06XnfWtpuw=
 github.com/sapcc/go-api-declarations v1.7.0/go.mod h1:3OCDo75YJwpytM/I0SjwcZJf1ZNu89KeAZ55kdOTSqE=
+github.com/sapcc/go-api-declarations v1.8.0 h1:jlomBUa0IMgcibtUT1GQ6VOT9RYa8LCk6LuP0DxURWo=
+github.com/sapcc/go-api-declarations v1.8.0/go.mod h1:83R3hTANhuRXt/pXDby37IJetw8l7DG41s33Tp9NXxI=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230808121208-865da3ea3f30 h1:MoAS6CD4FcLjcPwmMIB9csJttK6yDkErHbYQJy16f/A=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20230808121208-865da3ea3f30/go.mod h1:q8oIZAGnHovuIygmQJDnCr8qly36NYyt6D4C56aKF8A=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230824030507-b730bdde296f h1:gmxLF8mHjX4IwdvNSL9kDArDhFWuHuDF8W2A79GUzi0=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20230824030507-b730bdde296f/go.mod h1:/uaLC/Xa+fHbB4gGvnMfDwOXkg5Nu6tqytWlgNTNUa4=
 github.com/spf13/afero v1.9.5 h1:stMpOSZFs//0Lv29HduCmli3GUfpFoF3Y1Q/aXj/wVM=
 github.com/spf13/afero v1.9.5/go.mod h1:UBogFpq8E9Hx+xc5CNTTEpTnuHVmXDwZcZcE1eb/UhQ=
 github.com/spf13/cast v1.5.1 h1:R+kOtfhWQE6TVQzY+4D7wJLBgkdVasCEFxSUBYBYIlA=
