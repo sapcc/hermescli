@@ -4,7 +4,7 @@
 [![CI](https://github.com/sapcc/hermescli/actions/workflows/ci.yaml/badge.svg)](https://github.com/sapcc/hermescli/actions/workflows/ci.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sapcc/hermescli)](https://goreportcard.com/report/github.com/sapcc/hermescli)
 
-`hermescli` is the command-line interface for [Hermes](https://github.com/sapcc/hermes).
+Hermes CLI is a command line interface for interacting with [Hermes](https://github.com/sapcc/hermes), an OpenStack service for storing and retrieving audit events. It allows users to easily retrieve and display audit events from the service, without the need for manual API calls or a separate client library.
 
 ## Installation
 
@@ -13,9 +13,6 @@ We provide pre-compiled binaries for the [latest release](https://github.com/sap
 Alternatively, you can build with `make` or install with `make install`. The latter
 understands the conventional environment variables for choosing install locations:
 `DESTDIR` and `PREFIX`.
-
-
-Hermes CLI is a command line interface for interacting with [Hermes](https://github.com/sapcc/hermes), an OpenStack service for storing and retrieving audit events. It allows users to easily retrieve and display audit events from the service, without the need for manual API calls or a separate client library.
 
 ## Commands
 
@@ -121,6 +118,9 @@ $ hermescli show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 ## Attributes
 
 ### Usage
+
+`hermescli` requires the full set of OpenStack auth environment
+variables. See [documentation for openstackclient](https://docs.openstack.org/python-openstackclient/latest/cli/man/openstack.html) for details.
 
 ```sh
 List Hermes attributes
