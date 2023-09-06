@@ -65,7 +65,7 @@ github.com/rivo/uniseg
 # github.com/sapcc/go-api-declarations v1.8.1
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20230831004640-11f565cf98ee
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20230906134359-10d9afa26e9a
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
