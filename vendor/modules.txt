@@ -1,7 +1,7 @@
 # github.com/fsnotify/fsnotify v1.6.0
 ## explicit; go 1.16
 github.com/fsnotify/fsnotify
-# github.com/gophercloud/gophercloud v1.5.0
+# github.com/gophercloud/gophercloud v1.6.0
 ## explicit; go 1.14
 github.com/gophercloud/gophercloud
 github.com/gophercloud/gophercloud/openstack
@@ -62,10 +62,10 @@ github.com/pelletier/go-toml/v2/unstable
 # github.com/rivo/uniseg v0.2.0
 ## explicit; go 1.12
 github.com/rivo/uniseg
-# github.com/sapcc/go-api-declarations v1.8.0
+# github.com/sapcc/go-api-declarations v1.8.1
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20230824030507-b730bdde296f
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20230906134359-10d9afa26e9a
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
