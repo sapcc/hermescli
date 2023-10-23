@@ -68,6 +68,9 @@ type ListOpts struct {
 	DomainID    string `q:"domain_id"`
 	ProjectID   string `q:"project_id"`
 
+	// Search is over the entire event body.
+	Search string `q:"search"`
+
 	// Sort will sort the results in the requested order.
 	Sort string `q:"sort"`
 
