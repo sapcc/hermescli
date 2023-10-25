@@ -282,6 +282,7 @@ var ListCmd = &cobra.Command{
 			Outcome:       viper.GetString("outcome"),
 			RequestPath:   viper.GetString("request-path"),
 			ObserverType:  viper.GetString("source"),
+			Search:        viper.GetString("search"),
 			ProjectID:     projectID,
 			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
 		}
@@ -384,6 +385,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
 	ListCmd.Flags().StringP("request-path", "", "", "filter events by a request path")
 	ListCmd.Flags().StringP("source", "", "", "filter events by a source")
+	ListCmd.Flags().StringP("search", "", "", "filter events by a search string")
 	ListCmd.Flags().StringP("time", "", "", "filter events by time")
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
