@@ -187,8 +187,6 @@ github.com/sagikazarmark/locafero v0.3.0 h1:zT7VEGWC2DTflmccN/5T1etyKvxSxpHsjb9c
 github.com/sagikazarmark/locafero v0.3.0/go.mod h1:w+v7UsPNFwzF1cHuOajOOzoq4U7v/ig1mpRjqV+Bu1U=
 github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6gto+ugjYE=
 github.com/sagikazarmark/slog-shim v0.1.0/go.mod h1:SrcSrq8aKtyuqEI1uvTDTK1arOWRIczQRv+GVI1AkeQ=
-github.com/sapcc/go-api-declarations v1.7.0 h1:fABKw/dw300ZQ5TKEjVnKPqMSH5aCOSbJ06XnfWtpuw=
-github.com/sapcc/go-api-declarations v1.7.0/go.mod h1:3OCDo75YJwpytM/I0SjwcZJf1ZNu89KeAZ55kdOTSqE=
 github.com/sapcc/go-api-declarations v1.8.0 h1:jlomBUa0IMgcibtUT1GQ6VOT9RYa8LCk6LuP0DxURWo=
 github.com/sapcc/go-api-declarations v1.8.0/go.mod h1:83R3hTANhuRXt/pXDby37IJetw8l7DG41s33Tp9NXxI=
 github.com/sapcc/go-api-declarations v1.8.1 h1:cICFeK+YIZ9ozz01Q03OVjBYVNo33RuKep83Dw82KmY=
