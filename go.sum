@@ -190,6 +190,8 @@ github.com/sapcc/go-api-declarations v1.10.3 h1:wFnq1Qx1Uv0G4F0AWT+9E4N/8n77Lm3b
 github.com/sapcc/go-api-declarations v1.10.3/go.mod h1:83R3hTANhuRXt/pXDby37IJetw8l7DG41s33Tp9NXxI=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231026032203-a84c0e0b876c h1:TAkW5yutkfFFrIehPDgYoIZyVzUM9UMMa6nxZbRyTHY=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231026032203-a84c0e0b876c/go.mod h1:/3oIVy9wFbZaFM4qwkZkRYIOPTRmfpQExXvMCvHxNi4=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20231130134757-d737dedd4227 h1:F93zZAVJaGp23Gzs4/x4U3gefyAqwSR2J7mf8t4z6S0=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20231130134757-d737dedd4227/go.mod h1:xy1lSR6BUjzAtvER9kcnvfkhdOWFEC2SCllabSWKgEQ=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spf13/afero v1.10.0 h1:EaGW2JJh15aKOejeuJ+wpFSHnbd7GE6Wvp3TsNhb6LY=
