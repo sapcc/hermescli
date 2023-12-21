@@ -7,6 +7,7 @@ require (
 	github.com/gophercloud/utils v0.0.0-20231010081019-80377eca5d56
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.10.4
+	github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8
 	github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.0
@@ -32,7 +33,7 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/sys v0.15.0 // indirect
