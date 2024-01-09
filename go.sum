@@ -57,6 +57,8 @@ github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6g
 github.com/sagikazarmark/slog-shim v0.1.0/go.mod h1:SrcSrq8aKtyuqEI1uvTDTK1arOWRIczQRv+GVI1AkeQ=
 github.com/sapcc/go-api-declarations v1.10.4 h1:ZUq/2GjOMaKTVuWQrhY09Hu20Smk3SbDqItCJT0H9mg=
 github.com/sapcc/go-api-declarations v1.10.4/go.mod h1:83R3hTANhuRXt/pXDby37IJetw8l7DG41s33Tp9NXxI=
+github.com/sapcc/go-api-declarations v1.10.6 h1:WtdxsNon5g7NMxcDWL/obe8cW8QjPwfBlnjq975s0qM=
+github.com/sapcc/go-api-declarations v1.10.6/go.mod h1:83R3hTANhuRXt/pXDby37IJetw8l7DG41s33Tp9NXxI=
 github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8 h1:Vx0Ebmkk9Ti+jWXdtAWKPmdMlcyBhbnV0WA8J7vLyR0=
 github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8/go.mod h1:jsn7K60WbjIzXz5V38eeHP2SNsBsCpFOtbXOSsBZXoQ=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1 h1:v3Fw4NzccL94uIjksUeae8TaR4cM/WpHthjQqwQ1EZo=
