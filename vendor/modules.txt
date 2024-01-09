@@ -71,6 +71,11 @@ github.com/sagikazarmark/slog-shim
 # github.com/sapcc/go-api-declarations v1.10.4
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
+# github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8
+## explicit; go 1.21
+github.com/sapcc/go-bits/logg
+github.com/sapcc/go-bits/osext
+github.com/sapcc/go-bits/secrets
 # github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
@@ -110,8 +115,8 @@ github.com/spf13/viper/internal/encoding/yaml
 # github.com/subosito/gotenv v1.6.0
 ## explicit; go 1.18
 github.com/subosito/gotenv
-# go.uber.org/atomic v1.9.0
-## explicit; go 1.13
+# go.uber.org/atomic v1.11.0
+## explicit; go 1.18
 go.uber.org/atomic
 # go.uber.org/multierr v1.9.0
 ## explicit; go 1.19
