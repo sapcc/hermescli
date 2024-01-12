@@ -71,7 +71,7 @@ github.com/sagikazarmark/slog-shim
 # github.com/sapcc/go-api-declarations v1.10.6
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8
+# github.com/sapcc/go-bits v0.0.0-20240112110430-0c99ebfb2236
 ## explicit; go 1.21
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
