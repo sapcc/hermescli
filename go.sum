@@ -63,6 +63,8 @@ github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8 h1:Vx0Ebmkk9Ti+jWXdt
 github.com/sapcc/go-bits v0.0.0-20231207031921-c96e6a5833c8/go.mod h1:jsn7K60WbjIzXz5V38eeHP2SNsBsCpFOtbXOSsBZXoQ=
 github.com/sapcc/go-bits v0.0.0-20240112110430-0c99ebfb2236 h1:ALO6uaufDyDgStNNAA2pmZybUfoGcqMsEwiJbJXbN9U=
 github.com/sapcc/go-bits v0.0.0-20240112110430-0c99ebfb2236/go.mod h1:CcxcvepW1acwEpN7C7gYPkIPoJ8mubCJ3nGq7sfztz0=
+github.com/sapcc/go-bits v0.0.0-20240118093656-a4f981f7fa46 h1:sGq+rDN3I78/RegxuhleJ4OwH6Y1hKhBmUa5UaNkuNU=
+github.com/sapcc/go-bits v0.0.0-20240118093656-a4f981f7fa46/go.mod h1:BoNXg4QirV4TD704Uvgp0KueUA7DZdOHhilvewfQXhw=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1 h1:v3Fw4NzccL94uIjksUeae8TaR4cM/WpHthjQqwQ1EZo=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1/go.mod h1:5xn8YcYXweyv3DriB2weiVI5PyEqb0ea1JugKHxN/J4=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20240112110432-417e6721267f h1:K7OV5feZJYjYkDxigZfooCgnuco6Id8uQagR2RgjL7E=
@@ -120,6 +122,8 @@ golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.2.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.15.0 h1:h48lPFYpsTvQJZF4EKyI4aLHaev3CxivZmv7yZig9pc=
 golang.org/x/sys v0.15.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
+golang.org/x/sys v0.16.0 h1:xWw16ngr6ZMtmxDyKyIgsE93KNKz5HKmMa3b8ALHidU=
+golang.org/x/sys v0.16.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20210927222741-03fcf44c2211/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
