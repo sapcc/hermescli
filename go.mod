@@ -6,9 +6,9 @@ require (
 	github.com/gophercloud/gophercloud v1.8.0
 	github.com/gophercloud/utils v0.0.0-20231010081019-80377eca5d56
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/sapcc/go-api-declarations v1.10.6
-	github.com/sapcc/go-bits v0.0.0-20240118093656-a4f981f7fa46
-	github.com/sapcc/gophercloud-sapcc v0.0.0-20240118043751-6df5809a4f93
+	github.com/sapcc/go-api-declarations v1.10.7
+	github.com/sapcc/go-bits v0.0.0-20240201031405-faeba90d7591
+	github.com/sapcc/gophercloud-sapcc v0.0.0-20240201060604-a720edf45038
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
