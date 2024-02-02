@@ -1,9 +1,10 @@
 # github.com/fsnotify/fsnotify v1.7.0
 ## explicit; go 1.17
 github.com/fsnotify/fsnotify
-# github.com/gophercloud/gophercloud v1.8.0
+# github.com/gophercloud/gophercloud v1.9.0
 ## explicit; go 1.14
 github.com/gophercloud/gophercloud
+github.com/gophercloud/gophercloud/internal/ctxt
 github.com/gophercloud/gophercloud/openstack
 github.com/gophercloud/gophercloud/openstack/identity/v2/tenants
 github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
@@ -76,7 +77,7 @@ github.com/sapcc/go-api-declarations/cadf
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20240201060604-a720edf45038
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20240202151850-54936c8f7929
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
