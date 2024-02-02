@@ -79,6 +79,8 @@ github.com/sapcc/gophercloud-sapcc v0.0.0-20240118043751-6df5809a4f93 h1:yDyD0w2
 github.com/sapcc/gophercloud-sapcc v0.0.0-20240118043751-6df5809a4f93/go.mod h1:Dwr32yA8TxIaJ2YM1cq1YCAtY8hUbENBNOM86Y+2oUM=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20240201060604-a720edf45038 h1:KYZGeKWdvKAvX8oDZ6ARHKgyf+Lk4yo1wZ+QcMhAilE=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20240201060604-a720edf45038/go.mod h1:dAFkhSGnGS9mlrhlOFUe9vQ3Kl+Xpb99ABzgvzoIOQo=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20240202151850-54936c8f7929 h1:ENLe5pjfMPmgZ5yFk7kdOrxkQiBX/rQx9DNnIM5LF8s=
+github.com/sapcc/gophercloud-sapcc v0.0.0-20240202151850-54936c8f7929/go.mod h1:bI704VPmStFq/TN0r1wJVl2bsUzwyBSGeSEiSs68RHE=
 github.com/sergi/go-diff v1.3.1 h1:xkr+Oxo4BOQKmkn/B9eMK0g5Kg/983T9DqqPHwYqD+8=
 github.com/sergi/go-diff v1.3.1/go.mod h1:aMJSSKb2lpPvRNec0+w3fl7LP9IOFzdc9Pa4NFbPK1I=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
