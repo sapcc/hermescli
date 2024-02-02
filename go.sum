@@ -71,6 +71,8 @@ github.com/sapcc/go-bits v0.0.0-20240118093656-a4f981f7fa46 h1:sGq+rDN3I78/Regxu
 github.com/sapcc/go-bits v0.0.0-20240118093656-a4f981f7fa46/go.mod h1:BoNXg4QirV4TD704Uvgp0KueUA7DZdOHhilvewfQXhw=
 github.com/sapcc/go-bits v0.0.0-20240201031405-faeba90d7591 h1:O3XdTXAuyvqsgiSavWbs4OUIv4j1hOgYo6XHtRGBNc8=
 github.com/sapcc/go-bits v0.0.0-20240201031405-faeba90d7591/go.mod h1:yqorNSJcric60UOPoplaTF9YpcYvrtfSStNnBVZ1c2Y=
+github.com/sapcc/go-bits v0.0.0-20240202151734-7d1284b994ef h1:1UMRa8dUs8WZSiNZgppNOLiygTd39isolyPLfG0+E9E=
+github.com/sapcc/go-bits v0.0.0-20240202151734-7d1284b994ef/go.mod h1:huXoTW7VVHm5rKwvUC5yMCqN0di0SfwXd1c84IqY7ds=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1 h1:v3Fw4NzccL94uIjksUeae8TaR4cM/WpHthjQqwQ1EZo=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20231207102321-ccb7578c58b1/go.mod h1:5xn8YcYXweyv3DriB2weiVI5PyEqb0ea1JugKHxN/J4=
 github.com/sapcc/gophercloud-sapcc v0.0.0-20240112110432-417e6721267f h1:K7OV5feZJYjYkDxigZfooCgnuco6Id8uQagR2RgjL7E=
