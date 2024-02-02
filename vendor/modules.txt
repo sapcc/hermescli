@@ -1,9 +1,10 @@
 # github.com/fsnotify/fsnotify v1.7.0
 ## explicit; go 1.17
 github.com/fsnotify/fsnotify
-# github.com/gophercloud/gophercloud v1.8.0
+# github.com/gophercloud/gophercloud v1.9.0
 ## explicit; go 1.14
 github.com/gophercloud/gophercloud
+github.com/gophercloud/gophercloud/internal/ctxt
 github.com/gophercloud/gophercloud/openstack
 github.com/gophercloud/gophercloud/openstack/identity/v2/tenants
 github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
