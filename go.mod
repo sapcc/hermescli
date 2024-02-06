@@ -8,7 +8,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.10.8
 	github.com/sapcc/go-bits v0.0.0-20240205133215-226be063fcbe
-	github.com/sapcc/gophercloud-sapcc v0.0.0-20240202151850-54936c8f7929
+	github.com/sapcc/gophercloud-sapcc v0.0.0-20240205131351-c1e0e0a77dbd
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	gopkg.in/cheggaaa/pb.v1 v1.0.28
