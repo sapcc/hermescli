@@ -39,7 +39,7 @@ func eventToKV(event events.Event) map[string]string {
 	kv["Type"] = event.EventType
 	kv["Time"] = event.EventTime
 
-	if len(event.Observer.Name) > 0 {
+	if event.Observer.Name != "" {
 		kv["Observer"] = event.Observer.Name
 	}
 	kv["TypeURI"] = event.Observer.TypeURI
@@ -50,10 +50,10 @@ func eventToKV(event events.Event) map[string]string {
 	kv["Outcome"] = string(event.Outcome)
 	kv["Target"] = fmt.Sprintf("%s %s", event.Target.TypeURI, event.Target.ID)
 
-	if len(event.Initiator.Name) > 0 {
+	if event.Initiator.Name != "" {
 		kv["Initiator"] = event.Initiator.Name
 	}
-	if len(event.Initiator.Domain) > 0 {
+	if event.Initiator.Domain != "" {
 		kv["InitiatorDomain"] = event.Initiator.Domain
 	}
 	if event.Initiator.Host != nil {
@@ -61,11 +61,11 @@ func eventToKV(event events.Event) map[string]string {
 		kv["InitiatorAgent"] = event.Initiator.Host.Agent
 	}
 
-	if len(event.Initiator.AppCredentialID) > 0 {
+	if event.Initiator.AppCredentialID != "" {
 		kv["InitiatorAppCredential"] = event.Initiator.AppCredentialID
 	}
 
-	if len(event.RequestPath) > 0 {
+	if event.RequestPath != "" {
 		kv["RequestPath"] = event.RequestPath
 	}
 
