@@ -76,7 +76,7 @@ github.com/sapcc/go-api-declarations/cadf
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20240227153904-5459df20b8b7
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20240321130357-022151c85de7
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
