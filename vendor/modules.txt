@@ -1,10 +1,9 @@
 # github.com/fsnotify/fsnotify v1.7.0
 ## explicit; go 1.17
 github.com/fsnotify/fsnotify
-# github.com/gophercloud/gophercloud v1.10.0
+# github.com/gophercloud/gophercloud v1.11.0
 ## explicit; go 1.14
 github.com/gophercloud/gophercloud
-github.com/gophercloud/gophercloud/internal/ctxt
 github.com/gophercloud/gophercloud/openstack
 github.com/gophercloud/gophercloud/openstack/identity/v2/tenants
 github.com/gophercloud/gophercloud/openstack/identity/v2/tokens
@@ -72,7 +71,7 @@ github.com/sagikazarmark/slog-shim
 # github.com/sapcc/go-api-declarations v1.10.9
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20240306125359-5ba13b83cfd3
+# github.com/sapcc/go-bits v0.0.0-20240321130422-af7405f5e67d
 ## explicit; go 1.21
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
@@ -130,7 +129,7 @@ golang.org/x/exp/slices
 golang.org/x/exp/slog
 golang.org/x/exp/slog/internal
 golang.org/x/exp/slog/internal/buffer
-# golang.org/x/sys v0.16.0
+# golang.org/x/sys v0.18.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
 golang.org/x/sys/windows
