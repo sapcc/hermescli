@@ -18,10 +18,8 @@ name: CI
 permissions:
   contents: read
 jobs:
-  build:
-    name: Build
-    needs:
-      - lint
+  buildAndLint:
+    name: Build & Lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -29,19 +27,10 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.21"
-      - name: Make build
+          check-latest: true
+          go-version: "1.22"
+      - name: Build all binaries
         run: make build-all
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.21"
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v4
         with:
@@ -49,7 +38,7 @@ jobs:
   test:
     name: Test
     needs:
-      - build
+      - buildAndLint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -57,7 +46,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.21"
+          check-latest: true
+          go-version: "1.22"
       - name: Run tests and generate coverage report
         run: make build/cover.out
       - name: Upload coverage report to Coveralls
