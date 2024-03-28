@@ -16,6 +16,7 @@ package client
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -50,7 +51,7 @@ func validateAll(checks ...cobra.PositionalArgs) cobra.PositionalArgs {
 
 // AttributesCmd represents the list command
 var AttributesCmd = &cobra.Command{
-	Use:       fmt.Sprintf("attributes %s", strings.Join(validArgs, "|")),
+	Use:       "attributes " + strings.Join(validArgs, "|"),
 	Args:      validateAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	ValidArgs: validArgs,
 	Short:     "List Hermes attributes",
@@ -65,7 +66,7 @@ var AttributesCmd = &cobra.Command{
 		// list attributes
 		client, err := NewHermesV1Client()
 		if err != nil {
-			return fmt.Errorf("failed to create Hermes client: %s", err)
+			return fmt.Errorf("failed to create Hermes client: %w", err)
 		}
 
 		format := viper.GetString("format")
@@ -87,7 +88,7 @@ var AttributesCmd = &cobra.Command{
 			err = attributes.List(client, name, listOpts).EachPage(func(page pagination.Page) (bool, error) {
 				attrs, err := attributes.ExtractAttributes(page)
 				if err != nil {
-					return false, fmt.Errorf("failed to extract attributes: %s", err)
+					return false, fmt.Errorf("failed to extract attributes: %w", err)
 				}
 
 				allAttributes = append(allAttributes, attrs...)
@@ -95,10 +96,11 @@ var AttributesCmd = &cobra.Command{
 				return true, nil
 			})
 			if err != nil {
-				if _, ok := err.(gophercloud.ErrDefault500); ok {
-					return fmt.Errorf(`failed to list attributes: %s: please try to decrease an amount of the attributes in output, e.g. set "--limit 100"`, err)
+				var gopherErr gophercloud.ErrDefault500
+				if errors.As(err, &gopherErr) {
+					return fmt.Errorf(`failed to list attributes: %w: please try to decrease the amount of the attributes in output, e.g. set "--limit 100"`, err)
 				}
-				return fmt.Errorf("failed to list attributes: %s", err)
+				return fmt.Errorf("failed to list attributes: %w", err)
 			}
 		}
 
