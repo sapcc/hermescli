@@ -15,6 +15,7 @@
 package client
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -114,7 +115,7 @@ func verifyGlobalFlags(columnsOrder []string) error {
 	columns := viper.GetStringSlice("column")
 	for _, c := range columns {
 		if len(columnsOrder) == 0 {
-			return fmt.Errorf(`columns are not supported for this command`)
+			return errors.New(`columns are not supported for this command`)
 		}
 		if !isSliceContainsStr(columnsOrder, c) {
 			return fmt.Errorf(`invalid "%s" column name, supported values for the column: %s`, c, strings.Join(columnsOrder, ", "))
@@ -130,7 +131,7 @@ func verifyGlobalFlags(columnsOrder []string) error {
 	projectID := viper.GetString("project-id")
 	allProjects := viper.GetBool("all-projects")
 	if projectID != "" && allProjects {
-		return fmt.Errorf("--project-id and --all-projects cannot be both specified")
+		return errors.New("--project-id and --all-projects cannot be both specified")
 	}
 
 	return nil

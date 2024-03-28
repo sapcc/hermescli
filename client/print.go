@@ -106,7 +106,7 @@ func printCSV(allEvents []events.Event, keyOrder []string) error {
 	csv := csv.NewWriter(&buf) //nolint:gocritic
 
 	if err := csv.Write(keyOrder); err != nil {
-		return fmt.Errorf("error writing header to csv: %s", err)
+		return fmt.Errorf("error writing header to csv: %w", err)
 	}
 
 	for _, v := range allEvents {
@@ -117,7 +117,7 @@ func printCSV(allEvents []events.Event, keyOrder []string) error {
 			tableRow = append(tableRow, v)
 		}
 		if err := csv.Write(tableRow); err != nil {
-			return fmt.Errorf("error writing record to csv: %s", err)
+			return fmt.Errorf("error writing record to csv: %w", err)
 		}
 	}
 

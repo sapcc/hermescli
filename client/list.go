@@ -16,6 +16,7 @@ package client
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"net/url"
 	"os"
@@ -66,7 +67,7 @@ func getTimeListOpts(allEvents *[]events.Event, listOpts *events.ListOpts) error
 	t := (*allEvents)[len(*allEvents)-1]
 	rt, err := parseTime(t.EventTime)
 	if err != nil {
-		return fmt.Errorf("failed to parse time of the last %s event: %s", t.ID, err)
+		return fmt.Errorf("failed to parse time of the last %s event: %w", t.ID, err)
 	}
 
 	var filter events.DateFilter
@@ -105,16 +106,16 @@ func getNextOffset(page pagination.Page) (int, error) {
 	// detect next URL offset
 	next, err := page.NextPageURL()
 	if err != nil {
-		return 0, fmt.Errorf("failed to detect next page url: %s", err)
+		return 0, fmt.Errorf("failed to detect next page url: %w", err)
 	}
 	parsedURL, err := url.Parse(next)
 	if err != nil {
-		return 0, fmt.Errorf("failed to parse next url: %s", err)
+		return 0, fmt.Errorf("failed to parse next url: %w", err)
 	}
 	params := parsedURL.Query()
 	if v, ok := params["offset"]; ok {
 		if len(v) == 0 || len(v) > 1 {
-			return 0, fmt.Errorf("failed to detect offset")
+			return 0, errors.New("failed to detect offset")
 		}
 		return strconv.Atoi(v[0])
 	}
@@ -147,7 +148,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 	err := events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
 		evnts, err := events.ExtractEvents(page)
 		if err != nil {
-			return false, fmt.Errorf("failed to extract events: %s", err)
+			return false, fmt.Errorf("failed to extract events: %w", err)
 		}
 
 		if precise {
@@ -182,7 +183,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 
 		if *bar == nil {
 			if v, err := page.(events.EventPage).Total(); err != nil {
-				return false, fmt.Errorf("failed to extract total: %s", err)
+				return false, fmt.Errorf("failed to extract total: %w", err)
 			} else if eventLength <= maxOffset && eventLength != userLimit {
 				if userLimit >= maxOffset && v > userLimit {
 					*bar = pb.New(userLimit)
@@ -219,7 +220,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 		return true, nil
 	})
 	if err != nil {
-		return fmt.Errorf("failed to list events: %s", err)
+		return fmt.Errorf("failed to list events: %w", err)
 	}
 
 	if forceWorkaround && eventLength > 0 {
@@ -252,7 +253,7 @@ var ListCmd = &cobra.Command{
 		tgt := viper.GetString("time-start")
 		tlt := viper.GetString("time-end")
 		if teq != "" && !(tgt == "" && tlt == "") {
-			return fmt.Errorf("cannot combine time flag with time-start or time-end flags")
+			return errors.New("cannot combine time flag with time-start or time-end flags")
 		}
 
 		return verifyGlobalFlags(defaultListKeyOrder)
@@ -296,7 +297,7 @@ var ListCmd = &cobra.Command{
 		if t := viper.GetString("time"); t != "" {
 			rt, err := parseTime(t)
 			if err != nil {
-				return fmt.Errorf("failed to parse time: %s", err)
+				return fmt.Errorf("failed to parse time: %w", err)
 			}
 			listOpts.Time = []events.DateQuery{
 				{
@@ -307,7 +308,7 @@ var ListCmd = &cobra.Command{
 		if t := viper.GetString("time-start"); t != "" {
 			rt, err := parseTime(t)
 			if err != nil {
-				return fmt.Errorf("failed to parse time-start: %s", err)
+				return fmt.Errorf("failed to parse time-start: %w", err)
 			}
 			listOpts.Time = append(listOpts.Time, events.DateQuery{
 				Date:   rt,
@@ -317,7 +318,7 @@ var ListCmd = &cobra.Command{
 		if t := viper.GetString("time-end"); t != "" {
 			rt, err := parseTime(t)
 			if err != nil {
-				return fmt.Errorf("failed to parse time-end: %s", err)
+				return fmt.Errorf("failed to parse time-end: %w", err)
 			}
 			listOpts.Time = append(listOpts.Time, events.DateQuery{
 				Date:   rt,
@@ -327,7 +328,7 @@ var ListCmd = &cobra.Command{
 
 		client, err := NewHermesV1Client()
 		if err != nil {
-			return fmt.Errorf("failed to create Hermes client: %s", err)
+			return fmt.Errorf("failed to create Hermes client: %w", err)
 		}
 
 		var allEvents []events.Event
@@ -337,7 +338,7 @@ var ListCmd = &cobra.Command{
 			if bar != nil {
 				bar.Finish()
 			}
-			return fmt.Errorf("failed to list the events: %s", err)
+			return fmt.Errorf("failed to list the events: %w", err)
 		}
 		if bar != nil {
 			bar.Finish()
