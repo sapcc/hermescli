@@ -10,6 +10,7 @@ binaries:
 
 golang:
   setGoModVersion: true
+  enableVendoring: true
 
 dockerfile:
   enabled: yes
