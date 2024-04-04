@@ -19,7 +19,7 @@ prepare-static-check: FORCE
 	@if ! hash go-licence-detector 2>/dev/null; then printf "\e[1;36m>> Installing go-licence-detector...\e[0m\n"; go install go.elastic.co/go-licence-detector@latest; fi
 	@if ! hash addlicense 2>/dev/null; then  printf "\e[1;36m>> Installing addlicense...\e[0m\n";  go install github.com/google/addlicense@latest; fi
 
-GO_BUILDFLAGS =
+GO_BUILDFLAGS = -mod vendor
 GO_LDFLAGS =
 GO_TESTENV =
 
@@ -74,8 +74,14 @@ static-check: FORCE run-golangci-lint check-dependency-licenses check-license-he
 build:
 	@mkdir $@
 
-tidy-deps: FORCE
+vendor: FORCE
 	go mod tidy
+	go mod vendor
+	go mod verify
+
+vendor-compat: FORCE
+	go mod tidy -compat=$(shell awk '$$1 == "go" { print $$2 }' < go.mod)
+	go mod vendor
 	go mod verify
 
 license-headers: FORCE prepare-static-check
@@ -129,7 +135,8 @@ help: FORCE
 	@printf "  \e[36mstatic-check\e[0m               Run static code checks\n"
 	@printf "\n"
 	@printf "\e[1mDevelopment\e[0m\n"
-	@printf "  \e[36mtidy-deps\e[0m                  Run go mod tidy and go mod verify.\n"
+	@printf "  \e[36mvendor\e[0m                     Run go mod tidy, go mod verify, and go mod vendor.\n"
+	@printf "  \e[36mvendor-compat\e[0m              Same as 'make vendor' but go mod tidy will use '-compat' flag with the Go version from go.mod file as value.\n"
 	@printf "  \e[36mlicense-headers\e[0m            Add license headers to all non-vendored .go files.\n"
 	@printf "  \e[36mcheck-license-headers\e[0m      Check license headers in all non-vendored .go files.\n"
 	@printf "  \e[36mcheck-dependency-licenses\e[0m  Check all dependency licenses using go-licence-detector.\n"
