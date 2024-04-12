@@ -1,5 +1,3 @@
-# github.com/BurntSushi/toml v1.3.2
-## explicit; go 1.16
 # github.com/fsnotify/fsnotify v1.7.0
 ## explicit; go 1.17
 github.com/fsnotify/fsnotify
@@ -66,6 +64,8 @@ github.com/pelletier/go-toml/v2/unstable
 # github.com/rivo/uniseg v0.2.0
 ## explicit; go 1.12
 github.com/rivo/uniseg
+# github.com/rogpeppe/go-internal v1.12.0
+## explicit; go 1.20
 # github.com/sagikazarmark/locafero v0.4.0
 ## explicit; go 1.20
 github.com/sagikazarmark/locafero
@@ -75,12 +75,12 @@ github.com/sagikazarmark/slog-shim
 # github.com/sapcc/go-api-declarations v1.10.11
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20240328092936-0e0b562825d4
-## explicit; go 1.21
+# github.com/sapcc/go-bits v0.0.0-20240411125018-95b87ec589ac
+## explicit; go 1.22
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20240328042652-ea67c703afd6
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20240411125438-ff745973c150
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
@@ -133,18 +133,10 @@ golang.org/x/exp/slices
 golang.org/x/exp/slog
 golang.org/x/exp/slog/internal
 golang.org/x/exp/slog/internal/buffer
-# golang.org/x/exp/typeparams v0.0.0-20240325151524-a685a6edb6d8
-## explicit; go 1.18
-# golang.org/x/mod v0.16.0
-## explicit; go 1.18
-# golang.org/x/sync v0.6.0
-## explicit; go 1.18
 # golang.org/x/sys v0.18.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/telemetry v0.0.0-20240319204737-f4db1c7d8e43
-## explicit; go 1.20
 # golang.org/x/text v0.14.0
 ## explicit; go 1.18
 golang.org/x/text/encoding
@@ -156,17 +148,9 @@ golang.org/x/text/internal/utf8internal
 golang.org/x/text/runes
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
-# golang.org/x/tools v0.18.1-0.20240311201521-78fbdeb61842
-## explicit; go 1.18
-# golang.org/x/tools/gopls v0.15.2
-## explicit; go 1.18
-# golang.org/x/vuln v1.0.4
-## explicit; go 1.18
 # gopkg.in/cheggaaa/pb.v1 v1.0.28
 ## explicit
 gopkg.in/cheggaaa/pb.v1
-# gopkg.in/cheggaaa/pb.v2 v2.0.7
-## explicit
 # gopkg.in/ini.v1 v1.67.0
 ## explicit
 gopkg.in/ini.v1
@@ -176,9 +160,3 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# honnef.co/go/tools v0.4.7
-## explicit; go 1.19
-# mvdan.cc/gofumpt v0.6.0
-## explicit; go 1.20
-# mvdan.cc/xurls/v2 v2.5.0
-## explicit; go 1.19
