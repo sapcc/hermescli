@@ -72,15 +72,15 @@ github.com/sagikazarmark/locafero
 # github.com/sagikazarmark/slog-shim v0.1.0
 ## explicit; go 1.20
 github.com/sagikazarmark/slog-shim
-# github.com/sapcc/go-api-declarations v1.10.12
+# github.com/sapcc/go-api-declarations v1.11.0
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20240418035538-c509bd89fb1a
+# github.com/sapcc/go-bits v0.0.0-20240425084953-de3210f2772e
 ## explicit; go 1.22
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20240418091604-612364ab440e
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20240425084956-3aa7add805ed
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
