@@ -75,12 +75,12 @@ github.com/sagikazarmark/slog-shim
 # github.com/sapcc/go-api-declarations v1.11.2
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20240509162919-cebeb2d4844a
+# github.com/sapcc/go-bits v0.0.0-20240516084938-1c041b7a84ce
 ## explicit; go 1.22
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc v0.0.0-20240509162915-96bb0fb64b89
+# github.com/sapcc/gophercloud-sapcc v0.0.0-20240510132707-01d47d03e5d9
 ## explicit; go 1.21
 github.com/sapcc/gophercloud-sapcc/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/audit/v1/events
