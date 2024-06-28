@@ -72,10 +72,10 @@ github.com/sagikazarmark/locafero
 # github.com/sagikazarmark/slog-shim v0.1.0
 ## explicit; go 1.20
 github.com/sagikazarmark/slog-shim
-# github.com/sapcc/go-api-declarations v1.11.2
+# github.com/sapcc/go-api-declarations v1.11.3
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20240606120701-d430ac9229ab
+# github.com/sapcc/go-bits v0.0.0-20240627095426-aeda20453e46
 ## explicit; go 1.22
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
@@ -133,11 +133,11 @@ golang.org/x/exp/slices
 golang.org/x/exp/slog
 golang.org/x/exp/slog/internal
 golang.org/x/exp/slog/internal/buffer
-# golang.org/x/sys v0.20.0
+# golang.org/x/sys v0.21.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.15.0
+# golang.org/x/text v0.16.0
 ## explicit; go 1.18
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
