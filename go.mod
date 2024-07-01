@@ -3,7 +3,7 @@ module github.com/sapcc/hermescli
 go 1.22
 
 require (
-	github.com/gophercloud/gophercloud v1.12.0
+	github.com/gophercloud/gophercloud/v2 v2.0.0
 	github.com/gophercloud/utils v0.0.0-20231010081019-80377eca5d56
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.11.3
@@ -11,8 +11,8 @@ require (
 	github.com/sapcc/gophercloud-sapcc v0.0.0-20240606103143-b09c014b629b
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
-	gopkg.in/cheggaaa/pb.v1 v1.0.28
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/cheggaaa/pb.v2 v2.0.7
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
