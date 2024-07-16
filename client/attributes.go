@@ -15,14 +15,15 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 
-	"github.com/gophercloud/gophercloud"
-	"github.com/gophercloud/gophercloud/pagination"
-	"github.com/sapcc/gophercloud-sapcc/audit/v1/attributes"
+	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/pagination"
+	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/attributes"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -64,7 +65,7 @@ var AttributesCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// list attributes
-		client, err := NewHermesV1Client()
+		client, err := NewHermesV1Client(cmd.Context())
 		if err != nil {
 			return fmt.Errorf("failed to create Hermes client: %w", err)
 		}
@@ -85,7 +86,7 @@ var AttributesCmd = &cobra.Command{
 		var allAttributes []string
 
 		for _, name := range args {
-			err = attributes.List(client, name, listOpts).EachPage(func(page pagination.Page) (bool, error) {
+			err = attributes.List(client, name, listOpts).EachPage(cmd.Context(), func(ctx context.Context, page pagination.Page) (bool, error) {
 				attrs, err := attributes.ExtractAttributes(page)
 				if err != nil {
 					return false, fmt.Errorf("failed to extract attributes: %w", err)
@@ -96,8 +97,7 @@ var AttributesCmd = &cobra.Command{
 				return true, nil
 			})
 			if err != nil {
-				var gopherErr gophercloud.ErrDefault500
-				if errors.As(err, &gopherErr) {
+				if gophercloud.ResponseCodeIs(err, http.StatusInternalServerError) {
 					return fmt.Errorf(`failed to list attributes: %w: please try to decrease the amount of the attributes in output, e.g. set "--limit 100"`, err)
 				}
 				return fmt.Errorf("failed to list attributes: %w", err)

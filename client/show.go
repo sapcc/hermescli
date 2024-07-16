@@ -21,7 +21,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
-	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/cheggaaa/pb.v1"
@@ -59,7 +59,7 @@ var ShowCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// show event
-		client, err := NewHermesV1Client()
+		client, err := NewHermesV1Client(cmd.Context())
 		if err != nil {
 			return fmt.Errorf("failed to create Hermes client: %w", err)
 		}
@@ -92,7 +92,7 @@ var ShowCmd = &cobra.Command{
 			if bar != nil {
 				bar.Set(i + 1)
 			}
-			event, err := events.Get(client, id, getOpts).Extract()
+			event, err := events.Get(cmd.Context(), client, id, getOpts).Extract()
 			if err != nil {
 				log.Printf("[WARNING] Failed to get %s event: %s", id, err)
 				continue
