@@ -15,19 +15,20 @@
 package client
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
 
-	"github.com/gophercloud/gophercloud"
-	"github.com/gophercloud/gophercloud/openstack"
-	"github.com/gophercloud/utils/client"
-	"github.com/gophercloud/utils/env"
-	"github.com/gophercloud/utils/openstack/clientconfig"
+	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/openstack"
+	"github.com/gophercloud/utils/v2/client"
+	"github.com/gophercloud/utils/v2/env"
+	"github.com/gophercloud/utils/v2/openstack/clientconfig"
 	"github.com/sapcc/go-bits/secrets"
-	"github.com/sapcc/gophercloud-sapcc/clients"
+	"github.com/sapcc/gophercloud-sapcc/v2/clients"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -61,7 +62,7 @@ func initRootCmdFlags() {
 // NewHermesV1Client returns a *ServiceClient for making calls
 // to the OpenStack Lyra v1 API. An error will be returned if
 // authentication or client creation was not possible.
-func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
+func NewHermesV1Client(ctx context.Context) (*gophercloud.ServiceClient, error) {
 	if err := secrets.GetPasswordFromCommandIfRequested(); err != nil {
 		return nil, err
 	}
@@ -100,7 +101,7 @@ func NewHermesV1Client() (*gophercloud.ServiceClient, error) {
 		}
 	}
 
-	err = openstack.Authenticate(provider, *ao)
+	err = openstack.Authenticate(ctx, provider, *ao)
 	if err != nil {
 		return nil, err
 	}

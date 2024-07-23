@@ -16,6 +16,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"net/url"
@@ -24,10 +25,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gophercloud/gophercloud"
-	"github.com/gophercloud/gophercloud/pagination"
+	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/pagination"
 	"github.com/olekukonko/tablewriter"
-	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/cheggaaa/pb.v1"
@@ -141,11 +142,11 @@ func getTimeSort(listOpts events.ListOpts) bool {
 	return true
 }
 
-func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar **pb.ProgressBar) error {
+func getEvents(ctx context.Context, client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar **pb.ProgressBar) error {
 	var forceWorkaround bool
 	var eventLength int
 
-	err := events.List(client, listOpts).EachPage(func(page pagination.Page) (bool, error) {
+	err := events.List(client, listOpts).EachPage(ctx, func(ctx context.Context, page pagination.Page) (bool, error) {
 		evnts, err := events.ExtractEvents(page)
 		if err != nil {
 			return false, fmt.Errorf("failed to extract events: %w", err)
@@ -232,7 +233,7 @@ func getEvents(client *gophercloud.ServiceClient, allEvents *[]events.Event, lis
 		if delta > 0 && delta <= maxOffset {
 			listOpts.Limit = delta
 		}
-		return getEvents(client, allEvents, listOpts, userLimit, precise, bar)
+		return getEvents(ctx, client, allEvents, listOpts, userLimit, precise, bar)
 	}
 
 	return nil
@@ -326,7 +327,7 @@ var ListCmd = &cobra.Command{
 			})
 		}
 
-		client, err := NewHermesV1Client()
+		client, err := NewHermesV1Client(cmd.Context())
 		if err != nil {
 			return fmt.Errorf("failed to create Hermes client: %w", err)
 		}
@@ -334,7 +335,7 @@ var ListCmd = &cobra.Command{
 		var allEvents []events.Event
 		var bar *pb.ProgressBar
 
-		if err = getEvents(client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), &bar); err != nil {
+		if err = getEvents(cmd.Context(), client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), &bar); err != nil {
 			if bar != nil {
 				bar.Finish()
 			}

@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/sapcc/go-api-declarations/cadf"
-	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 )
 
 func TestEventToKV(t *testing.T) {

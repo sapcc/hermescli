@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sapcc/gophercloud-sapcc/audit/v1/events"
+	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 	"gopkg.in/yaml.v2"
 )
 
