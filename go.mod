@@ -11,8 +11,8 @@ require (
 	github.com/sapcc/gophercloud-sapcc/v2 v2.0.2
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
-	gopkg.in/cheggaaa/pb.v1 v1.0.28
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/cheggaaa/pb.v2 v2.0.7
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
