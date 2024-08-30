@@ -2,6 +2,8 @@ module github.com/sapcc/hermescli
 
 go 1.23
 
+version v0.6.0
+
 require (
 	github.com/gophercloud/gophercloud/v2 v2.1.0
 	github.com/gophercloud/utils/v2 v2.0.0-20240812072210-8ce1fc0f2894
