@@ -6,7 +6,7 @@ github.com/fsnotify/fsnotify
 github.com/gofrs/uuid/v5
 # github.com/google/go-cmp v0.6.0
 ## explicit; go 1.13
-# github.com/gophercloud/gophercloud/v2 v2.1.0
+# github.com/gophercloud/gophercloud/v2 v2.1.1
 ## explicit; go 1.22
 github.com/gophercloud/gophercloud/v2
 github.com/gophercloud/gophercloud/v2/openstack
@@ -17,7 +17,7 @@ github.com/gophercloud/gophercloud/v2/openstack/identity/v3/oauth1
 github.com/gophercloud/gophercloud/v2/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/v2/openstack/utils
 github.com/gophercloud/gophercloud/v2/pagination
-# github.com/gophercloud/utils/v2 v2.0.0-20240812072210-8ce1fc0f2894
+# github.com/gophercloud/utils/v2 v2.0.0-20240912080913-c094a6e5b7da
 ## explicit; go 1.22
 github.com/gophercloud/utils/v2/client
 github.com/gophercloud/utils/v2/env
@@ -75,7 +75,7 @@ github.com/sagikazarmark/slog-shim
 # github.com/sapcc/go-api-declarations v1.12.6
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20240912081530-0967be9f0a6b
+# github.com/sapcc/go-bits v0.0.0-20240919081231-a80ea73a2dce
 ## explicit; go 1.23
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
