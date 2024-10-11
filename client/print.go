@@ -22,7 +22,7 @@ import (
 	"strings"
 
 	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 var defaultPrintFormats = []string{
