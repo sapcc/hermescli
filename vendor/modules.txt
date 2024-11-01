@@ -72,10 +72,10 @@ github.com/sagikazarmark/locafero
 # github.com/sagikazarmark/slog-shim v0.1.0
 ## explicit; go 1.20
 github.com/sagikazarmark/slog-shim
-# github.com/sapcc/go-api-declarations v1.12.8
+# github.com/sapcc/go-api-declarations v1.12.9
 ## explicit; go 1.21
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20241024075658-61a12e76dcad
+# github.com/sapcc/go-bits v0.0.0-20241030155708-d3f315057be8
 ## explicit; go 1.23
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
