@@ -20,11 +20,11 @@ import (
 	"log"
 	"os"
 
+	"github.com/cheggaaa/pb/v3"
 	"github.com/olekukonko/tablewriter"
 	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/cheggaaa/pb.v1"
 )
 
 var defaultShowKeyOrder = []string{
@@ -74,7 +74,7 @@ var ShowCmd = &cobra.Command{
 		var bar *pb.ProgressBar
 		if len(args) > 1 {
 			bar = pb.New(len(args))
-			bar.Output = os.Stderr
+			bar.SetWriter(os.Stderr)
 			bar.Start()
 		}
 
@@ -90,7 +90,7 @@ var ShowCmd = &cobra.Command{
 		var allEvents []events.Event
 		for i, id := range args {
 			if bar != nil {
-				bar.Set(i + 1)
+				bar.SetCurrent(int64(i + 1))
 			}
 			event, err := events.Get(cmd.Context(), client, id, getOpts).Extract()
 			if err != nil {
