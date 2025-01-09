@@ -103,7 +103,7 @@ func printEvent(allEvents []events.Event, format string, keyOrder []string) erro
 
 func printCSV(allEvents []events.Event, keyOrder []string) error {
 	var buf bytes.Buffer
-	csv := csv.NewWriter(&buf) //nolint:gocritic
+	csv := csv.NewWriter(&buf)
 
 	if err := csv.Write(keyOrder); err != nil {
 		return fmt.Errorf("error writing header to csv: %w", err)
