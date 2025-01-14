@@ -21,6 +21,7 @@ Hermes CLI offers the following commands:
 - `list`: Retrieve a list of audit events
 - `show`: Show details for a specific event
 - `attributes`: List attributes related to audit events
+- `export`: Export events to Swift
 
 ## Usage
 
@@ -150,6 +151,66 @@ success
 failure
 unknown
 ```
+
+## Export
+
+### Usage
+
+```sh
+Export audit events to Swift storage
+
+Usage:
+  hermescli export [flags]
+
+Flags:
+      --container string       Swift container name (required)
+      --format string         Output format (json|csv|yaml) (default "json")
+      --filename string       Name of the output file (default "hermes-export-{timestamp}")
+  -l, --limit uint           limit number of events to export (default: 10000)
+      --time string          filter events by time
+      --time-start string    filter events from time
+      --time-end string      filter events till time
+      --action string        filter events by action
+      --outcome string       filter events by outcome
+      --target-id string     filter events by a target ID
+      --target-type string   filter events by a target type
+      --initiator-id string  filter events by an initiator ID
+      --initiator-name string filter events by an initiator name
+      --project-id string    filter events by the project or domain ID (admin only)
+  -A, --all-projects         include all projects and domains (admin only)
+
+Global Flags:
+  -d, --debug            print out request and response objects
+  -f, --format string    the output format (default "table")
+```
+
+### Examples
+
+```sh
+# Export last week's events to JSON
+$ hermescli export --container audit-exports --time-start "2024-01-07T00:00:00" --time-end "2024-01-14T23:59:59"
+Fetching events...
+Found 857 events to export
+Converting to json format...
+Uploading 2.3MB to Swift...
+[==================================] 2.3MB/2.3MB
+Successfully exported 857 events
+
+# Export specific events as CSV
+$ hermescli export --container audit-exports --format csv --initiator-name admin --action update
+Fetching events...
+Found 124 events to export
+Converting to csv format...
+Uploading 0.5MB to Swift...
+[==================================] 0.5MB/0.5MB
+Successfully exported 124 events
+```
+
+The `export` command allows you to export audit events to Swift storage for archival or further processing. Events can be exported in JSON, CSV, or YAML formats. The command supports all filtering options available in the `list` command.
+
+By default, it will export up to 10,000 events. Use the `--limit` flag to adjust this number. Large exports are automatically handled through Swift's segmented upload feature.
+
+> Note: This command requires Swift storage access in addition to the standard OpenStack authentication environment variables.
 
 ## Build
 

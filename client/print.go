@@ -19,6 +19,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"io"
 	"strings"
 
 	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
@@ -172,5 +173,33 @@ func printValue(allEvents []events.Event, keyOrder []string) error {
 		}
 		fmt.Printf("%s\n", strings.Join(p, " "))
 	}
+	return nil
+}
+
+// writeCSV writes events to a writer in CSV format
+func writeCSV(w io.Writer, allEvents []events.Event, keyOrder []string) error {
+	csvWriter := csv.NewWriter(w)
+
+	if err := csvWriter.Write(keyOrder); err != nil {
+		return fmt.Errorf("error writing CSV header: %w", err)
+	}
+
+	for idx, event := range allEvents {
+		kv := eventToKV(event)
+		row := make([]string, len(keyOrder))
+		for i, key := range keyOrder {
+			row[i] = kv[key]
+		}
+		if err := csvWriter.Write(row); err != nil {
+			return fmt.Errorf("error writing CSV row %d: %w", idx+1, err)
+		}
+	}
+
+	// Ensure buffered data is written
+	csvWriter.Flush()
+	if err := csvWriter.Error(); err != nil {
+		return fmt.Errorf("error flushing CSV writer: %w", err)
+	}
+
 	return nil
 }

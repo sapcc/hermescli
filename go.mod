@@ -6,6 +6,7 @@ require (
 	github.com/cheggaaa/pb/v3 v3.1.5
 	github.com/gophercloud/gophercloud/v2 v2.4.0
 	github.com/gophercloud/utils/v2 v2.0.0-20250106080359-c8704d65b4fa
+	github.com/majewsky/schwift v1.3.0
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.13.2
 	github.com/sapcc/go-bits v0.0.0-20250109131708-a74cd002e3e4
@@ -23,7 +24,9 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
+	github.com/majewsky/schwift/v2 v2.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
