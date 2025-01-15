@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"net/http"
 	"time"
 
 	"github.com/gophercloud/gophercloud/v2"
@@ -28,7 +27,6 @@ import (
 	"github.com/gophercloud/utils/v2/env"
 	"github.com/majewsky/schwift/v2"
 	"github.com/majewsky/schwift/v2/gopherschwift"
-	"github.com/sapcc/go-bits/logg"
 	"github.com/sapcc/go-bits/osext"
 )
 
@@ -54,7 +52,7 @@ func initializeSwiftContainer(ctx context.Context, provider *gophercloud.Provide
 		return nil, fmt.Errorf("failed to create swift account: %w", err)
 	}
 
-	container, err := swiftAccount.Container(containerName).EnsureExists()
+	container, err := swiftAccount.Container(containerName).EnsureExists(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create container: %w", err)
 	}
