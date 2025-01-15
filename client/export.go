@@ -50,7 +50,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 
 		// Validate format
 		format := viper.GetString("format")
-		if !isSliceContainsStr([]string{"json", "csv", "yaml"}, format) {
+		if !slices.Contains([]string{"json", "csv", "yaml"}, format) {
 			return fmt.Errorf("unsupported format: %s (supported formats: json, csv, yaml)", format)
 		}
 
