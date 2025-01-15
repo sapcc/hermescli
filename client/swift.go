@@ -120,9 +120,7 @@ func (e *SwiftExporter) Upload(ctx context.Context, reader io.Reader) error {
 	if segSize > uint64(math.MaxInt64) {
 		return errors.New("segment size exceeds maximum int64 value")
 	}
-	if err := largeObject.Append(ctx, reader, int64(segSize), &schwift.RequestOptions{
-		Headers: headers,
-	}); err != nil {
+	if err := largeObject.Append(ctx, reader, int64(segSize), headers.ToOpts()); err != nil {
 		return fmt.Errorf("failed to upload segments: %w", err)
 	}
 
