@@ -54,16 +54,9 @@ func initializeSwiftContainer(ctx context.Context, provider *gophercloud.Provide
 		return nil, fmt.Errorf("failed to create swift account: %w", err)
 	}
 
-	container := swiftAccount.Container(containerName)
-	_, err = container.Headers(ctx)
-	if schwift.Is(err, http.StatusNotFound) {
-		container, err = container.EnsureExists(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create container: %w", err)
-		}
-		logg.Info("created Swift container %s", containerName)
-	} else if err != nil {
-		return nil, fmt.Errorf("failed to check container: %w", err)
+	container, err := swiftAccount.Container(containerName).EnsureExists()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create container: %w", err)
 	}
 
 	return container, nil
