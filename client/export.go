@@ -22,6 +22,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"slices"
 
 	"github.com/cheggaaa/pb/v3"
 	"github.com/sapcc/go-bits/logg"
