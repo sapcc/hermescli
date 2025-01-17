@@ -20,28 +20,64 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"time"
 
 	"github.com/gophercloud/gophercloud/v2"
 	"github.com/gophercloud/gophercloud/v2/openstack"
 	"github.com/gophercloud/utils/v2/env"
 	"github.com/majewsky/schwift/v2"
 	"github.com/majewsky/schwift/v2/gopherschwift"
-	"github.com/sapcc/go-bits/osext"
 )
 
-// SwiftExporter handles exporting data to Swift
-type SwiftExporter struct {
-	container *schwift.Container
-	format    string
-	filename  string
-	segSize   uint64
+// ExportFile represents a file to be exported to Swift storage
+type ExportFile struct {
+	Format      string
+	FileName    string
+	SegmentSize uint64
+	Contents    io.Reader
 }
 
-// initializeSwiftContainer creates and initializes a Swift container
-func initializeSwiftContainer(ctx context.Context, provider *gophercloud.ProviderClient, containerName string) (*schwift.Container, error) {
+func (f ExportFile) UploadTo(ctx context.Context, container *schwift.Container) error {
+	filename := fmt.Sprintf("%s.%s", f.FileName, f.Format)
+	obj := container.Object(filename)
+
+	// Setup headers
+	headers := make(schwift.Headers)
+	headers.Set("Content-Type", getContentType(f.Format))
+
+	// Create segmentation options
+	segmentOpts := schwift.SegmentingOptions{
+		SegmentContainer: container,
+		SegmentPrefix:    f.FileName + "-segments/",
+		Strategy:         schwift.StaticLargeObject,
+	}
+
+	// Create large object
+	largeObject, err := obj.AsNewLargeObject(ctx, segmentOpts, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create large object: %w", err)
+	}
+
+	// Upload the data
+	segSize := f.SegmentSize
+	if segSize > uint64(math.MaxInt64) {
+		return errors.New("segment size exceeds maximum int64 value")
+	}
+	if err := largeObject.Append(ctx, f.Contents, int64(segSize), headers.ToOpts()); err != nil {
+		return fmt.Errorf("failed to upload segments: %w", err)
+	}
+
+	// Write the manifest to complete the upload
+	if err := largeObject.WriteManifest(ctx, nil); err != nil {
+		return fmt.Errorf("failed to write manifest: %w", err)
+	}
+
+	return nil
+}
+
+// InitializeSwiftContainer creates and initializes a Swift container
+func InitializeSwiftContainer(ctx context.Context, provider *gophercloud.ProviderClient, containerName string) (*schwift.Container, error) {
 	client, err := openstack.NewObjectStorageV1(provider, gophercloud.EndpointOpts{
-		Region: osext.GetenvOrDefault("OS_REGION_NAME", env.Getenv("OS_REGION_NAME")),
+		Region: env.Getenv("OS_REGION_NAME"),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Swift client: %w", err)
@@ -58,69 +94,6 @@ func initializeSwiftContainer(ctx context.Context, provider *gophercloud.Provide
 	}
 
 	return container, nil
-}
-
-// NewSwiftExporter creates a new SwiftExporter instance
-func NewSwiftExporter(ctx context.Context, provider *gophercloud.ProviderClient, containerName, format, filename string, segmentSize uint64) (*SwiftExporter, error) {
-	container, err := initializeSwiftContainer(ctx, provider, containerName)
-	if err != nil {
-		return nil, err
-	}
-
-	if filename == "" {
-		filename = "hermes-export-" + time.Now().Format("2006-01-02-150405")
-	}
-
-	// Default segment size to 100MB if not specified
-	if segmentSize == 0 {
-		segmentSize = 100 * 1024 * 1024 // 100MB in bytes
-	}
-
-	return &SwiftExporter{
-		container: container,
-		format:    format,
-		filename:  filename,
-		segSize:   segmentSize,
-	}, nil
-}
-
-// Upload uploads data to Swift, automatically handling large files through segmentation
-func (e *SwiftExporter) Upload(ctx context.Context, reader io.Reader) error {
-	filename := fmt.Sprintf("%s.%s", e.filename, e.format)
-	obj := e.container.Object(filename)
-
-	// Setup headers
-	headers := make(schwift.Headers)
-	headers.Set("Content-Type", getContentType(e.format))
-
-	// Create segmentation options
-	segmentOpts := schwift.SegmentingOptions{
-		SegmentContainer: e.container,
-		SegmentPrefix:    e.filename + "-segments/",
-		Strategy:         schwift.StaticLargeObject,
-	}
-
-	// Create large object
-	largeObject, err := obj.AsNewLargeObject(ctx, segmentOpts, nil)
-	if err != nil {
-		return fmt.Errorf("failed to create large object: %w", err)
-	}
-
-	// Upload the data
-	segSize := e.segSize
-	if segSize > uint64(math.MaxInt64) {
-		return errors.New("segment size exceeds maximum int64 value")
-	}
-	if err := largeObject.Append(ctx, reader, int64(segSize), headers.ToOpts()); err != nil {
-		return fmt.Errorf("failed to upload segments: %w", err)
-	}
-
-	// Write the manifest to complete the upload
-	if err := largeObject.WriteManifest(ctx, nil); err != nil {
-		return fmt.Errorf("failed to write manifest: %w", err)
-	}
-
-	return nil
 }
 
 // getContentType returns content type based on format

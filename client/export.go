@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"os"
 	"slices"
+	"time"
 
 	"github.com/cheggaaa/pb/v3"
 	"github.com/sapcc/go-bits/logg"
@@ -134,26 +135,37 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		uploadBar.SetWidth(80)
 		defer uploadBar.Finish()
 
-		// Create Swift exporter using the client's provider
-		exporter, err := NewSwiftExporter(
-			ctx,
-			client.ProviderClient,
-			viper.GetString("container"),
-			viper.GetString("format"),
-			viper.GetString("filename"),
-			uint64(viper.GetInt("segment-size"))*1024*1024, // Convert MB to bytes
-		)
-		if err != nil {
-			return fmt.Errorf("failed to create Swift exporter: %w", err)
-		}
-
 		// Wrap the buffer in a progress reader
 		progressReader := &ProgressReader{
 			Reader: &buf,
 			Bar:    uploadBar,
 		}
 
-		if err := exporter.Upload(ctx, progressReader); err != nil {
+		// Initialize Swift container
+		container, err := InitializeSwiftContainer(
+			ctx,
+			client.ProviderClient,
+			viper.GetString("container"),
+		)
+		if err != nil {
+			return fmt.Errorf("failed to initialize Swift container: %w", err)
+		}
+
+		// Create and configure export file
+		filename := viper.GetString("filename")
+		if filename == "" {
+			filename = "hermes-export-" + time.Now().Format("2006-01-02-150405")
+		}
+
+		exportFile := ExportFile{
+			Format:      viper.GetString("format"),
+			FileName:    filename,
+			SegmentSize: uint64(viper.GetInt("segment-size")) * 1024 * 1024, // Convert MB to bytes
+			Contents:    progressReader,
+		}
+
+		// Upload to Swift
+		if err := exportFile.UploadTo(ctx, container); err != nil {
 			return fmt.Errorf("failed to upload to Swift: %w", err)
 		}
 
