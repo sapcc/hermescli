@@ -33,6 +33,35 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// convertToRequestedFormat converts events to the specified format and writes to the provided buffer
+func convertToRequestedFormat(buf *bytes.Buffer, allEvents []events.Event, format string) error {
+	switch format {
+	case "json":
+		data, err := json.MarshalIndent(allEvents, "", "  ")
+		if err != nil {
+			return fmt.Errorf("failed to marshal JSON: %w", err)
+		}
+		buf.Write(data)
+
+	case "yaml":
+		data, err := yaml.Marshal(allEvents)
+		if err != nil {
+			return fmt.Errorf("failed to marshal YAML: %w", err)
+		}
+		buf.Write(data)
+
+	case "csv":
+		if err := writeCSV(buf, allEvents, defaultListKeyOrder); err != nil {
+			return fmt.Errorf("failed to write CSV: %w", err)
+		}
+
+	default:
+		return fmt.Errorf("unsupported format: %s", format)
+	}
+
+	return nil
+}
+
 // ExportCmd represents the export command
 var ExportCmd = &cobra.Command{
 	Use:   "export",
@@ -107,23 +136,8 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		// Convert events to desired format
 		fmt.Fprintf(os.Stderr, "Converting to %s format...\n", viper.GetString("format"))
 		var buf bytes.Buffer
-		switch viper.GetString("format") {
-		case "json":
-			data, err := json.MarshalIndent(allEvents, "", "  ")
-			if err != nil {
-				return fmt.Errorf("failed to marshal JSON: %w", err)
-			}
-			buf.Write(data)
-		case "yaml":
-			data, err := yaml.Marshal(allEvents)
-			if err != nil {
-				return fmt.Errorf("failed to marshal YAML: %w", err)
-			}
-			buf.Write(data)
-		case "csv":
-			if err := writeCSV(&buf, allEvents, defaultListKeyOrder); err != nil {
-				return fmt.Errorf("failed to write CSV: %w", err)
-			}
+		if err := convertToRequestedFormat(&buf, allEvents, viper.GetString("format")); err != nil {
+			return fmt.Errorf("failed to convert events: %w", err)
 		}
 
 		dataSize := float64(buf.Len()) / 1024 / 1024 // Convert to MB
