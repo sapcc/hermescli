@@ -15,15 +15,12 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"io"
 	"math"
-	"os"
 
-	"github.com/cheggaaa/pb/v3"
 	"github.com/gophercloud/gophercloud/v2"
 	"github.com/gophercloud/gophercloud/v2/openstack"
 	"github.com/gophercloud/utils/v2/env"
@@ -40,23 +37,6 @@ type ExportFile struct {
 }
 
 func (f ExportFile) UploadTo(ctx context.Context, container *schwift.Container) error {
-	if reader, ok := f.Contents.(*bytes.Buffer); ok {
-		dataSize := float64(reader.Len()) / 1024 / 1024 // Convert to MB
-		fmt.Fprintf(os.Stderr, "Uploading %.1fMB to Swift...\n", dataSize)
-
-		// Create upload progress bar
-		uploadBar := pb.Full.Start64(int64(reader.Len()))
-		uploadBar.Set(pb.Bytes, true)
-		uploadBar.SetWidth(80)
-		defer uploadBar.Finish()
-
-		// Wrap the buffer in a progress reader
-		f.Contents = &ProgressReader{
-			Reader: reader,
-			Bar:    uploadBar,
-		}
-	}
-
 	filename := fmt.Sprintf("%s.%s", f.FileName, f.Format)
 	obj := container.Object(filename)
 
@@ -128,18 +108,4 @@ func getContentType(format string) string {
 	default:
 		return "application/octet-stream"
 	}
-}
-
-// ProgressReader wraps an io.Reader to update a progress bar
-type ProgressReader struct {
-	Reader io.Reader
-	Bar    *pb.ProgressBar
-}
-
-func (pr *ProgressReader) Read(p []byte) (n int, err error) {
-	n, err = pr.Reader.Read(p)
-	if n > 0 {
-		pr.Bar.Add(n)
-	}
-	return
 }

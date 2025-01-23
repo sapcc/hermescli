@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"slices"
@@ -139,6 +140,21 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 			return fmt.Errorf("failed to convert events: %w", err)
 		}
 
+		dataSize := float64(buf.Len()) / 1024 / 1024 // Convert to MB
+		fmt.Fprintf(os.Stderr, "Uploading %.1fMB to Swift...\n", dataSize)
+
+		// Create upload progress bar
+		uploadBar := pb.Full.Start64(int64(buf.Len()))
+		uploadBar.Set(pb.Bytes, true)
+		uploadBar.SetWidth(80)
+		defer uploadBar.Finish()
+
+		// Wrap the buffer in a progress reader
+		progressReader := &ProgressReader{
+			Reader: &buf,
+			Bar:    uploadBar,
+		}
+
 		// Initialize Swift container
 		container, err := InitializeSwiftContainer(
 			ctx,
@@ -159,7 +175,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 			Format:      viper.GetString("format"),
 			FileName:    filename,
 			SegmentSize: uint64(viper.GetInt("segment-size")) * 1024 * 1024, // Convert MB to bytes
-			Contents:    &buf,
+			Contents:    progressReader,
 		}
 
 		// Upload to Swift
@@ -170,6 +186,20 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		fmt.Fprintf(os.Stderr, "\nSuccessfully exported %d events\n", len(allEvents))
 		return nil
 	},
+}
+
+// ProgressReader wraps an io.Reader to update a progress bar
+type ProgressReader struct {
+	Reader io.Reader
+	Bar    *pb.ProgressBar
+}
+
+func (pr *ProgressReader) Read(p []byte) (n int, err error) {
+	n, err = pr.Reader.Read(p)
+	if n > 0 {
+		pr.Bar.Add(n)
+	}
+	return
 }
 
 func init() {
