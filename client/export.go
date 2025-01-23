@@ -20,7 +20,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"slices"
 	"time"
@@ -122,14 +121,6 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		client, err := NewHermesV1Client(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to create Hermes client: %w", err)
-		}
-
-		// Configure debug logging if enabled
-		if viper.GetBool("debug") {
-			transport := &http.Transport{}
-			client.HTTPClient = http.Client{
-				Transport: transport,
-			}
 		}
 
 		fmt.Fprintf(os.Stderr, "Fetching events...\n")
