@@ -49,7 +49,7 @@ var (
 	}
 )
 
-func ParseExportFormat(input string) (ExportFormat, error) {
+func parseExportFormat(input string) (ExportFormat, error) {
 	if slices.Contains(allExportFormats, ExportFormat(input)) {
 		return ExportFormat(input), nil
 	}
@@ -103,7 +103,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		}
 
 		// Validate format
-		_, err := ParseExportFormat(viper.GetString("format"))
+		_, err := parseExportFormat(viper.GetString("format"))
 		if err != nil {
 			return err
 		}
@@ -173,7 +173,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		defer uploadBar.Finish()
 
 		// Wrap the buffer in a progress reader
-		progressReader := &ProgressReader{
+		progressReader := &progressReader{
 			Reader: &buf,
 			Bar:    uploadBar,
 		}
@@ -194,7 +194,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 			filename = "hermes-export-" + time.Now().Format("2006-01-02-150405")
 		}
 
-		format, err := ParseExportFormat(viper.GetString("format"))
+		format, err := parseExportFormat(viper.GetString("format"))
 		if err != nil {
 			return fmt.Errorf("invalid format: %w", err)
 		}
@@ -215,13 +215,13 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 	},
 }
 
-// ProgressReader wraps an io.Reader to update a progress bar
-type ProgressReader struct {
+// progressReader wraps an io.Reader to update a progress bar
+type progressReader struct {
 	Reader io.Reader
 	Bar    *pb.ProgressBar
 }
 
-func (pr *ProgressReader) Read(p []byte) (n int, err error) {
+func (pr *progressReader) Read(p []byte) (n int, err error) {
 	n, err = pr.Reader.Read(p)
 	if n > 0 {
 		pr.Bar.Add(n)
