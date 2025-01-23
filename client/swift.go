@@ -39,20 +39,6 @@ type ExportFile struct {
 	Contents    io.Reader
 }
 
-// ProgressReader wraps an io.Reader to update a progress bar
-type ProgressReader struct {
-	Reader io.Reader
-	Bar    *pb.ProgressBar
-}
-
-func (pr *ProgressReader) Read(p []byte) (n int, err error) {
-	n, err = pr.Reader.Read(p)
-	if n > 0 {
-		pr.Bar.Add(n)
-	}
-	return
-}
-
 func (f ExportFile) UploadTo(ctx context.Context, container *schwift.Container) error {
 	if reader, ok := f.Contents.(*bytes.Buffer); ok {
 		dataSize := float64(reader.Len()) / 1024 / 1024 // Convert to MB
@@ -142,4 +128,18 @@ func getContentType(format string) string {
 	default:
 		return "application/octet-stream"
 	}
+}
+
+// ProgressReader wraps an io.Reader to update a progress bar
+type ProgressReader struct {
+	Reader io.Reader
+	Bar    *pb.ProgressBar
+}
+
+func (pr *ProgressReader) Read(p []byte) (n int, err error) {
+	n, err = pr.Reader.Read(p)
+	if n > 0 {
+		pr.Bar.Add(n)
+	}
+	return
 }
