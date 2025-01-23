@@ -188,10 +188,12 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 			return fmt.Errorf("failed to initialize Swift container: %w", err)
 		}
 
+		// Use hyphenated timestamp format for safe and sortable filenames
+		const timeFormat = "2006-01-02-150405"
 		// Create and configure export file
 		filename := viper.GetString("filename")
 		if filename == "" {
-			filename = "hermes-export-" + time.Now().Format("2006-01-02-150405")
+			filename = "hermes-export-" + time.Now().Format(timeFormat)
 		}
 
 		format, err := parseExportFormat(viper.GetString("format"))
