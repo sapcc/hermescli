@@ -160,7 +160,6 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		// Create upload progress bar
 		uploadBar := pb.Full.Start64(int64(buf.Len()))
 		uploadBar.Set(pb.Bytes, true)
-		uploadBar.SetWriter(os.Stderr)   // Ensure writing to terminal
 		uploadBar.Set(pb.Terminal, true) // Enable terminal features
 		uploadBar.SetWidth(0)
 		defer uploadBar.Finish()
