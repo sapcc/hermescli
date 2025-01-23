@@ -33,6 +33,25 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type ExportFormat string
+
+const (
+	ExportFormatJSON ExportFormat = "json"
+	ExportFormatYAML ExportFormat = "yaml"
+	ExportFormatCSV  ExportFormat = "csv"
+)
+
+var (
+	allExportFormats = []ExportFormat{ExportFormatJSON, ExportFormatYAML, ExportFormatCSV}
+)
+
+func ParseExportFormat(input string) (ExportFormat, error) {
+	if slices.Contains(allExportFormats, ExportFormat(input)) {
+		return ExportFormat(input), nil
+	}
+	return "", fmt.Errorf("unsupported format: %s (supported formats: %v)", input, allExportFormats)
+}
+
 // convertToRequestedFormat converts events to the specified format and writes to the provided buffer
 func convertToRequestedFormat(buf *bytes.Buffer, allEvents []events.Event, format string) error {
 	switch format {
@@ -80,9 +99,9 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		}
 
 		// Validate format
-		format := viper.GetString("format")
-		if !slices.Contains([]string{"json", "csv", "yaml"}, format) {
-			return fmt.Errorf("unsupported format: %s (supported formats: json, csv, yaml)", format)
+		_, err := ParseExportFormat(viper.GetString("format"))
+		if err != nil {
+			return err
 		}
 
 		return verifyGlobalFlags(defaultListKeyOrder)
@@ -171,8 +190,12 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 			filename = "hermes-export-" + time.Now().Format("2006-01-02-150405")
 		}
 
+		format, err := ParseExportFormat(viper.GetString("format"))
+		if err != nil {
+			return fmt.Errorf("invalid format: %w", err)
+		}
 		exportFile := ExportFile{
-			Format:      viper.GetString("format"),
+			Format:      format,
 			FileName:    filename,
 			SegmentSize: uint64(viper.GetInt("segment-size")) * 1024 * 1024, // Convert MB to bytes
 			Contents:    progressReader,

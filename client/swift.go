@@ -30,7 +30,7 @@ import (
 
 // ExportFile represents a file to be exported to Swift storage
 type ExportFile struct {
-	Format      string
+	Format      ExportFormat
 	FileName    string
 	SegmentSize uint64
 	Contents    io.Reader
@@ -97,13 +97,13 @@ func InitializeSwiftContainer(ctx context.Context, provider *gophercloud.Provide
 }
 
 // getContentType returns content type based on format
-func getContentType(format string) string {
+func getContentType(format ExportFormat) string {
 	switch format {
-	case "json":
+	case ExportFormatJSON:
 		return "application/json"
-	case "csv":
+	case ExportFormatCSV:
 		return "text/csv"
-	case "yaml":
+	case ExportFormatYAML:
 		return "application/x-yaml"
 	default:
 		return "application/octet-stream"
