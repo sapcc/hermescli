@@ -42,7 +42,11 @@ const (
 )
 
 var (
-	allExportFormats = []ExportFormat{ExportFormatJSON, ExportFormatYAML, ExportFormatCSV}
+	allExportFormats = []ExportFormat{
+		ExportFormatJSON,
+		ExportFormatYAML,
+		ExportFormatCSV,
+	}
 )
 
 func ParseExportFormat(input string) (ExportFormat, error) {
