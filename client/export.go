@@ -159,7 +159,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		// Convert events to desired format
 		fmt.Fprintf(os.Stderr, "Converting to %s format...\n", viper.GetString("format"))
 		var buf bytes.Buffer
-		if err := convertToRequestedFormat(&buf, allEvents, viper.GetString("format")); err != nil {
+		if err = convertToRequestedFormat(&buf, allEvents, viper.GetString("format")); err != nil {
 			return fmt.Errorf("failed to convert events: %w", err)
 		}
 
