@@ -3,10 +3,10 @@ module github.com/sapcc/hermescli
 go 1.23
 
 require (
-	github.com/cheggaaa/pb/v3 v3.1.5
+	github.com/cheggaaa/pb/v3 v3.1.6
 	github.com/gophercloud/gophercloud/v2 v2.4.0
 	github.com/gophercloud/utils/v2 v2.0.0-20250106080359-c8704d65b4fa
-	github.com/majewsky/schwift v1.3.0
+	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.13.2
 	github.com/sapcc/go-bits v0.0.0-20250123075407-996af6490bfc
@@ -18,7 +18,7 @@ require (
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/fatih/color v1.15.0 // indirect
+	github.com/fatih/color v1.18.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gofrs/uuid/v5 v5.3.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
@@ -26,10 +26,9 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/majewsky/schwift/v2 v2.0.0 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/mattn/go-runewidth v0.0.15 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
