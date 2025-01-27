@@ -49,9 +49,20 @@ github.com/hashicorp/hcl/json/token
 # github.com/inconshreveable/mousetrap v1.1.0
 ## explicit; go 1.18
 github.com/inconshreveable/mousetrap
+# github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629
+## explicit
+github.com/jpillora/longestcommon
 # github.com/magiconair/properties v1.8.7
 ## explicit; go 1.19
 github.com/magiconair/properties
+# github.com/majewsky/schwift v1.3.0
+## explicit; go 1.20
+# github.com/majewsky/schwift/v2 v2.0.0
+## explicit; go 1.22
+github.com/majewsky/schwift/v2
+github.com/majewsky/schwift/v2/capabilities
+github.com/majewsky/schwift/v2/gopherschwift
+github.com/majewsky/schwift/v2/internal/errext
 # github.com/mattn/go-colorable v0.1.13
 ## explicit; go 1.15
 github.com/mattn/go-colorable
