@@ -4,8 +4,8 @@ go 1.23
 
 require (
 	github.com/cheggaaa/pb/v3 v3.1.6
-	github.com/gophercloud/gophercloud/v2 v2.4.0
-	github.com/gophercloud/utils/v2 v2.0.0-20250205065254-a1bff20237e7
+	github.com/gophercloud/gophercloud/v2 v2.5.0
+	github.com/gophercloud/utils/v2 v2.0.0-20250212084022-725b94822eeb
 	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.13.2
