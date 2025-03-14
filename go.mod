@@ -3,7 +3,7 @@ module github.com/sapcc/hermescli
 go 1.24
 
 require (
-	github.com/cheggaaa/pb/v3 v3.1.6
+	github.com/cheggaaa/pb/v3 v3.1.7
 	github.com/gophercloud/gophercloud/v2 v2.6.0
 	github.com/gophercloud/utils/v2 v2.0.0-20250212084022-725b94822eeb
 	github.com/majewsky/schwift/v2 v2.0.0
@@ -31,7 +31,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
-	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
