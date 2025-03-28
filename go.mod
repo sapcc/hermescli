@@ -12,7 +12,7 @@ require (
 	github.com/sapcc/go-bits v0.0.0-20250320011137-5ec7b29ab444
 	github.com/sapcc/gophercloud-sapcc/v2 v2.0.3
 	github.com/spf13/cobra v1.9.1
-	github.com/spf13/viper v1.20.0
+	github.com/spf13/viper v1.20.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
