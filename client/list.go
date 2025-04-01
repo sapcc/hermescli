@@ -253,7 +253,7 @@ var ListCmd = &cobra.Command{
 		teq := viper.GetString("time")
 		tgt := viper.GetString("time-start")
 		tlt := viper.GetString("time-end")
-		if teq != "" && !(tgt == "" && tlt == "") {
+		if teq != "" && (tgt != "" || tlt != "") {
 			return errors.New("cannot combine time flag with time-start or time-end flags")
 		}
 
