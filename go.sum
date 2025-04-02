@@ -52,10 +52,10 @@ github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sagikazarmark/locafero v0.7.0 h1:5MqpDsTGNDhY8sGp0Aowyf0qKsPrhewaLSsFaodPcyo=
 github.com/sagikazarmark/locafero v0.7.0/go.mod h1:2za3Cg5rMaTMoG/2Ulr9AwtFaIppKXTRYnozin4aB5k=
-github.com/sapcc/go-api-declarations v1.14.1 h1:TP9N1OYJPFLaVmmDTAwaBSbIBljTCr8+EEb7NXI8hvw=
-github.com/sapcc/go-api-declarations v1.14.1/go.mod h1:KEYQoknn0gSjhmI19b85YUEZkav9SOu2bC21VeDNlnU=
-github.com/sapcc/go-bits v0.0.0-20250320011137-5ec7b29ab444 h1:2qTdScsqWEL0y1uMANBeQRK+5ZFzsy/e1cgPHEydFLM=
-github.com/sapcc/go-bits v0.0.0-20250320011137-5ec7b29ab444/go.mod h1:Qq18HjGxQBr8sbfGpZGuxN/wyGsjwkpoKE2CztVeM3s=
+github.com/sapcc/go-api-declarations v1.14.3 h1:iDmwB8LGO+tkgW4A4nh1pILWIs7w4AM6f7SSMZtltSk=
+github.com/sapcc/go-api-declarations v1.14.3/go.mod h1:KEYQoknn0gSjhmI19b85YUEZkav9SOu2bC21VeDNlnU=
+github.com/sapcc/go-bits v0.0.0-20250331150521-702566178fc4 h1:nXTaLqQg2szg2b/9fvI54426C1j9Fp0/UNx7v6QtmPw=
+github.com/sapcc/go-bits v0.0.0-20250331150521-702566178fc4/go.mod h1:Cpx4J90pbutHzjlDOxqSTUwl96+xZcCJMBOLzjP5lyk=
 github.com/sapcc/gophercloud-sapcc/v2 v2.0.3 h1:w6xb4mLvYBIzfHctLqw/FpMi+FSDt7Cq26qL6xPDRAE=
 github.com/sapcc/gophercloud-sapcc/v2 v2.0.3/go.mod h1:8FiEk0Zz+tpqptR90x/ETUe630sDv0hbt8lKQtHeksk=
 github.com/sergi/go-diff v1.3.1 h1:xkr+Oxo4BOQKmkn/B9eMK0g5Kg/983T9DqqPHwYqD+8=
