@@ -4,12 +4,12 @@ go 1.24
 
 require (
 	github.com/cheggaaa/pb/v3 v3.1.7
-	github.com/gophercloud/gophercloud/v2 v2.6.0
+	github.com/gophercloud/gophercloud/v2 v2.7.0
 	github.com/gophercloud/utils/v2 v2.0.0-20250212084022-725b94822eeb
 	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/sapcc/go-api-declarations v1.14.3
-	github.com/sapcc/go-bits v0.0.0-20250331150521-702566178fc4
+	github.com/sapcc/go-bits v0.0.0-20250403123117-63238e6e6cfa
 	github.com/sapcc/gophercloud-sapcc/v2 v2.0.3
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.0
@@ -21,7 +21,7 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
-	github.com/gofrs/uuid/v5 v5.3.1 // indirect
+	github.com/gofrs/uuid/v5 v5.3.2 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
