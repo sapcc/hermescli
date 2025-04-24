@@ -123,7 +123,9 @@ func printCSV(allEvents []events.Event, keyOrder []string) error {
 	}
 
 	csvWriter.Flush()
-
+	if err := csvWriter.Error(); err != nil {
+		return fmt.Errorf("error flushing csv writer: %w", err)
+	}
 	fmt.Print(buf.String())
 
 	return nil
