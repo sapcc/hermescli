@@ -104,9 +104,9 @@ func printEvent(allEvents []events.Event, format string, keyOrder []string) erro
 
 func printCSV(allEvents []events.Event, keyOrder []string) error {
 	var buf bytes.Buffer
-	csv := csv.NewWriter(&buf)
+	csvWriter := csv.NewWriter(&buf)
 
-	if err := csv.Write(keyOrder); err != nil {
+	if err := csvWriter.Write(keyOrder); err != nil {
 		return fmt.Errorf("error writing header to csv: %w", err)
 	}
 
@@ -117,12 +117,12 @@ func printCSV(allEvents []events.Event, keyOrder []string) error {
 			v := kv[k]
 			tableRow = append(tableRow, v)
 		}
-		if err := csv.Write(tableRow); err != nil {
+		if err := csvWriter.Write(tableRow); err != nil {
 			return fmt.Errorf("error writing record to csv: %w", err)
 		}
 	}
 
-	csv.Flush()
+	csvWriter.Flush()
 
 	fmt.Print(buf.String())
 
