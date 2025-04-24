@@ -54,8 +54,8 @@ github.com/sagikazarmark/locafero v0.7.0 h1:5MqpDsTGNDhY8sGp0Aowyf0qKsPrhewaLSsF
 github.com/sagikazarmark/locafero v0.7.0/go.mod h1:2za3Cg5rMaTMoG/2Ulr9AwtFaIppKXTRYnozin4aB5k=
 github.com/sapcc/go-api-declarations v1.14.3 h1:iDmwB8LGO+tkgW4A4nh1pILWIs7w4AM6f7SSMZtltSk=
 github.com/sapcc/go-api-declarations v1.14.3/go.mod h1:KEYQoknn0gSjhmI19b85YUEZkav9SOu2bC21VeDNlnU=
-github.com/sapcc/go-bits v0.0.0-20250410003731-7b4174e5d933 h1:N3rVMF58N0Rvkmj+f+c/h6vfBvQKwIeTzpXxZtltoQw=
-github.com/sapcc/go-bits v0.0.0-20250410003731-7b4174e5d933/go.mod h1:RsvMeQAYl5ynZXCqVyNIViJI3Ufhgu7u3ynIW2q62Rs=
+github.com/sapcc/go-bits v0.0.0-20250423153018-e4213f99573c h1:CkuJ/ytg6YzNWC9l/9dbdd4kH8hGkjNMUDkftWfwn+4=
+github.com/sapcc/go-bits v0.0.0-20250423153018-e4213f99573c/go.mod h1:sa/OqICghQ1/f3+HEOHF5UgVgD1GuBGzOpfD3oe+21A=
 github.com/sapcc/gophercloud-sapcc/v2 v2.0.3 h1:w6xb4mLvYBIzfHctLqw/FpMi+FSDt7Cq26qL6xPDRAE=
 github.com/sapcc/gophercloud-sapcc/v2 v2.0.3/go.mod h1:8FiEk0Zz+tpqptR90x/ETUe630sDv0hbt8lKQtHeksk=
 github.com/sergi/go-diff v1.3.1 h1:xkr+Oxo4BOQKmkn/B9eMK0g5Kg/983T9DqqPHwYqD+8=
@@ -81,10 +81,10 @@ go.uber.org/atomic v1.11.0/go.mod h1:LUxbIzbOniOlMKjJjyPfpl4v+PKK2cNJn91OQbhoJI0
 go.uber.org/multierr v1.9.0 h1:7fIwc/ZtS0q++VgcfqFDxSBZVv/Xo49/SYnDFupUwlI=
 go.uber.org/multierr v1.9.0/go.mod h1:X2jQV1h+kxSjClGpnseKVIxpmcjrj7MNnI0bnlfKTVQ=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.30.0 h1:QjkSwP/36a20jFYWkSue1YwXzLmsV5Gfq7Eiy72C1uc=
-golang.org/x/sys v0.30.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
-golang.org/x/text v0.22.0 h1:bofq7m3/HAFvbF51jz3Q9wLg3jkvSPuiZu/pD1XwgtM=
-golang.org/x/text v0.22.0/go.mod h1:YRoo4H8PVmsu+E3Ou7cqLVH8oXWIHVoX0jqUWALQhfY=
+golang.org/x/sys v0.31.0 h1:ioabZlmFYtWhL+TRYpcnNlLwhyxaM9kWTDEmfnprqik=
+golang.org/x/sys v0.31.0/go.mod h1:BJP2sWEmIv4KK5OTEluFJCKSidICx8ciO85XgH3Ak8k=
+golang.org/x/text v0.23.0 h1:D71I7dUrlY+VX0gQShAThNGHFxZ13dGLBHQLVl1mJlY=
+golang.org/x/text v0.23.0/go.mod h1:/BLNzu4aZCJ1+kcD0DNRotWKage4q2rGVAg4o22unh4=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 h1:YR8cESwS4TdDjEe65xsg0ogRM/Nc3DYOhEAlW+xobZo=
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
