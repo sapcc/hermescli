@@ -1,28 +1,5 @@
-#This is an example .goreleaser.yml file with some sensible defaults.
-#Make sure to check the documentation at https://goreleaser.com
-before:
-  hooks:
-    - go mod tidy
-    - ./scripts/completions.sh
-builds:
-  - env:
-    - CGO_ENABLED=0
-    goos:
-      - linux
-      - windows
-      - darwin
-    goarch:
-      - amd64
-      - arm64
-    ldflags:
-      - -s -w
-      - -X github.com/sapcc/go-api-declarations/bininfo.binName=hermescli
-      - -X github.com/sapcc/go-api-declarations/bininfo.version={{ .Version }}
-      - -X github.com/sapcc/go-api-declarations/bininfo.commit={{ .FullCommit  }}
-      # Use CommitDate instead of Date for reproducibility.
-      - -X github.com/sapcc/go-api-declarations/bininfo.buildDate={{ .CommitDate }}
-      # Set the modified timestamp on the output binary to ensure that builds are reproducible.
-    mod_timestamp: "{{ .CommitTimestamp }}"
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
 
 archives:
   - name_template: '{{ .ProjectName }}-{{ replace .Version "v" "" }}-{{ .Os }}-{{ .Arch }}'
@@ -30,29 +7,40 @@ archives:
       - goos: windows
         format: zip
     files:
+      - CHANGELOG.md
       - LICENSE
       - README.md
-      - completions/*
 
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
+
+builds:
+  - binary: 'hermescli'
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X github.com/sapcc/go-api-declarations/bininfo.binName=hermescli
+      - -X github.com/sapcc/go-api-declarations/bininfo.version={{ .Version }}
+      - -X github.com/sapcc/go-api-declarations/bininfo.commit={{ .FullCommit  }}
+      - -X github.com/sapcc/go-api-declarations/bininfo.buildDate={{ .CommitDate }} # use CommitDate instead of Date for reproducibility
+    main: ./cmd
+    # Set the modified timestamp on the output binary to ensure that builds are reproducible.
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+release:
+  make_latest: true
+  prerelease: auto
 
 snapshot:
-  name_template: "{{ .Tag }}-next"
-
-brews:
-  - repository:
-      owner: sapcc
-      name: hermescli
-    folder: HomebrewFormula
-    homepage: https://github.com/sapcc/hermescli
-    description: Command-line interface for Hermes
-    license: Apache-2.0
-    install: |-
-      bin.install "hermescli"
-      bash_completion.install "completions/hermescli.bash" => "hermescli"
-      zsh_completion.install "completions/hermescli.zsh" => "_hermescli"
-      fish_completion.install "completions/limesctl.fish"
-    test: |
-      system "#{bin}/hermescli --version"
-    commit_msg_template: "Homebrew: update formula to {{ .Tag }}"
+  version_template: "{{ .Tag }}-next"
