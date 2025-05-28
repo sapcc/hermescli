@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 SAP SE or an SAP affiliate company
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Hermescli
 
 [![GitHub Release](https://img.shields.io/github/v/release/sapcc/hermescli)](https://github.com/sapcc/hermescli/releases/latest)
