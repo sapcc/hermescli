@@ -11,6 +11,7 @@ import (
 
 	"github.com/cheggaaa/pb/v3"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -100,19 +101,21 @@ var ShowCmd = &cobra.Command{
 
 				// create table
 				var buf bytes.Buffer
-				table := tablewriter.NewWriter(&buf)
-				table.SetColWidth(20)
-				table.SetAlignment(3)
-				table.SetHeader([]string{"Key", "Value"})
+				table := tablewriter.NewTable(&buf, tablewriter.WithColumnMax(20), tablewriter.WithRowAlignment(tw.AlignRight))
+				table.Header("Key", "Value")
 
 				// populate output table
 				for _, k := range keyOrder {
 					if v, ok := kv[k]; ok {
-						table.Append([]string{k, v})
+						if err := table.Append(k, v); err != nil {
+							log.Printf("Error appending row for key %s: %v", k, err)
+						}
 					}
 				}
 
-				table.Render()
+				if err := table.Render(); err != nil {
+					log.Printf("Error rendering table for event %s: %v", event.ID, err)
+				}
 
 				fmt.Print(buf.String())
 			}

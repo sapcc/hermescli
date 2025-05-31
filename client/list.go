@@ -18,6 +18,7 @@ import (
 	"github.com/gophercloud/gophercloud/v2"
 	"github.com/gophercloud/gophercloud/v2/pagination"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -336,22 +337,24 @@ var ListCmd = &cobra.Command{
 
 		if format == "table" {
 			var buf bytes.Buffer
-			table := tablewriter.NewWriter(&buf)
-			table.SetColWidth(20)
-			table.SetAlignment(3)
-			table.SetHeader(keyOrder)
+			table := tablewriter.NewTable(&buf, tablewriter.WithColumnMax(20), tablewriter.WithRowAlignment(tw.AlignRight))
+			table.Header(keyOrder)
 
 			for _, v := range allEvents {
 				kv := eventToKV(v)
 				tableRow := []string{}
 				for _, k := range keyOrder {
-					v := kv[k]
-					tableRow = append(tableRow, v)
+					cellValue := kv[k]
+					tableRow = append(tableRow, cellValue)
 				}
-				table.Append(tableRow)
+				if err := table.Append(tableRow); err != nil {
+					return fmt.Errorf("error appending row to table: %w", err)
+				}
 			}
 
-			table.Render()
+			if err := table.Render(); err != nil {
+				return fmt.Errorf("error rendering table: %w", err)
+			}
 
 			fmt.Print(buf.String())
 		} else {
