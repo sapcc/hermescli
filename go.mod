@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/cheggaaa/pb/v3 v3.1.7
 	github.com/gophercloud/gophercloud/v2 v2.7.0
-	github.com/gophercloud/utils/v2 v2.0.0-20250404104721-4c0f6d93d3a9
+	github.com/gophercloud/utils/v2 v2.0.0-20250506092640-af27464b6166
 	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v1.0.7
 	github.com/sapcc/go-api-declarations v1.15.0
