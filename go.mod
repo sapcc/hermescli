@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/cheggaaa/pb/v3 v3.1.7
 	github.com/gophercloud/gophercloud/v2 v2.7.0
-	github.com/gophercloud/utils/v2 v2.0.0-20250506092640-af27464b6166
+	github.com/gophercloud/utils/v2 v2.0.0-20250606082759-66f28657aaaa
 	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v1.0.7
 	github.com/sapcc/go-api-declarations v1.15.0
@@ -41,5 +41,5 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/text v0.25.0 // indirect
+	golang.org/x/text v0.26.0 // indirect
 )
