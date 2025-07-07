@@ -114,7 +114,7 @@ func getNextOffset(page pagination.Page) (int, error) {
 }
 
 func getTimeSort(listOpts events.ListOpts) bool {
-	for _, v := range strings.Split(listOpts.Sort, ",") {
+	for v := range strings.SplitSeq(listOpts.Sort, ",") {
 		s := strings.SplitN(v, ":", 2)
 		if len(s) == 2 && s[0] == "time" {
 			if s[1] == "asc" {

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/gophercloud/gophercloud/v2"
@@ -107,13 +108,13 @@ func verifyGlobalFlags(columnsOrder []string) error {
 		if len(columnsOrder) == 0 {
 			return errors.New(`columns are not supported for this command`)
 		}
-		if !isSliceContainsStr(columnsOrder, c) {
+		if !slices.Contains(columnsOrder, c) {
 			return fmt.Errorf(`invalid "%s" column name, supported values for the column: %s`, c, strings.Join(columnsOrder, ", "))
 		}
 	}
 
 	// verify supported formats
-	if !isSliceContainsStr(defaultPrintFormats, viper.GetString("format")) {
+	if !slices.Contains(defaultPrintFormats, viper.GetString("format")) {
 		return fmt.Errorf(`invalid "%s" column name, supported values for the format: %s`, viper.GetString("format"), strings.Join(defaultPrintFormats, ", "))
 	}
 
@@ -125,14 +126,4 @@ func verifyGlobalFlags(columnsOrder []string) error {
 	}
 
 	return nil
-}
-
-// isSliceContainsStr returns true if the string exists in given slice
-func isSliceContainsStr(sl []string, str string) bool {
-	for _, s := range sl {
-		if s == str {
-			return true
-		}
-	}
-	return false
 }
