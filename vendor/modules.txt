@@ -19,7 +19,7 @@ github.com/go-viper/mapstructure/v2/internal/errors
 # github.com/gofrs/uuid/v5 v5.3.2
 ## explicit; go 1.19
 github.com/gofrs/uuid/v5
-# github.com/gophercloud/gophercloud/v2 v2.7.0
+# github.com/gophercloud/gophercloud/v2 v2.8.0
 ## explicit; go 1.22
 github.com/gophercloud/gophercloud/v2
 github.com/gophercloud/gophercloud/v2/openstack
@@ -30,7 +30,7 @@ github.com/gophercloud/gophercloud/v2/openstack/identity/v3/oauth1
 github.com/gophercloud/gophercloud/v2/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/v2/openstack/utils
 github.com/gophercloud/gophercloud/v2/pagination
-# github.com/gophercloud/utils/v2 v2.0.0-20250808094129-719028187fb5
+# github.com/gophercloud/utils/v2 v2.0.0-20250819195638-e4fc39f0eda4
 ## explicit; go 1.23.0
 github.com/gophercloud/utils/v2/client
 github.com/gophercloud/utils/v2/env
@@ -91,12 +91,12 @@ github.com/sagikazarmark/locafero
 # github.com/sapcc/go-api-declarations v1.17.3
 ## explicit; go 1.24
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20250815083328-9eefdef740e1
+# github.com/sapcc/go-bits v0.0.0-20250820140623-085431e07de8
 ## explicit; go 1.24
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc/v2 v2.0.4
+# github.com/sapcc/gophercloud-sapcc/v2 v2.0.5
 ## explicit; go 1.24
 github.com/sapcc/gophercloud-sapcc/v2/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/v2/audit/v1/events
