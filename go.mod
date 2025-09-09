@@ -1,6 +1,6 @@
 module github.com/sapcc/hermescli
 
-go 1.24
+go 1.25
 
 require (
 	github.com/cheggaaa/pb/v3 v3.1.7
