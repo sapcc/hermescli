@@ -26,3 +26,11 @@ renovate:
   enabled: true
   assignees:
     - notque
+
+reuse:
+  enabled: true
+  annotations:
+    - paths:
+        - vendor/go.yaml.in/yaml/v3/**
+      SPDX-FileCopyrightText: 'Other'
+      SPDX-License-Identifier: MIT
