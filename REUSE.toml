@@ -21,6 +21,13 @@ SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
 path = [
+  "vendor/go.yaml.in/yaml/v3/**",
+]
+SPDX-FileCopyrightText = "Other"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = [
   "vendor/github.com/cheggaaa/pb/v3/**",
 ]
 precedence = "aggregate"
@@ -341,15 +348,7 @@ SPDX-License-Identifier = "MIT"
 
 [[annotations]]
 path = [
-  "vendor/go.uber.org/atomic/**",
-]
-precedence = "aggregate"
-SPDX-FileCopyrightText = "Other"
-SPDX-License-Identifier = "MIT"
-
-[[annotations]]
-path = [
-  "vendor/go.uber.org/multierr/**",
+  "vendor/go.yaml.in/yaml/v3/**",
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Other"
