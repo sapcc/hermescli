@@ -9,7 +9,7 @@ require (
 	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v1.1.0
 	github.com/sapcc/go-api-declarations v1.17.4
-	github.com/sapcc/go-bits v0.0.0-20251023170348-b4bcd3ab3925
+	github.com/sapcc/go-bits v0.0.0-20251103102353-294e1c42cb0c
 	github.com/sapcc/gophercloud-sapcc/v2 v2.0.5
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
@@ -21,7 +21,7 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
-	github.com/gofrs/uuid/v5 v5.3.2 // indirect
+	github.com/gofrs/uuid/v5 v5.4.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect

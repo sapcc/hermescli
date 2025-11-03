@@ -13,8 +13,8 @@ github.com/fsnotify/fsnotify v1.9.0 h1:2Ml+OJNzbYCTzsxtv8vKSFD9PbJjmhYF14k/jKC7S
 github.com/fsnotify/fsnotify v1.9.0/go.mod h1:8jBTzvmWwFyi3Pb8djgCCO5IBqzKJ/Jwo8TRcHyHii0=
 github.com/go-viper/mapstructure/v2 v2.4.0 h1:EBsztssimR/CONLSZZ04E8qAkxNYq4Qp9LvH92wZUgs=
 github.com/go-viper/mapstructure/v2 v2.4.0/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
-github.com/gofrs/uuid/v5 v5.3.2 h1:2jfO8j3XgSwlz/wHqemAEugfnTlikAYHhnqQ8Xh4fE0=
-github.com/gofrs/uuid/v5 v5.3.2/go.mod h1:CDOjlDMVAtN56jqyRUZh58JT31Tiw7/oQyEXZV+9bD8=
+github.com/gofrs/uuid/v5 v5.4.0 h1:EfbpCTjqMuGyq5ZJwxqzn3Cbr2d0rUZU7v5ycAk/e/0=
+github.com/gofrs/uuid/v5 v5.4.0/go.mod h1:CDOjlDMVAtN56jqyRUZh58JT31Tiw7/oQyEXZV+9bD8=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
 github.com/google/go-cmp v0.7.0/go.mod h1:pXiqmnSA92OHEEa9HXL2W4E7lf9JzCmGVUdgjX3N/iU=
 github.com/gophercloud/gophercloud/v2 v2.8.0 h1:of2+8tT6+FbEYHfYC8GBu8TXJNsXYSNm9KuvpX7Neqo=
@@ -57,8 +57,8 @@ github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDc
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
 github.com/sapcc/go-api-declarations v1.17.4 h1:F4smuE9x1NJ/7NAdytJ1wekeXT3QeRaYu3L/HyWKqqo=
 github.com/sapcc/go-api-declarations v1.17.4/go.mod h1:MWmLjmvjftgyAugNUfIhsDsHIzXH1pn32cWLZpiluKg=
-github.com/sapcc/go-bits v0.0.0-20251023170348-b4bcd3ab3925 h1:SB5ySjieq4WKN5HiZAysOWqjm3dqaMM/aocNJ0Kxt1w=
-github.com/sapcc/go-bits v0.0.0-20251023170348-b4bcd3ab3925/go.mod h1:NBw3A0I60Y6dntj1oMMuU0GHxApVP14A/2Srgj5h3gE=
+github.com/sapcc/go-bits v0.0.0-20251103102353-294e1c42cb0c h1:UoF9jd5KpjNxkJHwl6N+jGkqTK1YPESbSXdA5l0FAzY=
+github.com/sapcc/go-bits v0.0.0-20251103102353-294e1c42cb0c/go.mod h1:DMge7GidLysrU9IfPsWQNbIi6OvesTvj1hDXlTXEI+g=
 github.com/sapcc/gophercloud-sapcc/v2 v2.0.5 h1:pWVIM0qP3YYAoZNx8jtfX+8nBSJ03ETDyrrdBmI/b6I=
 github.com/sapcc/gophercloud-sapcc/v2 v2.0.5/go.mod h1:ylQgPjcEWI6Kw7GvG5e8iEfIP+p1oiFQgrAImGIGvac=
 github.com/sergi/go-diff v1.4.0 h1:n/SP9D5ad1fORl+llWyN+D6qoUETXNZARKjyY2/KVCw=
