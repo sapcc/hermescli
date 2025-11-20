@@ -19,7 +19,7 @@ github.com/go-viper/mapstructure/v2/internal/errors
 # github.com/gofrs/uuid/v5 v5.4.0
 ## explicit; go 1.19
 github.com/gofrs/uuid/v5
-# github.com/gophercloud/gophercloud/v2 v2.8.0
+# github.com/gophercloud/gophercloud/v2 v2.9.0
 ## explicit; go 1.22
 github.com/gophercloud/gophercloud/v2
 github.com/gophercloud/gophercloud/v2/openstack
@@ -91,7 +91,7 @@ github.com/sagikazarmark/locafero
 # github.com/sapcc/go-api-declarations v1.17.4
 ## explicit; go 1.24
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20251113131016-b7245870e76e
+# github.com/sapcc/go-bits v0.0.0-20251119215428-a048ca8f6eba
 ## explicit; go 1.25
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
