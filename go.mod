@@ -9,7 +9,7 @@ require (
 	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v1.1.0
 	github.com/sapcc/go-api-declarations v1.18.0
-	github.com/sapcc/go-bits v0.0.0-20251204133412-746f1e02903e
+	github.com/sapcc/go-bits v0.0.0-20251211170253-467ecb6aaf3d
 	github.com/sapcc/gophercloud-sapcc/v2 v2.0.5
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
