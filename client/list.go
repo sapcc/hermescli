@@ -137,7 +137,7 @@ func getEvents(ctx context.Context, client *gophercloud.ServiceClient, allEvents
 	var eventLength int
 
 	err := events.List(client, listOpts).EachPage(ctx, func(ctx context.Context, page pagination.Page) (bool, error) {
-		evnts, err := events.ExtractEvents(page)
+		pageEvents, err := events.ExtractEvents(page)
 		if err != nil {
 			return false, fmt.Errorf("failed to extract events: %w", err)
 		}
@@ -148,26 +148,26 @@ func getEvents(ctx context.Context, client *gophercloud.ServiceClient, allEvents
 			// otherwise it is very slow for an amount of objects > 10000 (10000^2*pageN iterations)
 			eventLength = len(*allEvents)
 		ROOTLOOP:
-			for i, evntNew := range evnts {
+			for i, evt := range pageEvents {
 				for k, j := 0, eventLength-1; j >= eventLength-precision && j >= 0; k, j = k+1, j-1 {
 					if k >= precision {
 						// don't compare items above 100, break the loop
 						break
 					}
-					if (*allEvents)[j].ID == evntNew.ID {
+					if (*allEvents)[j].ID == evt.ID {
 						continue ROOTLOOP
 					}
 				}
 				if i >= precision {
 					// append all remaining and exit the loop
-					*allEvents = append(*allEvents, evnts[i:]...)
+					*allEvents = append(*allEvents, pageEvents[i:]...)
 					break
 				} else {
-					*allEvents = append(*allEvents, evntNew)
+					*allEvents = append(*allEvents, evt)
 				}
 			}
 		} else {
-			*allEvents = append(*allEvents, evnts...)
+			*allEvents = append(*allEvents, pageEvents...)
 		}
 
 		eventLength = len(*allEvents)
