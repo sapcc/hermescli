@@ -23,8 +23,10 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Set default branch ref
-        run: git remote set-head origin --auto
+      - name: Fetch default branch so go-makefile-maker can detect it
+        run: |
+          git fetch origin master:refs/remotes/origin/master
+          git remote set-head origin master
 
       - name: Set up Go
         uses: actions/setup-go@v6
