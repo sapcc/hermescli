@@ -130,7 +130,7 @@ SPDX-License-Identifier = "MIT"
 
 [[annotations]]
 path = [
-  "vendor/github.com/clipperhouse/displaywidth/**",
+  "vendor/github.com/cespare/xxhash/v2/**",
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "Other"
@@ -138,7 +138,7 @@ SPDX-License-Identifier = "MIT"
 
 [[annotations]]
 path = [
-  "vendor/github.com/clipperhouse/stringish/**",
+  "vendor/github.com/clipperhouse/displaywidth/**",
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "Other"
