@@ -23,6 +23,9 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: Set default branch ref
+        run: git remote set-head origin --auto
+
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
