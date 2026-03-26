@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 SAP SE or an SAP affiliate company
+# SPDX-License-Identifier: Apache-2.0
+
+name: Run go-makefile-maker
+"on":
+  pull_request:
+    branches:
+      - '*'
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    name: Run go-makefile-maker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          check-latest: true
+          go-version: 1.26.1
+
+      - name: Install go-makefile-maker and go-licence-detector
+        run: |
+          go install github.com/sapcc/go-makefile-maker@latest
+          go install go.elastic.co/go-licence-detector@latest
+
+      - name: Run go-makefile-maker and push
+        run: |
+          go-makefile-maker
+
+          if [[ $(git status --porcelain | wc -l) != 0 ]]; then
+            # https://github.com/actions/checkout#push-a-commit-to-a-pr-using-the-built-in-token
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "Run go-makefile-maker"
+            git push
+          fi
