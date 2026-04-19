@@ -6,13 +6,13 @@ require (
 	github.com/cheggaaa/pb/v3 v3.1.7
 	github.com/gophercloud/gophercloud/v2 v2.12.0
 	github.com/gophercloud/utils/v2 v2.0.0-20260409164906-cd2167a8681a
-	github.com/majewsky/schwift/v2 v2.0.0
 	github.com/olekukonko/tablewriter v1.1.4
 	github.com/sapcc/go-api-declarations v1.21.0
 	github.com/sapcc/go-bits v0.0.0-20260416170349-9b32d8192041
 	github.com/sapcc/gophercloud-sapcc/v2 v2.0.5
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
+	go.xyrillian.de/schwift/v2 v2.1.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -42,6 +42,6 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/text v0.36.0 // indirect
 )
