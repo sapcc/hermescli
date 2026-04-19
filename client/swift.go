@@ -13,8 +13,8 @@ import (
 	"github.com/gophercloud/gophercloud/v2"
 	"github.com/gophercloud/gophercloud/v2/openstack"
 	"github.com/gophercloud/utils/v2/env"
-	"github.com/majewsky/schwift/v2"
-	"github.com/majewsky/schwift/v2/gopherschwift"
+	"go.xyrillian.de/schwift/v2"
+	"go.xyrillian.de/schwift/v2/gopherschwift"
 )
 
 // ExportFile represents a file to be exported to Swift storage
