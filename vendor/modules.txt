@@ -39,7 +39,7 @@ github.com/gophercloud/gophercloud/v2/openstack/identity/v3/oauth1
 github.com/gophercloud/gophercloud/v2/openstack/identity/v3/tokens
 github.com/gophercloud/gophercloud/v2/openstack/utils
 github.com/gophercloud/gophercloud/v2/pagination
-# github.com/gophercloud/utils/v2 v2.0.0-20260409164906-cd2167a8681a
+# github.com/gophercloud/utils/v2 v2.0.0-20260424064311-2eeed4ceb3e9
 ## explicit; go 1.25.0
 github.com/gophercloud/utils/v2/client
 github.com/gophercloud/utils/v2/env
