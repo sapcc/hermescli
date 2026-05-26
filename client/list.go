@@ -337,7 +337,11 @@ var ListCmd = &cobra.Command{
 
 		if format == "table" {
 			var buf bytes.Buffer
-			table := tablewriter.NewTable(&buf, tablewriter.WithColumnMax(20), tablewriter.WithRowAlignment(tw.AlignRight))
+			table := tablewriter.NewTable(&buf,
+				tablewriter.WithHeaderMaxWidth(20),
+				tablewriter.WithRowMaxWidth(20),
+				tablewriter.WithRowAlignment(tw.AlignRight),
+			)
 			table.Header(keyOrder)
 
 			for _, v := range allEvents {
