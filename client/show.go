@@ -101,7 +101,11 @@ var ShowCmd = &cobra.Command{
 
 				// create table
 				var buf bytes.Buffer
-				table := tablewriter.NewTable(&buf, tablewriter.WithColumnMax(20), tablewriter.WithRowAlignment(tw.AlignRight))
+				table := tablewriter.NewTable(&buf,
+					tablewriter.WithHeaderMaxWidth(20),
+					tablewriter.WithRowMaxWidth(20),
+					tablewriter.WithRowAlignment(tw.AlignRight),
+				)
 				table.Header("Key", "Value")
 
 				// populate output table
