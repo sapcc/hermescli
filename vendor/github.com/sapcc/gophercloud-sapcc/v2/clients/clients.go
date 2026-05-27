@@ -1,4 +1,5 @@
-// SPDX-FileCopyrightText: 2020 SAP SE or an SAP affiliate company
+// SPDX-FileCopyrightText: 2020-2023 SAP SE or an SAP affiliate company
+// SPDX-FileCopyrightText: 2026 Dexter Le <dextersydney2001@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
 // Package gophercloud-sapcc provides integration between SAP CC services and
@@ -41,6 +42,22 @@ func NewLimesRatesV1(client *gophercloud.ProviderClient, endpointOpts gopherclou
 		ProviderClient: client,
 		Endpoint:       endpoint,
 		Type:           "sapcc-rates",
+	}, nil
+}
+
+// NewCastellumV1 creates a ServiceClient that may be used with the v1 Castellum package.
+func NewCastellumV1(client *gophercloud.ProviderClient, endpointOpts gophercloud.EndpointOpts) (*gophercloud.ServiceClient, error) {
+	endpointOpts.ApplyDefaults("castellum")
+	endpoint, err := client.EndpointLocator(endpointOpts)
+	if err != nil {
+		return nil, err
+	}
+	endpoint += "v1/"
+
+	return &gophercloud.ServiceClient{
+		ProviderClient: client,
+		Endpoint:       endpoint,
+		Type:           "projects",
 	}, nil
 }
 
