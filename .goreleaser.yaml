@@ -6,34 +6,29 @@
 version: 2
 
 archives:
-  - name_template: '{{ .ProjectName }}-{{ replace .Version "v" "" }}-{{ .Os }}-{{ .Arch }}'
-    format_overrides:
-      - goos: windows
-        format: zip
-    files:
-      - CHANGELOG.md
-      - LICENSE
-      - README.md
+  - formats:
+      - binary
+    name_template: '{{ if eq .Os "darwin" }}hermescli_darwin{{ else }}hermescli{{ end }}'
 
 checksum:
-  name_template: "checksums.txt"
+  disable: true
 
 builds:
-  - binary: 'hermescli'
+  - id: hermescli
+    # Keep internal build artifact names distinct from the uploaded legacy names
+    # below, otherwise GoReleaser records duplicate artifact names.
+    binary: 'hermescli_{{ .Target }}'
     env:
       - CGO_ENABLED=0
-    goos:
-      - linux
-      - windows
-      - darwin
-    goarch:
-      - amd64
-      - arm64
-    ignore:
-      - goos: windows
-        goarch: arm64
+    targets:
+      - linux_amd64_v1
+      - windows_amd64_v1
+      - darwin_amd64_v1
+    flags:
+      - -mod=vendor
     ldflags:
       - -s -w
+      - -X github.com/sapcc/hermescli/client.Version={{ .Version }}
       - -X github.com/sapcc/go-api-declarations/bininfo.binName=hermescli
       - -X github.com/sapcc/go-api-declarations/bininfo.version={{ .Version }}
       - -X github.com/sapcc/go-api-declarations/bininfo.commit={{ .FullCommit  }}
