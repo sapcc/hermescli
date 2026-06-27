@@ -60,8 +60,8 @@ github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDc
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
 github.com/sapcc/go-api-declarations v1.24.0 h1:sGBvOMVSM1olJlyvNoQSk7NX5uatXHKkztGDBPnTWMs=
 github.com/sapcc/go-api-declarations v1.24.0/go.mod h1:ZWRTijvgF8o8aHg5stgg7u4DF6jFrd0X97le/uGlZsA=
-github.com/sapcc/go-bits v0.0.0-20260623114633-b9734b46a368 h1:RZRK9YiWgFGXCAXm3rm5DVHUONKseTTZlYzvjtfkvn4=
-github.com/sapcc/go-bits v0.0.0-20260623114633-b9734b46a368/go.mod h1:iijO1r0HeCbtam2ekqGr9fZOrtFF13dKrCrvPRmbK/w=
+github.com/sapcc/go-bits v0.0.0-20260626143732-3999ce9f8fdc h1:oflzbbZ1C2tc0EMCwf5tETd6nlqA5TMnckihJqz7joU=
+github.com/sapcc/go-bits v0.0.0-20260626143732-3999ce9f8fdc/go.mod h1:WIr0qdewi9zEDh4egX9c7zB4e6JwrzTS3AA02y0EVxk=
 github.com/sapcc/gophercloud-sapcc/v2 v2.1.0 h1:6Y8VOsZCeIL6rpzbU4jIv+Jva9Hu8neT6/XA1DcVLz8=
 github.com/sapcc/gophercloud-sapcc/v2 v2.1.0/go.mod h1:h4fike9u3QmUlcXsbnLKn8TKt4MTgGUAWmBmIgS2SMw=
 github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8 h1:+jumHNA0Wrelhe64i8F6HNlS8pkoyMv5sreGx2Ry5Rw=
