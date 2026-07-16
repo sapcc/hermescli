@@ -32,6 +32,7 @@ func ExtractAttributes(r pagination.Page) ([]string, error) {
 	return s, err
 }
 
+// ExtractAttributesInto is used by ExtractAttributes.
 func ExtractAttributesInto(r pagination.Page, v any) error {
 	return r.(AttributePage).ExtractIntoSlicePtr(v, "")
 }

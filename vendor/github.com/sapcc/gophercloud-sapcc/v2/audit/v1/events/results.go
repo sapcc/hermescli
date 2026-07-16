@@ -9,6 +9,8 @@ import (
 	"github.com/sapcc/go-api-declarations/cadf"
 )
 
+// GetResult represents the result of a get operation. Call its Extract method
+// to interpret it as an Event.
 type GetResult struct {
 	gophercloud.Result
 }
@@ -20,6 +22,7 @@ func (r GetResult) Extract() (*Event, error) {
 	return &s, err
 }
 
+// ExtractInto is used by Extract.
 func (r GetResult) ExtractInto(v any) error {
 	return r.ExtractIntoStructPtr(v, "")
 }
@@ -72,6 +75,7 @@ func ExtractEvents(r pagination.Page) ([]Event, error) {
 	return s, err
 }
 
+// ExtractEventsInto is used by ExtractEvents.
 func ExtractEventsInto(r pagination.Page, v any) error {
 	return r.(EventPage).ExtractIntoSlicePtr(v, "events")
 }
