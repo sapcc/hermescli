@@ -94,8 +94,9 @@ github.com/pelletier/go-toml/v2/unstable
 github.com/sagikazarmark/locafero
 # github.com/sapcc/go-api-declarations v1.24.0
 ## explicit; go 1.26
+github.com/sapcc/go-api-declarations/bininfo
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20260423021225-fb5e4523b6c5
+# github.com/sapcc/go-bits v0.0.0-20260716112359-12c1e998f741
 ## explicit; go 1.26
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
