@@ -5,6 +5,7 @@ package client
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
@@ -124,7 +125,7 @@ func resolveProjectID() (string, error) {
 	if id := os.Getenv("OS_PROJECT_ID"); id != "" {
 		return id, nil
 	}
-	return "", fmt.Errorf("--project-id is required (or set OS_PROJECT_ID)")
+	return "", errors.New("--project-id is required (or set OS_PROJECT_ID)")
 }
 
 func printDataplaneConfig(cfg *dataplaneconfig.DataplaneConfig) error {
