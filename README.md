@@ -28,6 +28,7 @@ Hermes CLI offers the following commands:
 - `show`: Show details for a specific event
 - `attributes`: List attributes related to audit events
 - `export`: Export events to Swift
+- `dataplane-config`: Manage per-project dataplane event routing configuration
 
 ## Usage
 
@@ -217,6 +218,85 @@ The `export` command allows you to export audit events to Swift storage for arch
 By default, it will export up to 10,000 events. Use the `--limit` flag to adjust this number. Large exports are automatically handled through Swift's segmented upload feature.
 
 > Note: This command requires Swift storage access in addition to the standard OpenStack authentication environment variables.
+
+## Dataplane Config
+
+Manages per-project dataplane event routing in Hermes. When enabled, Hermes routes
+Ceph RGW dataplane events into the project's own S3 bucket in addition to the shared
+admin bucket.
+
+> **Note:** Your OpenStack token must be scoped to the target project and your user
+> must have the **`audit_admin`** role on that project. Set `OS_PROJECT_ID` to the
+> project you want to manage and re-authenticate before running these commands.
+>
+> To assign the role (requires cloud admin):
+> ```sh
+> openstack role add --user <username> --project <project-id> audit_admin
+> ```
+
+### Usage
+
+```sh
+Manage Hermes dataplane event configuration
+
+Usage:
+  hermescli dataplane-config [command]
+
+Available Commands:
+  get     Get dataplane event configuration for a project
+  set     Create or replace dataplane event configuration for a project
+  delete  Delete dataplane event configuration for a project
+
+Flags:
+      --project-id string      project ID (defaults to OS_PROJECT_ID)
+      --enabled                enable dataplane event routing (set only)
+      --target-bucket string   target S3 bucket name (set only)
+
+Global Flags:
+  -d, --debug            print out request and response objects
+  -f, --format string    the output format (default "table")
+```
+
+### Examples
+
+```sh
+# Get current configuration (token must be scoped to the project)
+$ export OS_PROJECT_ID=e9141fb24eee4b3e9f25ae69cda31132
+$ hermescli dataplane-config get
+ProjectID       e9141fb24eee4b3e9f25ae69cda31132
+Enabled         false
+TargetBucket
+UpdatedAt       0001-01-01 00:00:00 +0000 UTC
+UpdatedBy
+
+# Enable dataplane event routing to an S3 bucket
+$ hermescli dataplane-config set --enabled --target-bucket my-audit-bucket
+ProjectID       e9141fb24eee4b3e9f25ae69cda31132
+Enabled         true
+TargetBucket    my-audit-bucket
+UpdatedAt       2026-07-08 10:00:00 +0000 UTC
+UpdatedBy       83e26760...
+
+# Disable routing (keep bucket name stored)
+$ hermescli dataplane-config set --target-bucket my-audit-bucket
+ProjectID       e9141fb24eee4b3e9f25ae69cda31132
+Enabled         false
+TargetBucket    my-audit-bucket
+UpdatedAt       2026-07-08 10:01:00 +0000 UTC
+UpdatedBy       83e26760...
+
+# Delete the configuration entirely
+$ hermescli dataplane-config delete
+dataplane-config for project e9141fb24eee4b3e9f25ae69cda31132 deleted
+
+# Output as JSON
+$ hermescli dataplane-config get --format json
+{
+  "project_id": "e9141fb24eee4b3e9f25ae69cda31132",
+  "enabled": false,
+  ...
+}
+```
 
 ## Build
 
