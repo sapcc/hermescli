@@ -96,12 +96,12 @@ github.com/sagikazarmark/locafero
 ## explicit; go 1.26
 github.com/sapcc/go-api-declarations/bininfo
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20260716112359-12c1e998f741
+# github.com/sapcc/go-bits v0.0.0-20260723170232-89c8670b5841
 ## explicit; go 1.26
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
 github.com/sapcc/go-bits/secrets
-# github.com/sapcc/gophercloud-sapcc/v2 v2.1.1-0.20260716122328-0d260f8a8645
+# github.com/sapcc/gophercloud-sapcc/v2 v2.2.0
 ## explicit; go 1.26
 github.com/sapcc/gophercloud-sapcc/v2/audit/v1/attributes
 github.com/sapcc/gophercloud-sapcc/v2/audit/v1/dataplaneconfig
