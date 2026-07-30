@@ -25,8 +25,8 @@ github.com/fsnotify/fsnotify/internal
 ## explicit; go 1.18
 github.com/go-viper/mapstructure/v2
 github.com/go-viper/mapstructure/v2/internal/errors
-# github.com/gofrs/uuid/v5 v5.4.0
-## explicit; go 1.19
+# github.com/gofrs/uuid/v5 v5.5.0
+## explicit; go 1.25
 github.com/gofrs/uuid/v5
 # github.com/gophercloud/gophercloud/v2 v2.13.0
 ## explicit; go 1.25.0
@@ -96,7 +96,7 @@ github.com/sagikazarmark/locafero
 ## explicit; go 1.26
 github.com/sapcc/go-api-declarations/bininfo
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20260723170232-89c8670b5841
+# github.com/sapcc/go-bits v0.0.0-20260730170321-f6f727520601
 ## explicit; go 1.26
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
