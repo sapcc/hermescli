@@ -96,7 +96,7 @@ github.com/sagikazarmark/locafero
 ## explicit; go 1.26
 github.com/sapcc/go-api-declarations/bininfo
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20260806170240-4bbc84d224db
+# github.com/sapcc/go-bits v0.0.0-20260813170327-ea1a14435d35
 ## explicit; go 1.26
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
@@ -150,7 +150,7 @@ go.yaml.in/yaml/v3
 ## explicit; go 1.25.0
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.40.0
+# golang.org/x/text v0.41.0
 ## explicit; go 1.25.0
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
