@@ -35,7 +35,8 @@ var listDownloadCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		outputFile := viper.GetString("output")
 
-		// "table" and "value" don't make sense for file output; default to json.
+		// --format defaults to "table" (set by the root persistent flag), which has no meaning for
+		// file output. Coerce it to "json". "value" is also display-only and is rejected explicitly.
 		format := viper.GetString("format")
 		switch format {
 		case "table", "":
