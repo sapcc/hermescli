@@ -58,10 +58,10 @@ github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sagikazarmark/locafero v0.11.0 h1:1iurJgmM9G3PA/I+wWYIOw/5SyBtxapeHDcg+AAIFXc=
 github.com/sagikazarmark/locafero v0.11.0/go.mod h1:nVIGvgyzw595SUSUE6tvCp3YYTeHs15MvlmU87WwIik=
-github.com/sapcc/go-api-declarations v1.24.0 h1:sGBvOMVSM1olJlyvNoQSk7NX5uatXHKkztGDBPnTWMs=
-github.com/sapcc/go-api-declarations v1.24.0/go.mod h1:ZWRTijvgF8o8aHg5stgg7u4DF6jFrd0X97le/uGlZsA=
-github.com/sapcc/go-bits v0.0.0-20260813170327-ea1a14435d35 h1:pTo+tUdMlRJRGY+MsAPeicedx58QYdnne8uWWufHA68=
-github.com/sapcc/go-bits v0.0.0-20260813170327-ea1a14435d35/go.mod h1:oxx7AA+bHudahaXHEcg/Xk4avBckWR/rOOa0SAsuSgg=
+github.com/sapcc/go-api-declarations v1.25.0 h1:vLkSVV8oaZExoBMEkwX31AqUjZIjwxKkxXr4q2sAAOg=
+github.com/sapcc/go-api-declarations v1.25.0/go.mod h1:7NrwidCCv/MxwBpb/qqYLbQb/eY6rlnYkXwWMGx/wlI=
+github.com/sapcc/go-bits v0.0.0-20260818140528-75bdd20c7867 h1:5cyIp5P6NKhmmvL3sXbgdYKwWtwKbPDzE1rzMzZvaH4=
+github.com/sapcc/go-bits v0.0.0-20260818140528-75bdd20c7867/go.mod h1:rF/e0K3R9qDS3xqDl4nMAGOoelSkUumR4BNwuhSMgZk=
 github.com/sapcc/gophercloud-sapcc/v2 v2.2.0 h1:DauTwF+nXrL1UL59P2Aw31IEKWqFjZbMGZlamQzQPrY=
 github.com/sapcc/gophercloud-sapcc/v2 v2.2.0/go.mod h1:LUHIl5thireKS+Vv39H80IbURmPKWT66feC9Kb0gNFs=
 github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8 h1:+jumHNA0Wrelhe64i8F6HNlS8pkoyMv5sreGx2Ry5Rw=
@@ -81,8 +81,8 @@ github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/subosito/gotenv v1.6.0 h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8=
 github.com/subosito/gotenv v1.6.0/go.mod h1:Dk4QP5c2W3ibzajGcXpNraDfq2IrhjMIvMSWPKKo0FU=
-go.xyrillian.de/gg v1.13.3 h1:Ulz3+eZnO2OUl7Bv+SWaA5ufDmjeLwwmICPP4dCurxA=
-go.xyrillian.de/gg v1.13.3/go.mod h1:DoO4fQSWIrBRlNlCjVyrYM0kAEBt/Jg2GkMH+cGRZ0k=
+go.xyrillian.de/gg v1.14.0 h1:S19Jk3V1dcF9WdXQi7OGWjboVj8/40I4+/G1lZ6i4TI=
+go.xyrillian.de/gg v1.14.0/go.mod h1:DoO4fQSWIrBRlNlCjVyrYM0kAEBt/Jg2GkMH+cGRZ0k=
 go.xyrillian.de/schwift/v2 v2.2.1 h1:uzw9Fe2ftiB4oUiEfxh2zTWxBRwFOAtVuyGZwAaAnNQ=
 go.xyrillian.de/schwift/v2 v2.2.1/go.mod h1:LeYCnGM3IAf22o5AkQTpzSoL38BZ2ytkQawfx8A63Wo=
 go.yaml.in/yaml/v3 v3.0.4 h1:tfq32ie2Jv2UxXFdLJdh3jXuOzWiL1fo0bu/FbuKpbc=
