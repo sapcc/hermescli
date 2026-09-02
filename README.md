@@ -25,6 +25,7 @@ understands the conventional environment variables for choosing install location
 Hermes CLI offers the following commands:
 
 - `list`: Retrieve a list of audit events
+  - `list download`: Download all matching events to a local file
 - `show`: Show details for a specific event
 - `attributes`: List attributes related to audit events
 - `export`: Export events to Swift
@@ -77,6 +78,74 @@ $ hermescli list --time 2019-04-23T22:07:16+0000 --sort time:asc
 |                                      |                          |                 |        |         | 88c4c917-f5de-43e5-a403-b7c023bfc13d |           |
 +--------------------------------------+--------------------------+-----------------+--------+---------+--------------------------------------+-----------+
 ```
+
+## List Download
+
+Downloads all matching audit events to a local file, bypassing the display limit. Supports the same filter flags as `list`.
+
+### Usage
+
+```sh
+Download all matching Hermes events to a local file
+
+Usage:
+  hermescli list download [flags]
+
+Flags:
+      --action string           filter events by an action
+  -A, --all-projects            include all projects and domains (admin only) (alias for --project-id '*')
+  -h, --help                    help for download
+      --initiator-id string     filter events by an initiator ID
+      --initiator-name string   filter events by an initiator name
+      --outcome string          filter events by an outcome
+  -o, --output string           output file path (use - for stdout) (default "events.json")
+      --project-id string       filter events by the project or domain ID (admin only)
+      --request-path string     filter events by a request path
+      --search string           filter events by a search string
+  -s, --sort strings            sort keys: time, observer_type, target_type, target_id, initiator_type,
+                                initiator_id, outcome, action (suffix :asc or :desc)
+      --source string           filter events by a source
+      --target-id string        filter events by a target ID
+      --target-type string      filter events by a target type
+      --time string             filter events by time
+      --time-end string         filter events till time
+      --time-start string       filter events from time
+
+Global Flags:
+  -c, --column strings   columns to include in CSV output (default: ID, Time, Source, Action, Outcome, RequestPath, Target, Initiator)
+  -d, --debug            print out request and response objects
+  -f, --format string    output format: json, yaml, csv (default "json")
+```
+
+### Output formats
+
+| Format | Flag | Description |
+|--------|------|-------------|
+| JSON   | `--format json` | JSON array of events (default) |
+| YAML   | `--format yaml` | YAML list of events |
+| CSV    | `--format csv`  | CSV with header row; columns controlled by `-c` |
+
+### Examples
+
+```sh
+# Download all events from a time range to JSON (default)
+$ hermescli list download --time-start 2025-08-01T00:00:00Z --time-end 2025-08-31T23:59:59Z -o august.json
+Downloaded 1234 events to august.json
+
+# Download as CSV
+$ hermescli list download --time-start 2025-08-01T00:00:00Z -o events.csv --format csv
+
+# Download with filters
+$ hermescli list download --action create --outcome failure -o failures.json
+
+# Stream to stdout (e.g. pipe to jq)
+$ hermescli list download -o - | jq '[.[] | .action]'
+
+# Admin: download across all projects
+$ hermescli list download -A --time-start 2025-08-01T00:00:00Z -o all-projects.json
+```
+
+> **Note:** Progress is shown on stderr so it does not corrupt file output when using `-o -`.
 
 ## Show
 
