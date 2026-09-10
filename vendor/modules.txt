@@ -96,7 +96,7 @@ github.com/sagikazarmark/locafero
 ## explicit; go 1.26
 github.com/sapcc/go-api-declarations/bininfo
 github.com/sapcc/go-api-declarations/cadf
-# github.com/sapcc/go-bits v0.0.0-20260907125021-ceb8c12b73ac
+# github.com/sapcc/go-bits v0.0.0-20260908173957-572b68774a1c
 ## explicit; go 1.27
 github.com/sapcc/go-bits/logg
 github.com/sapcc/go-bits/osext
