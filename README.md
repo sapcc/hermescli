@@ -319,7 +319,6 @@ Available Commands:
 Flags:
       --project-id string      project ID (defaults to OS_PROJECT_ID)
       --enabled                enable dataplane event routing (set only)
-      --target-bucket string   target S3 bucket name (set only)
 
 Global Flags:
   -d, --debug            print out request and response objects
@@ -338,19 +337,19 @@ TargetBucket
 UpdatedAt       0001-01-01 00:00:00 +0000 UTC
 UpdatedBy
 
-# Enable dataplane event routing to an S3 bucket
-$ hermescli dataplane-config set --enabled --target-bucket my-audit-bucket
+# Enable dataplane event routing (bucket defaults to hermes-audit server-side)
+$ hermescli dataplane-config set --enabled
 ProjectID       e9141fb24eee4b3e9f25ae69cda31132
 Enabled         true
-TargetBucket    my-audit-bucket
+TargetBucket    hermes-audit
 UpdatedAt       2026-07-08 10:00:00 +0000 UTC
 UpdatedBy       83e26760...
 
-# Disable routing (keep bucket name stored)
-$ hermescli dataplane-config set --target-bucket my-audit-bucket
+# Disable routing
+$ hermescli dataplane-config set
 ProjectID       e9141fb24eee4b3e9f25ae69cda31132
 Enabled         false
-TargetBucket    my-audit-bucket
+TargetBucket    hermes-audit
 UpdatedAt       2026-07-08 10:01:00 +0000 UTC
 UpdatedBy       83e26760...
 
