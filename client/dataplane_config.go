@@ -65,8 +65,7 @@ var dataplaneConfigSetCmd = &cobra.Command{
 		}
 
 		opts := dataplaneconfig.PutOpts{
-			Enabled:      viper.GetBool("enabled"),
-			TargetBucket: viper.GetString("target-bucket"),
+			Enabled: viper.GetBool("enabled"),
 		}
 
 		cfg, err := dataplaneconfig.Put(cmd.Context(), client, projectID, opts).Extract()
@@ -113,7 +112,6 @@ func init() {
 	dataplaneConfigGetCmd.Flags().String("project-id", "", "project ID (defaults to OS_PROJECT_ID)")
 	dataplaneConfigSetCmd.Flags().String("project-id", "", "project ID (defaults to OS_PROJECT_ID)")
 	dataplaneConfigSetCmd.Flags().Bool("enabled", false, "enable dataplane event routing")
-	dataplaneConfigSetCmd.Flags().String("target-bucket", "", "target S3 bucket name")
 	dataplaneConfigDeleteCmd.Flags().String("project-id", "", "project ID (defaults to OS_PROJECT_ID)")
 }
 
