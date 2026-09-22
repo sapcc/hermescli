@@ -270,10 +270,12 @@ var ListCmd = &cobra.Command{
 			TargetID:      viper.GetString("target-id"),
 			InitiatorID:   viper.GetString("initiator-id"),
 			InitiatorName: viper.GetString("initiator-name"),
+			InitiatorType: viper.GetString("initiator-type"),
 			Action:        viper.GetString("action"),
 			Outcome:       viper.GetString("outcome"),
 			RequestPath:   viper.GetString("request-path"),
 			ObserverType:  viper.GetString("source"),
+			DomainID:      viper.GetString("domain-id"),
 			Search:        viper.GetString("search"),
 			ProjectID:     projectID,
 			Sort:          strings.Join(viper.GetStringSlice("sort"), ","),
@@ -379,6 +381,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("target-id", "", "", "filter events by a target ID")
 	ListCmd.Flags().StringP("initiator-id", "", "", "filter events by an initiator ID")
 	ListCmd.Flags().StringP("initiator-name", "", "", "filter events by an initiator name")
+	ListCmd.Flags().StringP("initiator-type", "", "", "filter events by an initiator type")
 	ListCmd.Flags().StringP("action", "", "", "filter events by an action")
 	ListCmd.Flags().StringP("outcome", "", "", "filter events by an outcome")
 	ListCmd.Flags().StringP("request-path", "", "", "filter events by a request path")
@@ -388,6 +391,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("time-start", "", "", "filter events from time")
 	ListCmd.Flags().StringP("time-end", "", "", "filter events till time")
 	ListCmd.Flags().StringP("project-id", "", "", "filter events by the project or domain ID (admin only)")
+	ListCmd.Flags().StringP("domain-id", "", "", "filter events by the domain ID (admin only)")
 	ListCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
 	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out overlapping events for > 10k total events")
 	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
