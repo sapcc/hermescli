@@ -5,9 +5,11 @@ package client
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/cheggaaa/pb/v3"
 	"github.com/olekukonko/tablewriter"
@@ -105,12 +107,21 @@ var ShowCmd = &cobra.Command{
 					tablewriter.WithHeaderMaxWidth(20),
 					tablewriter.WithRowMaxWidth(20),
 					tablewriter.WithRowAlignment(tw.AlignRight),
+					// left-align values and keep leading spaces, so indented JSON stays readable
+					tablewriter.WithRowAlignmentConfig(tw.CellAlignment{PerColumn: []tw.Align{tw.AlignRight, tw.AlignLeft}}),
+					tablewriter.WithTrimSpace(tw.Off),
 				)
+				table.Configure(func(c *tablewriter.Config) {
+					c.Row.ColMaxWidths.PerColumn = tw.NewMapper[int, int]().Set(1, 80)
+				})
 				table.Header("Key", "Value")
 
 				// populate output table
 				for _, k := range keyOrder {
 					if v, ok := kv[k]; ok {
+						if k == "Attachments" {
+							v = indentJSONLines(v)
+						}
 						if err := table.Append(k, v); err != nil {
 							log.Printf("Error appending row for key %s: %v", k, err)
 						}
@@ -129,6 +140,18 @@ var ShowCmd = &cobra.Command{
 
 		return nil
 	},
+}
+
+// indentJSONLines pretty-prints each line that is valid JSON and leaves the others as they are.
+func indentJSONLines(s string) string {
+	lines := strings.Split(s, "\n")
+	for i, line := range lines {
+		var buf bytes.Buffer
+		if err := json.Indent(&buf, []byte(line), "", "  "); err == nil {
+			lines[i] = buf.String()
+		}
+	}
+	return strings.Join(lines, "\n")
 }
 
 func init() {

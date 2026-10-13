@@ -60,3 +60,12 @@ func TestEventToKV(t *testing.T) {
 		}
 	}
 }
+
+func TestIndentJSONLines(t *testing.T) {
+	input := "{\"flavorRef\":\"2042\",\"networks\":[{\"uuid\":\"abc\"}]}\nnot json"
+	expected := "{\n  \"flavorRef\": \"2042\",\n  \"networks\": [\n    {\n      \"uuid\": \"abc\"\n    }\n  ]\n}\nnot json"
+
+	if result := indentJSONLines(input); result != expected {
+		t.Errorf("expected:\n%s\ngot:\n%s", expected, result)
+	}
+}
