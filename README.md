@@ -301,8 +301,9 @@ safe.
 
 If the bucket is deleted, the Log Router entries are removed from its access lists,
 or the project runs out of object storage quota, the events for that hour are
-dropped. There is no other copy. Run `set --enabled` again to restore the bucket and
-its access lists.
+dropped. There is no other copy. Run `set --enabled` again: it recreates a deleted
+bucket in your project and restores the access lists on a bucket your project owns. On
+a bucket that still waits for the operator's ownership handover it only saves the config.
 
 > **Note:** Your OpenStack token must be scoped to the target project, and your user
 > needs both the **`audit_admin`** and the **`objectstore_admin`** role on that
