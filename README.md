@@ -291,16 +291,30 @@ By default, it will export up to 10,000 events. Use the `--limit` flag to adjust
 ## Dataplane Config
 
 Manages per-project dataplane event routing in Hermes. When enabled, Hermes routes
-Ceph RGW dataplane events into the project's own S3 bucket in addition to the shared
-admin bucket.
+Ceph RGW dataplane events into a bucket in the project's own object storage.
 
-> **Note:** Your OpenStack token must be scoped to the target project and your user
-> must have the **`audit_admin`** role on that project. Set `OS_PROJECT_ID` to the
-> project you want to manage and re-authenticate before running these commands.
+Enabling creates that bucket (`hermes-audit` by default) in the project with your
+token, so the project owns it and its quota and billing apply. Hermes also gives the
+Log Router writer read and write access to it, and writes and deletes a tiny probe
+object to check that the project has object storage quota left. Running it again is
+safe.
+
+If the bucket is deleted, the Log Router entries are removed from its access lists,
+or the project runs out of object storage quota, the events for that hour are
+dropped. There is no other copy. Run `set --enabled` again: it recreates a deleted
+bucket in your project and restores the access lists on a bucket your project owns. On
+a bucket that still waits for the operator's ownership handover it only saves the config.
+
+> **Note:** Your OpenStack token must be scoped to the target project, and your user
+> needs both the **`audit_admin`** and the **`objectstore_admin`** role on that
+> project to enable routing. `audit_admin` does not include `objectstore_admin`.
+> Set `OS_PROJECT_ID` to the project you want to manage and re-authenticate before
+> running these commands.
 >
-> To assign the role (requires cloud admin):
+> To assign the roles (requires cloud admin):
 > ```sh
 > openstack role add --user <username> --project <project-id> audit_admin
+> openstack role add --user <username> --project <project-id> objectstore_admin
 > ```
 
 ### Usage
