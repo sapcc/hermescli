@@ -120,7 +120,7 @@ Exports can be saved in different formats (json, csv, yaml) for further processi
 		logg.Debug("fetching events matching specified criteria")
 
 		listOpts := buildListOpts()
-		if err = getEvents(ctx, client, &allEvents, listOpts, viper.GetInt("limit"), true, &bar); err != nil {
+		if err = getEvents(ctx, client, &allEvents, listOpts, false, viper.GetInt("limit"), true, &bar); err != nil {
 			if bar != nil {
 				bar.Finish()
 			}
