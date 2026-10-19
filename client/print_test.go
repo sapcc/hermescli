@@ -21,6 +21,7 @@ func TestEventToKV(t *testing.T) {
 		},
 		Action:  cadf.Action("Action"),
 		Outcome: cadf.Outcome("Outcome"),
+		Reason:  cadf.Reason{ReasonType: "HTTP", ReasonCode: "403"},
 		Target:  cadf.Resource{TypeURI: "TargetTypeURI", ID: "TargetID"},
 		Initiator: cadf.Resource{
 			Name:   "InitiatorName",
@@ -43,6 +44,7 @@ func TestEventToKV(t *testing.T) {
 		"Source":                 "ObserverTypeURI",
 		"Action":                 "Action",
 		"Outcome":                "Outcome",
+		"Reason":                 "HTTP 403",
 		"Target":                 "TargetTypeURI TargetID",
 		"Initiator":              "InitiatorName",
 		"InitiatorDomain":        "InitiatorDomain",

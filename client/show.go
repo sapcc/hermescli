@@ -27,6 +27,7 @@ var defaultShowKeyOrder = []string{
 	"TypeURI",
 	"Action",
 	"Outcome",
+	"Reason",
 	"Target",
 	"Initiator",
 	"InitiatorDomain",

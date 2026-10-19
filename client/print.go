@@ -38,6 +38,9 @@ func eventToKV(event events.Event) map[string]string {
 
 	kv["Action"] = string(event.Action)
 	kv["Outcome"] = string(event.Outcome)
+	if event.Reason.ReasonCode != "" {
+		kv["Reason"] = strings.TrimSpace(event.Reason.ReasonType + " " + event.Reason.ReasonCode)
+	}
 	kv["Target"] = fmt.Sprintf("%s %s", event.Target.TypeURI, event.Target.ID)
 
 	if event.Initiator.Name != "" {
