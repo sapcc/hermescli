@@ -71,3 +71,12 @@ func TestIndentJSONLines(t *testing.T) {
 		t.Errorf("expected:\n%s\ngot:\n%s", expected, result)
 	}
 }
+
+func TestEventToKVReason(t *testing.T) {
+	if _, ok := eventToKV(events.Event{})["Reason"]; ok {
+		t.Error("expected no Reason key for an event without a reason")
+	}
+	if r := eventToKV(events.Event{Reason: cadf.Reason{ReasonCode: "403"}})["Reason"]; r != "403" {
+		t.Errorf("expected Reason 403, got %q", r)
+	}
+}
