@@ -182,6 +182,7 @@ $ hermescli show 1878df7c-d3ec-52d0-8b56-11ad68d25102
 | TypeURI                 | service/network                                  |
 | Action                  | update                                           |
 | Outcome                 | success                                          |
+| Reason                  | HTTP 200                                         |
 | Target                  | network/port                                     |
 |                         | 88c4c917-f5de-43e5-a403-b7c023bfc13d             |
 | Initiator               | neutron                                          |
