@@ -65,6 +65,20 @@ func (opts detailedListOpts) ToEventListQuery() (string, error) {
 	return u.String(), nil
 }
 
+// resolveListColumns picks the columns to print and whether the details
+// parameter is needed. Without explicit columns, details adds Attachments to
+// the defaults. Requesting the Attachments column enables details on its own,
+// because attachments are only returned with details.
+func resolveListColumns(columns []string, details bool) ([]string, bool) {
+	if len(columns) == 0 {
+		columns = defaultListKeyOrder
+		if details {
+			columns = listColumns
+		}
+	}
+	return columns, details || slices.Contains(columns, "Attachments")
+}
+
 func parseTime(timeStr string) (time.Time, error) {
 	validTimeFormats := []string{time.RFC3339, "2006-01-02T15:04:05", "2006-01-02T15:04:05-0700"}
 	var t time.Time
@@ -279,15 +293,7 @@ var ListCmd = &cobra.Command{
 
 		userLimit := viper.GetInt("limit")
 		details := viper.GetBool("details")
-		keyOrder := viper.GetStringSlice("column")
-		if len(keyOrder) == 0 {
-			keyOrder = defaultListKeyOrder
-			if details {
-				keyOrder = listColumns
-			}
-		}
-		// attachments are only returned with details
-		details = details || slices.Contains(keyOrder, "Attachments")
+		keyOrder, details := resolveListColumns(viper.GetStringSlice("column"), details)
 		format := viper.GetString("format")
 
 		projectID := viper.GetString("project-id")
