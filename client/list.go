@@ -71,9 +71,9 @@ func (opts detailedListOpts) ToEventListQuery() (string, error) {
 // because attachments are only returned with details.
 func resolveListColumns(columns []string, details bool) ([]string, bool) {
 	if len(columns) == 0 {
-		columns = defaultListKeyOrder
+		columns = slices.Clone(defaultListKeyOrder)
 		if details {
-			columns = listColumns
+			columns = slices.Clone(listColumns)
 		}
 	}
 	return columns, details || slices.Contains(columns, "Attachments")
