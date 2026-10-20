@@ -42,6 +42,7 @@ Usage:
 Flags:
       --action string           filter events by an action
   -A, --all-projects            include all projects and domains (admin only) (alias for --project-id '*')
+      --details                 include attachments, e.g. the request body (adds the Attachments column)
   -h, --help                    help for list
       --initiator-id string     filter events by an initiator ID
       --initiator-name string   filter events by an initiator name

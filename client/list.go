@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -38,6 +39,44 @@ var defaultListKeyOrder = []string{
 	"RequestPath",
 	"Target",
 	"Initiator",
+}
+
+// listColumns are all columns supported by the list command.
+var listColumns = append(slices.Clone(defaultListKeyOrder), "Attachments")
+
+// detailedListOpts adds the details parameter, which makes Hermes return the event attachments.
+type detailedListOpts struct {
+	events.ListOpts
+	Details bool
+}
+
+func (opts detailedListOpts) ToEventListQuery() (string, error) {
+	q, err := opts.ListOpts.ToEventListQuery()
+	if err != nil || !opts.Details {
+		return q, err
+	}
+	u, err := url.Parse(q)
+	if err != nil {
+		return "", err
+	}
+	params := u.Query()
+	params.Set("details", "true")
+	u.RawQuery = params.Encode()
+	return u.String(), nil
+}
+
+// resolveListColumns picks the columns to print and whether the details
+// parameter is needed. Without explicit columns, details adds Attachments to
+// the defaults. Requesting the Attachments column enables details on its own,
+// because attachments are only returned with details.
+func resolveListColumns(columns []string, details bool) ([]string, bool) {
+	if len(columns) == 0 {
+		columns = slices.Clone(defaultListKeyOrder)
+		if details {
+			columns = slices.Clone(listColumns)
+		}
+	}
+	return columns, details || slices.Contains(columns, "Attachments")
 }
 
 func parseTime(timeStr string) (time.Time, error) {
@@ -132,11 +171,11 @@ func getTimeSort(listOpts events.ListOpts) bool {
 	return true
 }
 
-func getEvents(ctx context.Context, client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, userLimit int, precise bool, bar **pb.ProgressBar) error {
+func getEvents(ctx context.Context, client *gophercloud.ServiceClient, allEvents *[]events.Event, listOpts events.ListOpts, details bool, userLimit int, precise bool, bar **pb.ProgressBar) error {
 	var forceWorkaround bool
 	var eventLength int
 
-	err := events.List(client, listOpts).EachPage(ctx, func(ctx context.Context, page pagination.Page) (bool, error) {
+	err := events.List(client, detailedListOpts{listOpts, details}).EachPage(ctx, func(ctx context.Context, page pagination.Page) (bool, error) {
 		pageEvents, err := events.ExtractEvents(page)
 		if err != nil {
 			return false, fmt.Errorf("failed to extract events: %w", err)
@@ -223,7 +262,7 @@ func getEvents(ctx context.Context, client *gophercloud.ServiceClient, allEvents
 		if delta > 0 && delta <= maxOffset {
 			listOpts.Limit = delta
 		}
-		return getEvents(ctx, client, allEvents, listOpts, userLimit, precise, bar)
+		return getEvents(ctx, client, allEvents, listOpts, details, userLimit, precise, bar)
 	}
 
 	return nil
@@ -247,16 +286,14 @@ var ListCmd = &cobra.Command{
 			return errors.New("cannot combine time flag with time-start or time-end flags")
 		}
 
-		return verifyGlobalFlags(defaultListKeyOrder)
+		return verifyGlobalFlags(listColumns)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// list events
 
 		userLimit := viper.GetInt("limit")
-		keyOrder := viper.GetStringSlice("column")
-		if len(keyOrder) == 0 {
-			keyOrder = defaultListKeyOrder
-		}
+		details := viper.GetBool("details")
+		keyOrder, details := resolveListColumns(viper.GetStringSlice("column"), details)
 		format := viper.GetString("format")
 
 		projectID := viper.GetString("project-id")
@@ -327,7 +364,7 @@ var ListCmd = &cobra.Command{
 		var allEvents []events.Event
 		var bar *pb.ProgressBar
 
-		if err = getEvents(cmd.Context(), client, &allEvents, listOpts, userLimit, viper.GetBool("over-10k-fix"), &bar); err != nil {
+		if err = getEvents(cmd.Context(), client, &allEvents, listOpts, details, userLimit, viper.GetBool("over-10k-fix"), &bar); err != nil {
 			if bar != nil {
 				bar.Finish()
 			}
@@ -344,6 +381,19 @@ var ListCmd = &cobra.Command{
 				tablewriter.WithRowMaxWidth(20),
 				tablewriter.WithRowAlignment(tw.AlignRight),
 			)
+			if i := slices.Index(keyOrder, "Attachments"); i >= 0 {
+				// left-align the attachments and keep the JSON indentation
+				align := make([]tw.Align, len(keyOrder))
+				for j := range align {
+					align[j] = tw.AlignRight
+				}
+				align[i] = tw.AlignLeft
+				table.Configure(func(c *tablewriter.Config) {
+					c.Row.Alignment.PerColumn = align
+					c.Row.ColMaxWidths.PerColumn = tw.NewMapper[int, int]().Set(i, 80)
+					c.Behavior.TrimSpace = tw.Off
+				})
+			}
 			table.Header(keyOrder)
 
 			for _, v := range allEvents {
@@ -351,6 +401,9 @@ var ListCmd = &cobra.Command{
 				tableRow := []string{}
 				for _, k := range keyOrder {
 					cellValue := kv[k]
+					if k == "Attachments" {
+						cellValue = indentJSONLines(cellValue)
+					}
 					tableRow = append(tableRow, cellValue)
 				}
 				if err := table.Append(tableRow); err != nil {
@@ -393,6 +446,7 @@ func initListCmdFlags() {
 	ListCmd.Flags().StringP("project-id", "", "", "filter events by the project or domain ID (admin only)")
 	ListCmd.Flags().StringP("domain-id", "", "", "filter events by the domain ID (admin only)")
 	ListCmd.Flags().BoolP("all-projects", "A", false, "include all projects and domains (admin only) (alias for --project-id '*')")
+	ListCmd.Flags().BoolP("details", "", false, "include attachments, e.g. the request body (adds the Attachments column)")
 	ListCmd.Flags().BoolP("over-10k-fix", "", true, "workaround to filter out overlapping events for > 10k total events")
 	ListCmd.Flags().UintP("limit", "l", 0, "limit an amount of events in output")
 	ListCmd.Flags().StringSliceP("sort", "s", []string{}, `supported sort keys include time, observer_type, target_type, target_id, initiator_type, initiator_id, outcome and action

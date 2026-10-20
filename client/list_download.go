@@ -100,7 +100,7 @@ var listDownloadCmd = &cobra.Command{
 
 		var allEvents []events.Event
 		var bar *pb.ProgressBar
-		if err = getEvents(cmd.Context(), hermesClient, &allEvents, listOpts, 0, true, &bar); err != nil {
+		if err = getEvents(cmd.Context(), hermesClient, &allEvents, listOpts, false, 0, true, &bar); err != nil {
 			if bar != nil {
 				bar.Finish()
 			}
