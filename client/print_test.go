@@ -21,6 +21,7 @@ func TestEventToKV(t *testing.T) {
 		},
 		Action:  cadf.Action("Action"),
 		Outcome: cadf.Outcome("Outcome"),
+		Reason:  cadf.Reason{ReasonType: "HTTP", ReasonCode: "403"},
 		Target:  cadf.Resource{TypeURI: "TargetTypeURI", ID: "TargetID"},
 		Initiator: cadf.Resource{
 			Name:   "InitiatorName",
@@ -43,6 +44,7 @@ func TestEventToKV(t *testing.T) {
 		"Source":                 "ObserverTypeURI",
 		"Action":                 "Action",
 		"Outcome":                "Outcome",
+		"Reason":                 "HTTP 403",
 		"Target":                 "TargetTypeURI TargetID",
 		"Initiator":              "InitiatorName",
 		"InitiatorDomain":        "InitiatorDomain",
@@ -67,5 +69,14 @@ func TestIndentJSONLines(t *testing.T) {
 
 	if result := indentJSONLines(input); result != expected {
 		t.Errorf("expected:\n%s\ngot:\n%s", expected, result)
+	}
+}
+
+func TestEventToKVReason(t *testing.T) {
+	if _, ok := eventToKV(events.Event{})["Reason"]; ok {
+		t.Error("expected no Reason key for an event without a reason")
+	}
+	if r := eventToKV(events.Event{Reason: cadf.Reason{ReasonCode: "403"}})["Reason"]; r != "403" {
+		t.Errorf("expected Reason 403, got %q", r)
 	}
 }
