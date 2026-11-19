@@ -4,11 +4,11 @@ go 1.27
 
 require (
 	github.com/cheggaaa/pb/v3 v3.2.1
-	github.com/gophercloud/gophercloud/v2 v2.15.0
+	github.com/gophercloud/gophercloud/v2 v2.16.0
 	github.com/gophercloud/utils/v2 v2.0.0-20260922174841-b4759ea0529b
 	github.com/olekukonko/tablewriter v1.1.5
 	github.com/sapcc/go-api-declarations v1.25.1
-	github.com/sapcc/go-bits v0.0.0-20261112131659-2726a2c437f4
+	github.com/sapcc/go-bits v0.0.0-20261119170052-2c0267f1a934
 	github.com/sapcc/gophercloud-sapcc/v2 v2.2.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
